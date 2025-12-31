@@ -1,7 +1,7 @@
 import './styles/global.css';
 import { useEffect, useRef, useState } from 'react';
 
-// Custom hook for counting animation
+// Custom hook for counting animation b
 function useCountUp(end, duration = 2000, startCounting = false) {
   const [count, setCount] = useState(0);
   
