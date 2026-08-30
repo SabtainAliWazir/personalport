@@ -1,266 +1,107 @@
-:root {
-  --bg-color: #0a0a0a;
-  --card-bg: #141414;
-  --card-hover: #1a1a1a;
-  --text-color: #fafafa;
-  --text-dim: #888;
-  --accent: #6366f1;
-  --accent-soft: rgba(99, 102, 241, 0.15);
-  --border: rgba(255, 255, 255, 0.08);
-  --radius: 24px;
-  --radius-sm: 16px;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Space Mono', monospace;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Syncopate', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --bg-base: #06070a;
+  --bg-surface: #0c0e17;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(59, 255, 185, 0.4);
+  
+  --accent-mint: #3BFFB9;
+  --accent-cyan: #00E5FF;
+  --accent-emerald: #00F5A0;
+}
+
+html,
+body,
+#root {
+  max-width: 100vw;
+  width: 100%;
+  overflow-x: clip;
+  position: relative;
+  -webkit-text-size-adjust: 100%;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  background-color: #06070a;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: var(--font-main);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #06070a;
+  color: #f8fafc;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+h1, h2, h3, .font-heading {
+  font-family: 'Syncopate', sans-serif;
 }
 
-/* ✨ LOADING SCREEN - Must be in global.css for immediate availability */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #0a0a0a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.loader-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.loader-orbit-container {
-  position: relative;
-  width: 280px;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.loader-orbit {
-  position: absolute;
+/* Premium Form inputs styling */
+.bento-input {
   width: 100%;
-  height: 100%;
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 50%;
-  animation: orbitSpin 10s linear infinite;
-}
-
-.loader-orbit span {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform-origin: 0 140px;
-  transform: rotate(calc(var(--i) * 60deg)) translateX(-50%);
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  color: #6366f1;
-  background: #0a0a0a;
-  padding: 0.5rem 0.75rem;
-  border-radius: 20px;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  white-space: nowrap;
-}
-
-@keyframes orbitSpin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loader-logo {
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: #6366f1;
-  animation: pulse 1.5s ease-in-out infinite;
-  z-index: 1;
-}
-
-.loader-text {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.85rem;
-  letter-spacing: 0.3em;
-  color: #888;
-  margin-bottom: 1.5rem;
-}
-
-.loader-bar {
-  width: 200px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 0 auto 1rem;
-}
-
-.loader-progress {
-  height: 100%;
-  background: linear-gradient(90deg, #6366f1, #a855f7);
-  border-radius: 10px;
-  transition: width 0.1s ease-out;
-}
-
-.loader-percent {
-  font-family: 'Space Mono', monospace;
-  font-size: 1.5rem;
-  color: #6366f1;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.7;
-    transform: scale(0.95);
-  }
-}
-
-/* Bento Card Base */
-.bento-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2rem;
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.bento-card:hover {
-  background: var(--card-hover);
-  border-color: rgba(255, 255, 255, 0.12);
-  transform: translateY(-4px);
-}
-
-.bento-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-}
-
-/* Typography */
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--accent);
-  margin-bottom: 1rem;
-}
-
-.heading-lg {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-}
-
-.heading-md {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.text-dim {
-  color: var(--text-dim);
-}
-
-/* Accent Button */
-.btn-accent {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--accent);
-  color: white;
-  padding: 0.875rem 1.5rem;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.9rem;
-  transition: var(--transition);
-  border: none;
-  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-accent:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
+@media (min-width: 768px) {
+  .bento-input {
+    padding: 1.1rem 1.25rem;
+    font-size: 0.95rem;
+  }
 }
 
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent;
-  color: var(--text-color);
-  padding: 0.875rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: 1px solid var(--border);
-  transition: var(--transition);
-  cursor: pointer;
+.bento-input::placeholder {
+  color: rgba(148, 163, 184, 0.45);
 }
 
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.15);
+.bento-input:focus {
+  outline: none;
+  border-color: #3BFFB9;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 20px rgba(59, 255, 185, 0.2);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+/* Luxury Card Glow Effect */
+.glass-card {
+  background: rgba(12, 14, 23, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-color);
+.glass-card:hover {
+  border-color: rgba(59, 255, 185, 0.35);
+  box-shadow: 0 0 35px rgba(59, 255, 185, 0.08);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 3px;
+.blend-portrait {
+  filter: contrast(105%) brightness(95%);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
