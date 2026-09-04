@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './styles/global.css';
 import { RouterProvider, useRouter } from './router/RouterContext';
 import PageTransitionLoader from './components/ui/PageTransitionLoader';
@@ -17,6 +17,13 @@ import Contact from './pages/Contact';
 
 function MainContent() {
   const { page } = useRouter();
+
+  // Scroll to top immediately whenever the active page view updates
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [page]);
 
   const renderPage = () => {
     switch (page) {

@@ -14,6 +14,38 @@ export function RouterProvider({ children }) {
 
   const [location, setLocation] = useState(getInitialLocation);
 
+  // Disable automatic browser scroll restoration so SPA navigations always start at top
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  // Force scroll-to-top whenever the pathname changes (unless navigating to a hash anchor)
+  useEffect(() => {
+    if (!location.hash) {
+      const resetScroll = () => {
+        const prevBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        document.documentElement.style.scrollBehavior = prevBehavior;
+      };
+
+      resetScroll();
+      const raf = requestAnimationFrame(resetScroll);
+      const timer = setTimeout(resetScroll, 60);
+
+      return () => {
+        cancelAnimationFrame(raf);
+        clearTimeout(timer);
+      };
+    }
+  }, [location.path]);
+
   useEffect(() => {
     const handlePopState = () => {
       const newLoc = {
@@ -31,6 +63,8 @@ export function RouterProvider({ children }) {
         }, 80);
       } else {
         window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
       }
     };
 
