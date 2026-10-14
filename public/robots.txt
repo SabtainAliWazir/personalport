@@ -3,5 +3,5 @@ User-agent: *
 Allow: /
 
 # Host & Sitemap (Required for Google Search Console)
-Host: https://sabtain.dev
-Sitemap: https://sabtain.dev/sitemap.xml
+Host: https://www.devcop.xyz
+Sitemap: https://www.devcop.xyz/sitemap.xml
