@@ -1,0 +1,7 @@
+# Google & Search Engine Crawlers
+User-agent: *
+Allow: /
+
+# Host & Sitemap (Required for Google Search Console)
+Host: https://sabtain.dev
+Sitemap: https://sabtain.dev/sitemap.xml

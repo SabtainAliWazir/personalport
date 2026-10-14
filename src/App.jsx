@@ -14,6 +14,8 @@ import CaseStudy from './pages/CaseStudy';
 import Services from './pages/Services';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 function MainContent() {
   const { page } = useRouter();
@@ -39,6 +41,10 @@ function MainContent() {
         return <About />;
       case 'contact':
         return <Contact />;
+      case 'blog':
+        return <Blog />;
+      case 'blog-post':
+        return <BlogPost />;
       default:
         return <Home />;
     }

@@ -152,6 +152,12 @@ export function RouterProvider({ children }) {
     page = 'about';
   } else if (cleanPath === '/contact') {
     page = 'contact';
+  } else if (cleanPath === '/blog' || cleanPath === '/blogs') {
+    page = 'blog';
+  } else if (cleanPath.startsWith('/blog/')) {
+    page = 'blog-post';
+    const parts = cleanPath.split('/');
+    params.slug = parts[parts.length - 1];
   } else {
     page = 'home';
   }
@@ -205,7 +211,7 @@ export function Link({ href, children, className = '', roll = false, onClick, ..
         href={href}
         onClick={handleClick}
         className={`group relative flex items-center py-1 text-sm font-medium transition-colors ${
-          isActive ? 'text-[#f8f5ee]' : 'text-[#f8f5ee]/75 hover:text-[#f8f5ee]'
+          isActive ? 'text-zinc-950 font-semibold' : 'text-zinc-600 hover:text-zinc-950'
         } ${className}`}
         {...props}
       >
@@ -235,7 +241,7 @@ export function Link({ href, children, className = '', roll = false, onClick, ..
           <span className="sr-only">{children}</span>
         </span>
         <span
-          className={`absolute bottom-0 left-0 h-px bg-[#e85a2d] transition-all duration-300 ${
+          className={`absolute bottom-0 left-0 h-px bg-[#f97316] transition-all duration-300 ${
             isActive ? 'w-full' : 'w-0 group-hover:w-full'
           }`}
         />

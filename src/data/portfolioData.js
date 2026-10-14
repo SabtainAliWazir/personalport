@@ -12,7 +12,7 @@ export const PROJECTS = [
     subtitle: 'Electronic Annual Certification Report Database & Automated Reconciliation Engine',
     heroImage: '/images/who_eacr.png',
     liveLink: 'https://polmis.emro.who.int/eacr',
-    shortDesc: 'A mission-critical surveillance and reporting pipeline for the World Health Organization (WHO EMRO), resolving data anomalies and guaranteeing mathematical consistency across regional epidemiological reports.',
+    shortDesc: 'An automated health surveillance web system built for the World Health Organization (WHO EMRO) in Laravel 11 and MySQL. It automatically verifies medical lab data across 22 member countries with zero discrepancies.',
     metrics: [
       { label: 'Data Consistency', value: '100%' },
       { label: 'Regional Countries', value: 'EMRO Member States' },
@@ -83,7 +83,7 @@ public function reconcileSurveillanceData(int $countryId, int $reportingYear): R
     subtitle: 'Global Delegation Mission Budgeting & Low-Latency Collaborative Chat Engine',
     heroImage: '/images/woah_pvsis.png',
     liveLink: 'https://pvs.woah.org/',
-    shortDesc: 'A real-time collaborative workspace and enterprise budgeting portal connecting international animal health delegates across 180+ member countries.',
+    shortDesc: 'A real-time web platform and multi-currency budgeting portal built with React, Node.js, and WebSockets connecting international animal health delegates across 180+ member countries.',
     metrics: [
       { label: 'Member States', value: '180+ Countries' },
       { label: 'Socket Latency', value: '< 65ms' },

@@ -11,29 +11,29 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
   const [copiedCode, setCopiedCode] = useState(false);
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-[1.25rem] border border-[#f8f5ee]/15 bg-[#100904] p-5 sm:p-6 text-[#f8f5ee] shadow-[0_1.5rem_4rem_rgba(16,9,4,0.5)] flex flex-col justify-between">
+    <div className="relative h-full w-full overflow-hidden rounded-[1.25rem] border border-zinc-800 bg-[#0c0a09] p-5 sm:p-6 text-zinc-100 shadow-2xl flex flex-col justify-between">
       {/* Background Radial Amber Glow & Grid */}
       <div 
-        className="pointer-events-none absolute -right-20 -top-20 size-60 rounded-full bg-[#e85a2d]/10 blur-[80px]"
+        className="pointer-events-none absolute -right-20 -top-20 size-60 rounded-full bg-[#f97316]/10 blur-[80px]"
         aria-hidden="true"
       />
       <div 
         className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{
-          backgroundImage: 'radial-gradient(#f8f5ee 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
           backgroundSize: '18px 18px'
         }}
       />
 
       {/* Top Status Capsule Bar */}
-      <div className="relative z-10 flex items-center justify-between border-b border-[#f8f5ee]/10 pb-3 font-mono text-[0.7rem]">
+      <div className="relative z-10 flex items-center justify-between border-b border-zinc-800 pb-3 font-mono text-[0.7rem]">
         <div className="flex items-center gap-2">
-          <span className="size-2 rounded-full bg-[#e85a2d] animate-ping" />
-          <span className="text-[#e85a2d] font-semibold uppercase tracking-wider">
+          <span className="size-2 rounded-full bg-[#f97316] animate-ping" />
+          <span className="text-[#f97316] font-semibold uppercase tracking-wider">
             {serviceId.replace(/-/g, ' ')}
           </span>
         </div>
-        <span className="uppercase tracking-widest text-[#f8f5ee]/40 rounded-full border border-[#f8f5ee]/10 px-2.5 py-0.5">
+        <span className="uppercase tracking-widest text-zinc-400 rounded-full border border-zinc-800 px-2.5 py-0.5">
           Live Interactive Simulator
         </span>
       </div>
@@ -59,7 +59,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
                   type="button"
                   onClick={() => setWpTab('blocks')}
                   className={`flex-1 rounded-md py-1 transition-all ${
-                    wpTab === 'blocks' ? 'bg-[#e85a2d] text-[#f8f5ee] font-semibold' : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
+                    wpTab === 'blocks' ? 'bg-[#f97316] text-[#f8f5ee] font-semibold' : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
                   }`}
                 >
                   Gutenberg Blocks
@@ -68,7 +68,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
                   type="button"
                   onClick={() => setWpTab('graphql')}
                   className={`flex-1 rounded-md py-1 transition-all ${
-                    wpTab === 'graphql' ? 'bg-[#e85a2d] text-[#f8f5ee] font-semibold' : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
+                    wpTab === 'graphql' ? 'bg-[#f97316] text-[#f8f5ee] font-semibold' : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
                   }`}
                 >
                   Headless GraphQL
@@ -77,7 +77,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
                   type="button"
                   onClick={() => setWpTab('performance')}
                   className={`flex-1 rounded-md py-1 transition-all ${
-                    wpTab === 'performance' ? 'bg-[#e85a2d] text-[#f8f5ee] font-semibold' : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
+                    wpTab === 'performance' ? 'bg-[#f97316] text-[#f8f5ee] font-semibold' : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
                   }`}
                 >
                   Object Cache
@@ -88,7 +88,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               {wpTab === 'blocks' && (
                 <div className="rounded-xl border border-[#f8f5ee]/10 bg-[#1a120b]/90 p-3.5 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#e85a2d] font-semibold flex items-center gap-1.5">
+                    <span className="text-[#f97316] font-semibold flex items-center gap-1.5">
                       <Boxes className="size-3.5" /> Bespoke ACF Block Tree
                     </span>
                     <span className="text-[0.65rem] text-[#f8f5ee]/50">0 Elementor Bloat</span>
@@ -96,12 +96,12 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
 
                   {/* Animated Block Nodes */}
                   <div className="space-y-1.5 text-[0.72rem]">
-                    <div className="flex items-center justify-between rounded-lg border border-[#e85a2d]/30 bg-[#e85a2d]/10 px-3 py-1.5 text-[#f8f5ee]">
+                    <div className="flex items-center justify-between rounded-lg border border-[#f97316]/30 bg-[#f97316]/10 px-3 py-1.5 text-[#f8f5ee]">
                       <span className="flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-[#e85a2d] animate-pulse" />
+                        <span className="size-1.5 rounded-full bg-[#f97316] animate-pulse" />
                         &lt;HeroEditorialBlock /&gt;
                       </span>
-                      <span className="text-[0.65rem] text-[#e85a2d]">PHP 8.3 + React</span>
+                      <span className="text-[0.65rem] text-[#f97316]">PHP 8.3 + React</span>
                     </div>
 
                     <div className="flex items-center justify-between rounded-lg border border-[#f8f5ee]/10 bg-white/[0.02] px-3 py-1.5 text-[#f8f5ee]/80">
@@ -125,12 +125,12 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
 
               {wpTab === 'graphql' && (
                 <div className="rounded-xl border border-[#f8f5ee]/10 bg-[#0a0603] p-3 text-[0.7rem] text-[#f8f5ee]/90 space-y-1 leading-relaxed">
-                  <p className="text-[#e85a2d]">query GetHeadlessContent &#123;</p>
+                  <p className="text-[#f97316]">query GetHeadlessContent &#123;</p>
                   <p className="pl-3 text-[#f8f5ee]/80">post(slug: &quot;high-speed-build&quot;) &#123;</p>
                   <p className="pl-6 text-[#f8f5ee]/60">title, acfFields &#123; speedMetrics, schema &#125;</p>
                   <p className="pl-3 text-[#f8f5ee]/80">&#125;</p>
-                  <p className="text-[#e85a2d]">&#125;</p>
-                  <div className="mt-2 pt-2 border-t border-[#f8f5ee]/10 flex items-center justify-between text-[0.65rem] text-[#e85a2d]">
+                  <p className="text-[#f97316]">&#125;</p>
+                  <div className="mt-2 pt-2 border-t border-[#f8f5ee]/10 flex items-center justify-between text-[0.65rem] text-[#f97316]">
                     <span>Headless Next.js Hook</span>
                     <span>120ms Fast Query</span>
                   </div>
@@ -138,12 +138,12 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               )}
 
               {wpTab === 'performance' && (
-                <div className="rounded-xl border border-[#e85a2d]/30 bg-[#e85a2d]/10 p-3.5 space-y-2">
+                <div className="rounded-xl border border-[#f97316]/30 bg-[#f97316]/10 p-3.5 space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#e85a2d] font-bold flex items-center gap-1.5">
-                      <Flame className="size-3.5 text-[#e85a2d]" /> Redis Object Cache Pro
+                    <span className="text-[#f97316] font-bold flex items-center gap-1.5">
+                      <Flame className="size-3.5 text-[#f97316]" /> Redis Object Cache Pro
                     </span>
-                    <span className="text-[0.68rem] font-bold text-[#f8f5ee] bg-[#e85a2d] px-2 py-0.5 rounded-full">
+                    <span className="text-[0.68rem] font-bold text-[#f8f5ee] bg-[#f97316] px-2 py-0.5 rounded-full">
                       99.4% Hit Rate
                     </span>
                   </div>
@@ -174,7 +174,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
             >
               <div className="flex items-center justify-between font-mono">
                 <span className="text-xs text-[#f8f5ee]/60">Lighthouse Performance</span>
-                <span className="font-display text-2xl font-bold text-[#e85a2d]">99 / 100</span>
+                <span className="font-display text-2xl font-bold text-[#f97316]">99 / 100</span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center font-mono">
                 <div className="rounded-xl border border-[#f8f5ee]/10 bg-white/[0.02] p-2.5">
@@ -193,11 +193,11 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               <div className="space-y-1.5 font-mono text-[0.7rem] text-[#f8f5ee]/70">
                 <div className="flex justify-between border-b border-[#f8f5ee]/5 pb-1">
                   <span>Server Render Path (SSR)</span>
-                  <span className="text-[#e85a2d]">● 14ms edge response</span>
+                  <span className="text-[#f97316]">● 14ms edge response</span>
                 </div>
                 <div className="flex justify-between border-b border-[#f8f5ee]/5 pb-1">
                   <span>Crawl Budget Efficiency</span>
-                  <span className="text-[#e85a2d]">● 100% 200 OK</span>
+                  <span className="text-[#f97316]">● 100% 200 OK</span>
                 </div>
               </div>
             </motion.div>
@@ -214,16 +214,16 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               className="w-full space-y-3 font-mono text-xs"
             >
               <div className="rounded-xl border border-[#f8f5ee]/10 bg-white/[0.02] p-3">
-                <p className="text-[0.68rem] uppercase text-[#e85a2d] mb-1 font-semibold">Semantic Hierarchy</p>
+                <p className="text-[0.68rem] uppercase text-[#f97316] mb-1 font-semibold">Semantic Hierarchy</p>
                 <div className="space-y-1.5 text-[0.72rem] text-[#f8f5ee]/80">
-                  <div className="pl-1 border-l-2 border-[#e85a2d]">&lt;H1&gt; Intent-Targeted Headline&lt;/H1&gt;</div>
+                  <div className="pl-1 border-l-2 border-[#f97316]">&lt;H1&gt; Intent-Targeted Headline&lt;/H1&gt;</div>
                   <div className="pl-4 border-l-2 border-[#f8f5ee]/20">&lt;H2&gt; High-Relevance Query Anchor&lt;/H2&gt;</div>
                   <div className="pl-7 border-l-2 border-[#f8f5ee]/10">&lt;Schema: LegalService JSON-LD&gt;</div>
                 </div>
               </div>
               <div className="flex items-center justify-between text-[0.7rem] text-[#f8f5ee]/60 pt-1">
                 <span>Internal Link Graph: Synced</span>
-                <span className="text-[#e85a2d] font-semibold">No Cannibalization</span>
+                <span className="text-[#f97316] font-semibold">No Cannibalization</span>
               </div>
             </motion.div>
           )}
@@ -239,17 +239,17 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               className="w-full space-y-3 font-mono"
             >
               <div className="rounded-xl border border-[#f8f5ee]/10 bg-white/[0.02] p-3 text-xs">
-                <div className="flex items-center justify-between text-[#e85a2d] mb-2 font-semibold">
+                <div className="flex items-center justify-between text-[#f97316] mb-2 font-semibold">
                   <span className="flex items-center gap-1.5"><Sparkles className="size-3.5" /> LLM Citation Graph</span>
-                  <span className="text-[0.68rem] bg-[#e85a2d]/15 px-2 py-0.5 rounded-full">Active</span>
+                  <span className="text-[0.68rem] bg-[#f97316]/15 px-2 py-0.5 rounded-full">Active</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[0.7rem] text-[#f8f5ee]/80">
                   <div className="border border-[#f8f5ee]/5 rounded-lg p-2 bg-[#1a120b]">
-                    <span className="text-[#e85a2d] block">Perplexity AI</span>
+                    <span className="text-[#f97316] block">Perplexity AI</span>
                     <span className="text-[0.65rem] text-[#f8f5ee]/50">Citation Rank #1</span>
                   </div>
                   <div className="border border-[#f8f5ee]/5 rounded-lg p-2 bg-[#1a120b]">
-                    <span className="text-[#e85a2d] block">ChatGPT Search</span>
+                    <span className="text-[#f97316] block">ChatGPT Search</span>
                     <span className="text-[0.65rem] text-[#f8f5ee]/50">Entity Verified</span>
                   </div>
                 </div>
@@ -269,9 +269,9 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               className="w-full space-y-3 font-mono text-xs"
             >
               <div className="rounded-xl border border-[#f8f5ee]/10 bg-white/[0.02] p-3.5 space-y-2">
-                <div className="flex items-center justify-between text-[#e85a2d] font-semibold">
+                <div className="flex items-center justify-between text-[#f97316] font-semibold">
                   <span>React 19 & Next.js App Router</span>
-                  <span className="text-[0.65rem] bg-[#e85a2d]/20 px-2 py-0.5 rounded-full text-[#f8f5ee]">60 FPS</span>
+                  <span className="text-[0.65rem] bg-[#f97316]/20 px-2 py-0.5 rounded-full text-[#f8f5ee]">60 FPS</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[0.7rem] text-[#f8f5ee]/80">
                   <div className="rounded-lg border border-[#f8f5ee]/5 bg-[#1a120b] p-2">
@@ -285,7 +285,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
                 </div>
                 <div className="flex items-center justify-between text-[0.68rem] text-[#f8f5ee]/60 pt-1">
                   <span>Bundle Size Budget</span>
-                  <span className="text-[#e85a2d] font-semibold">&lt; 140KB Gzipped</span>
+                  <span className="text-[#f97316] font-semibold">&lt; 140KB Gzipped</span>
                 </div>
               </div>
             </motion.div>
@@ -302,18 +302,18 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               className="w-full space-y-3 font-mono text-xs"
             >
               <div className="rounded-xl border border-[#f8f5ee]/10 bg-white/[0.02] p-3.5 space-y-2.5">
-                <span className="text-[#e85a2d] font-semibold text-xs block">3-Tier Distributed Pipeline</span>
+                <span className="text-[#f97316] font-semibold text-xs block">3-Tier Distributed Pipeline</span>
                 <div className="flex items-center justify-between text-[0.7rem] text-[#f8f5ee]/80 border-b border-[#f8f5ee]/10 pb-1.5">
-                  <span className="flex items-center gap-1.5"><Globe className="size-3 text-[#e85a2d]" /> Client React</span>
+                  <span className="flex items-center gap-1.5"><Globe className="size-3 text-[#f97316]" /> Client React</span>
                   <span>→ REST / JSON</span>
                 </div>
                 <div className="flex items-center justify-between text-[0.7rem] text-[#f8f5ee]/80 border-b border-[#f8f5ee]/10 pb-1.5">
-                  <span className="flex items-center gap-1.5"><Server className="size-3 text-[#e85a2d]" /> Laravel 11 API</span>
+                  <span className="flex items-center gap-1.5"><Server className="size-3 text-[#f97316]" /> Laravel 11 API</span>
                   <span>→ Queue Jobs</span>
                 </div>
                 <div className="flex items-center justify-between text-[0.7rem] text-[#f8f5ee]/80">
-                  <span className="flex items-center gap-1.5"><Database className="size-3 text-[#e85a2d]" /> MySQL / Redis</span>
-                  <span className="text-[#e85a2d] font-semibold">ACID Safe</span>
+                  <span className="flex items-center gap-1.5"><Database className="size-3 text-[#f97316]" /> MySQL / Redis</span>
+                  <span className="text-[#f97316] font-semibold">ACID Safe</span>
                 </div>
               </div>
             </motion.div>
@@ -329,19 +329,19 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               transition={{ duration: 0.28 }}
               className="w-full space-y-3 font-mono text-xs"
             >
-              <div className="rounded-xl border border-[#e85a2d]/30 bg-[#e85a2d]/10 p-3.5 space-y-2">
+              <div className="rounded-xl border border-[#f97316]/30 bg-[#f97316]/10 p-3.5 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[#e85a2d] font-bold flex items-center gap-1.5">
+                  <span className="text-[#f97316] font-bold flex items-center gap-1.5">
                     <ShieldCheck className="size-3.5" /> WHO Surveillance Integrity
                   </span>
-                  <span className="text-[0.68rem] font-bold text-[#f8f5ee] bg-[#e85a2d] px-2 py-0.5 rounded-full">
+                  <span className="text-[0.68rem] font-bold text-[#f8f5ee] bg-[#f97316] px-2 py-0.5 rounded-full">
                     100% Match
                   </span>
                 </div>
                 <p className="text-[0.7rem] text-[#f8f5ee]/70 leading-relaxed font-sans">
                   Automated SQL reconciliation scripts resolving real-time specimen surveillance anomalies across regional labs.
                 </p>
-                <div className="flex items-center justify-between text-[0.68rem] text-[#f8f5ee]/60 border-t border-[#e85a2d]/20 pt-1.5">
+                <div className="flex items-center justify-between text-[0.68rem] text-[#f8f5ee]/60 border-t border-[#f97316]/20 pt-1.5">
                   <span>Data Discrepancies</span>
                   <span className="text-[#f8f5ee] font-bold">0.000%</span>
                 </div>
@@ -360,7 +360,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
               className="w-full space-y-3 font-mono text-xs"
             >
               <div className="rounded-xl border border-[#f8f5ee]/10 bg-white/[0.02] p-3.5 space-y-2">
-                <div className="flex items-center justify-between text-[#e85a2d] font-semibold">
+                <div className="flex items-center justify-between text-[#f97316] font-semibold">
                   <span className="flex items-center gap-1.5"><Activity className="size-3.5" /> WOAH Socket Mesh</span>
                   <span className="text-[0.68rem] text-[#f8f5ee]/50">180+ Member States</span>
                 </div>
@@ -376,7 +376,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
                 </div>
                 <div className="flex items-center justify-between text-[0.68rem] text-[#f8f5ee]/60 pt-1">
                   <span>Pub/Sub Backplane</span>
-                  <span className="text-[#e85a2d] font-semibold">Redis Cluster</span>
+                  <span className="text-[#f97316] font-semibold">Redis Cluster</span>
                 </div>
               </div>
             </motion.div>
@@ -394,17 +394,17 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
             >
               <div className="rounded-xl border border-[#f8f5ee]/10 bg-[#0a0603] p-3.5 space-y-2">
                 <div className="flex items-center justify-between border-b border-[#f8f5ee]/10 pb-1.5 text-[0.68rem]">
-                  <span className="text-[#e85a2d] flex items-center gap-1.5"><Terminal className="size-3" /> WhatsApp / AI Agent</span>
+                  <span className="text-[#f97316] flex items-center gap-1.5"><Terminal className="size-3" /> WhatsApp / AI Agent</span>
                   <span className="text-[#f8f5ee]/40">Sub-400ms</span>
                 </div>
                 <div className="space-y-1 text-[0.68rem] text-[#f8f5ee]/80 font-sans">
                   <p className="text-[#f8f5ee]/50 font-mono">&gt; User: &quot;Need corporate litigation counsel.&quot;</p>
-                  <p className="text-[#e85a2d] font-mono">&gt; Agent: [Intent: High-Value Retainer]</p>
+                  <p className="text-[#f97316] font-mono">&gt; Agent: [Intent: High-Value Retainer]</p>
                   <p className="text-[#f8f5ee]">&gt; Bot: &quot;Connecting with Counsel Kazimi on WhatsApp...&quot;</p>
                 </div>
                 <div className="flex items-center justify-between text-[0.65rem] font-mono text-[#f8f5ee]/50 pt-1">
                   <span>Tool Calling: Live CRM Sync</span>
-                  <span className="text-[#e85a2d]">● 100% Auto</span>
+                  <span className="text-[#f97316]">● 100% Auto</span>
                 </div>
               </div>
             </motion.div>
@@ -415,7 +415,7 @@ export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }
       {/* Bottom Architectural Seal */}
       <div className="relative z-10 flex items-center justify-between border-t border-[#f8f5ee]/10 pt-3 text-[0.68rem] font-mono text-[#f8f5ee]/45">
         <span>Sabtain Ali · Systems Practice</span>
-        <span className="text-[#e85a2d]">Ready to Scope →</span>
+        <span className="text-[#f97316]">Ready to Scope →</span>
       </div>
     </div>
   );

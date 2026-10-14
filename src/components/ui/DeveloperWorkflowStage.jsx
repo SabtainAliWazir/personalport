@@ -194,36 +194,36 @@ export default function DeveloperWorkflowStage() {
   return (
     <div className="relative mx-auto mt-6 w-full max-w-5xl px-2 sm:px-4">
       {/* ─────────────────────────────────────────────────────────────
-          UNIFIED DARK LUXURY WORKFLOW SHOWCASE (No White Outer Borders)
+          CRISP STUDIO LIGHT WORKFLOW SHOWCASE
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-[2.25rem] border border-white/10 bg-[#100904] p-6 sm:p-10 shadow-[0_2.5rem_6rem_rgba(16,9,4,0.35)] text-[#f8f5ee]">
+      <div className="relative overflow-hidden rounded-[2.25rem] border border-zinc-200/90 bg-white p-6 sm:p-10 shadow-[0_16px_50px_rgba(0,0,0,0.06)] text-zinc-900">
         
         {/* Ambient Living Particle Canvas */}
         <canvas 
           ref={canvasRef} 
-          className="pointer-events-none absolute inset-0 h-full w-full opacity-60 z-0" 
+          className="pointer-events-none absolute inset-0 h-full w-full opacity-40 z-0" 
         />
 
         {/* Ambient Radial Color Glows */}
         <div 
-          className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-[#e85a2d]/20 blur-[100px] z-0" 
+          className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-[#f97316]/10 blur-[100px] z-0" 
           aria-hidden="true" 
         />
         <div 
-          className="pointer-events-none absolute -left-24 -bottom-24 size-80 rounded-full bg-[#38bdf8]/10 blur-[100px] z-0" 
+          className="pointer-events-none absolute -left-24 -bottom-24 size-80 rounded-full bg-sky-500/10 blur-[100px] z-0" 
           aria-hidden="true" 
         />
 
         {/* Content Container (Layered above Canvas) */}
         <div className="relative z-10">
           {/* Top Header & Conveyor Controller */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200/80 pb-6">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#e85a2d] font-semibold flex items-center gap-2">
-                <span className="size-2 rounded-full bg-[#e85a2d] animate-ping" />
+              <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#f97316] font-semibold flex items-center gap-2">
+                <span className="size-2 rounded-full bg-[#f97316] animate-ping" />
                 How I Work As Your Engineer
               </p>
-              <h2 className="font-display text-xl sm:text-2xl font-semibold text-[#f8f5ee] mt-1">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-zinc-950 mt-1">
                 From Your Idea to a Scalable, Working System
               </h2>
             </div>
@@ -231,9 +231,9 @@ export default function DeveloperWorkflowStage() {
             <button
               type="button"
               onClick={() => setIsPlaying(!isPlaying)}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 font-mono text-xs text-[#f8f5ee] hover:border-[#e85a2d] hover:bg-[#e85a2d]/10 transition-all self-start sm:self-auto shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 font-mono text-xs text-zinc-800 hover:border-[#f97316] hover:bg-orange-50/50 transition-all self-start sm:self-auto shadow-sm cursor-pointer"
             >
-              {isPlaying ? <Pause className="size-3 text-[#e85a2d]" /> : <Play className="size-3 text-[#e85a2d]" />}
+              {isPlaying ? <Pause className="size-3 text-[#f97316]" /> : <Play className="size-3 text-[#f97316]" />}
               <span>{isPlaying ? 'Auto Conveyor' : 'Paused'}</span>
             </button>
           </div>
@@ -241,11 +241,11 @@ export default function DeveloperWorkflowStage() {
           {/* 5-Step Story Conveyor Navigation with Developer Avatar Indicator */}
           <div className="relative my-8">
             {/* Background Track Line */}
-            <div className="absolute top-[26px] left-6 right-6 h-1 bg-white/10 rounded-full" />
+            <div className="absolute top-[26px] left-6 right-6 h-1 bg-zinc-200/90 rounded-full" />
             
             {/* Animated Glowing Progress Line */}
             <motion.div 
-              className="absolute top-[26px] left-6 h-1 bg-gradient-to-r from-[#e85a2d] to-[#ff7e53] rounded-full shadow-[0_0_14px_rgba(232,90,45,0.7)]"
+              className="absolute top-[26px] left-6 h-1 bg-gradient-to-r from-[#f97316] to-[#fb923c] rounded-full shadow-[0_0_12px_rgba(249,115,22,0.4)]"
               animate={{ 
                 width: `${(activeStepIndex / (WORKFLOW_STEPS.length - 1)) * 92}%` 
               }}
@@ -273,11 +273,11 @@ export default function DeveloperWorkflowStage() {
                       {isSelected && (
                         <motion.div
                           layoutId="active-developer-avatar"
-                          className="absolute -top-7 sm:-top-8 left-1/2 -translate-x-1/2 rounded-full bg-[#1a120b] text-[#f8f5ee] px-2.5 sm:px-3 py-0.5 font-mono text-[0.62rem] sm:text-[0.65rem] font-bold shadow-[0_0_15px_rgba(232,90,45,0.4)] border border-[#e85a2d] whitespace-nowrap flex items-center gap-1.5 z-20"
+                          className="absolute -top-7 sm:-top-8 left-1/2 -translate-x-1/2 rounded-full bg-zinc-950 text-white px-2.5 sm:px-3 py-0.5 font-mono text-[0.62rem] sm:text-[0.65rem] font-bold shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-[#f97316] whitespace-nowrap flex items-center gap-1.5 z-20"
                           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                         >
-                          <span className="size-1.5 rounded-full bg-[#e85a2d] animate-pulse" />
-                          <User className="size-2 sm:size-2.5 text-[#e85a2d]" />
+                          <span className="size-1.5 rounded-full bg-[#f97316] animate-pulse" />
+                          <User className="size-2 sm:size-2.5 text-[#f97316]" />
                           <span>Sabtain</span>
                         </motion.div>
                       )}
@@ -285,22 +285,22 @@ export default function DeveloperWorkflowStage() {
                       {/* Step Icon Bubble */}
                       <div className={`relative grid size-10 sm:size-14 place-items-center rounded-xl sm:rounded-2xl border transition-all duration-300 ${
                         isSelected
-                          ? 'border-[#e85a2d] bg-[#1a120b] text-[#f8f5ee] shadow-[0_0_20px_rgba(232,90,45,0.45)] scale-105 sm:scale-110 ring-2 sm:ring-4 ring-[#e85a2d]/25'
+                          ? 'border-[#f97316] bg-[#f97316] text-white shadow-[0_0_20px_rgba(249,115,22,0.35)] scale-105 sm:scale-110 ring-2 sm:ring-4 ring-[#f97316]/20'
                           : isPast
-                          ? 'border-[#e85a2d]/40 bg-[#e85a2d]/10 text-[#e85a2d]'
-                          : 'border-white/10 bg-white/[0.03] text-[#f8f5ee]/60 hover:border-white/30 hover:text-[#f8f5ee]'
+                          ? 'border-[#f97316]/40 bg-orange-50 text-[#f97316]'
+                          : 'border-zinc-200 bg-zinc-50 text-zinc-400 hover:border-zinc-300 hover:text-zinc-900'
                       }`}>
                         <StepIcon className="size-4 sm:size-6" />
                       </div>
                     </div>
 
                     <span className={`mt-3 font-mono text-xs font-semibold ${
-                      isSelected ? 'text-[#e85a2d]' : 'text-[#f8f5ee]/50 group-hover:text-[#f8f5ee]'
+                      isSelected ? 'text-[#f97316]' : 'text-zinc-400 group-hover:text-zinc-900'
                     }`}>
                       {step.stepNumber}
                     </span>
 
-                    <span className="font-sans text-[0.72rem] font-medium text-[#f8f5ee]/80 hidden md:block mt-0.5 line-clamp-1">
+                    <span className="font-sans text-[0.72rem] font-medium text-zinc-600 hidden md:block mt-0.5 line-clamp-1">
                       {step.shortTitle}
                     </span>
                   </button>
@@ -317,11 +317,11 @@ export default function DeveloperWorkflowStage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="grid gap-6 lg:grid-cols-12 rounded-2xl border border-white/10 bg-[#140e08]/90 p-6 sm:p-8 shadow-inner items-center backdrop-blur-sm"
+              className="grid gap-6 lg:grid-cols-12 rounded-2xl border border-zinc-200/90 bg-zinc-50/70 p-6 sm:p-8 shadow-sm items-center backdrop-blur-sm"
             >
               {/* Left Column: Visual Illustration Vector with Rich Micro-Animations */}
               <div className="lg:col-span-5 flex justify-center">
-                <div className="relative w-full max-w-[19rem] aspect-square rounded-2xl border border-white/10 bg-[#0a0603] p-6 flex flex-col items-center justify-center overflow-hidden shadow-[0_1rem_3rem_rgba(0,0,0,0.6)]">
+                <div className="relative w-full max-w-[19rem] aspect-square rounded-2xl border border-zinc-200 bg-white p-6 flex flex-col items-center justify-center overflow-hidden shadow-sm">
                   
                   {/* Step 1 Graphic: Holographic Requirement Brief & Scanner */}
                   {activeStep.graphicType === 'requirement' && (
@@ -443,31 +443,31 @@ export default function DeveloperWorkflowStage() {
               {/* Right Column: Clear Explanations */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-[#e85a2d] px-2.5 py-0.5 font-mono text-xs font-bold text-[#f8f5ee]">
+                  <span className="rounded-full bg-[#f97316] px-2.5 py-0.5 font-mono text-xs font-bold text-white">
                     Step {activeStep.stepNumber}
                   </span>
-                  <span className="font-mono text-xs text-[#f8f5ee]/60">
+                  <span className="font-mono text-xs text-zinc-500">
                     {activeStep.subTitle}
                   </span>
                 </div>
 
-                <h3 className="font-display text-2xl sm:text-3xl font-semibold text-[#f8f5ee]">
+                <h3 className="font-display text-2xl sm:text-3xl font-bold text-zinc-950">
                   {activeStep.name}
                 </h3>
 
-                <p className="text-sm text-[#f8f5ee]/80 font-sans leading-relaxed">
+                <p className="text-sm text-zinc-600 font-sans leading-relaxed">
                   {activeStep.description}
                 </p>
 
                 {/* Exact Actions List */}
-                <div className="pt-3 border-t border-white/10 space-y-2">
-                  <p className="font-mono text-xs uppercase tracking-wider text-[#e85a2d] font-semibold">
+                <div className="pt-3 border-t border-zinc-200/80 space-y-2">
+                  <p className="font-mono text-xs uppercase tracking-wider text-[#f97316] font-semibold">
                     What happens in this stage:
                   </p>
                   <div className="grid gap-2">
                     {activeStep.whatHappens.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex items-center gap-2.5 text-xs sm:text-sm text-[#f8f5ee]/90 font-sans">
-                        <span className="grid size-4 place-items-center rounded-full bg-[#e85a2d]/20 text-[#e85a2d] shrink-0">
+                      <div key={itemIdx} className="flex items-center gap-2.5 text-xs sm:text-sm text-zinc-700 font-sans">
+                        <span className="grid size-4 place-items-center rounded-full bg-[#f97316]/10 text-[#f97316] font-bold shrink-0">
                           ✓
                         </span>
                         <span>{item}</span>
@@ -480,16 +480,16 @@ export default function DeveloperWorkflowStage() {
           </AnimatePresence>
 
           {/* Bottom Proof Bar (Responsive flex-col on small mobile, flex-row on desktop) */}
-          <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-[#f8f5ee]/50 pt-4 border-t border-white/10">
+          <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-xs text-zinc-500 pt-4 border-t border-zinc-200/80">
             <div className="flex flex-wrap items-center gap-2">
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-              <span className="font-semibold text-[#f8f5ee]">Simple, Transparent Engineering:</span>
+              <span className="font-semibold text-zinc-900">Simple, Transparent Engineering:</span>
               <span>You are involved at every step</span>
             </div>
 
             <Link
               href="/contact"
-              className="group inline-flex items-center justify-center sm:justify-start gap-1.5 text-[#e85a2d] font-semibold hover:text-[#f8f5ee] transition-colors py-1 cursor-pointer w-full sm:w-auto"
+              className="group inline-flex items-center justify-center sm:justify-start gap-1.5 text-[#f97316] font-semibold hover:text-zinc-950 transition-colors py-1 cursor-pointer w-full sm:w-auto"
             >
               <span className="underline-offset-4 group-hover:underline">Ready to start your project?</span>
               <ArrowRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-1" />

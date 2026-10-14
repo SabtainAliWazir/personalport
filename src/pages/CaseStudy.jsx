@@ -29,43 +29,43 @@ export default function CaseStudy() {
   };
 
   return (
-    <div className="min-h-screen bg-[#100904] text-[#f8f5ee] pt-28 sm:pt-36 pb-24">
+    <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
       {/* ─────────────────────────────────────────────────────────────
           1. CASE STUDY HEADER & NAVIGATION
       ───────────────────────────────────────────────────────────── */}
       <section className="gutter mx-auto max-w-5xl">
         <Link
           href="/portfolio"
-          className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-[#f8f5ee]/50 hover:text-[#e85a2d] transition-colors mb-6"
+          className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-zinc-500 hover:text-[#f97316] transition-colors mb-6"
         >
           <ArrowLeft className="size-3.5" />
           <span>Back to all work</span>
         </Link>
 
-        <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-[#f8f5ee]/50">
-          <span className="text-[#e85a2d] font-semibold">{project.id}</span>
+        <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-zinc-500">
+          <span className="text-[#f97316] font-semibold">{project.id}</span>
           <span>·</span>
-          <span className="text-[#f8f5ee]/80">{project.client}</span>
+          <span className="text-zinc-900 font-medium">{project.client}</span>
           <span>·</span>
           <span>{project.year}</span>
         </div>
 
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.04em] mt-3 text-[#f8f5ee]">
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.04em] mt-3 text-zinc-950">
           {project.title}
         </h1>
 
-        <p className="mt-2 font-mono text-sm sm:text-base text-[#e85a2d]">
+        <p className="mt-2 font-mono text-sm sm:text-base text-[#f97316] font-medium">
           {project.subtitle}
         </p>
 
         {/* Live Metrics Ribbon */}
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 border-y border-[#f8f5ee]/10 py-6">
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 border-y border-zinc-200 py-6">
           {project.metrics.map((m, idx) => (
-            <div key={idx} className="border-l border-[#e85a2d]/40 pl-3">
-              <span className="font-display text-2xl sm:text-3xl font-semibold text-[#f8f5ee]">
+            <div key={idx} className="border-l border-[#f97316]/40 pl-3">
+              <span className="font-display text-2xl sm:text-3xl font-semibold text-zinc-950">
                 {m.value}
               </span>
-              <p className="text-[0.68rem] font-mono uppercase text-[#f8f5ee]/45 tracking-wider mt-0.5">
+              <p className="text-[0.68rem] font-mono uppercase text-zinc-500 tracking-wider mt-0.5">
                 {m.label}
               </p>
             </div>
@@ -90,10 +90,10 @@ export default function CaseStudy() {
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[#f8f5ee]/15 bg-white/[0.02] px-4 py-2 text-xs font-mono text-[#f8f5ee]/80 hover:border-[#e85a2d] hover:text-[#f8f5ee] transition-colors"
+              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-mono text-zinc-700 hover:border-[#f97316] hover:text-zinc-950 transition-colors shadow-sm"
             >
               <span>View Live Production Deployment</span>
-              <ExternalLink className="size-3.5 text-[#e85a2d]" />
+              <ExternalLink className="size-3.5 text-[#f97316]" />
             </a>
           </div>
         )}
@@ -104,21 +104,21 @@ export default function CaseStudy() {
       ───────────────────────────────────────────────────────────── */}
       <section className="gutter mx-auto max-w-5xl mt-16">
         {/* Mode Switcher Tabs */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#f8f5ee]/10 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 pb-4">
           <div>
-            <p className="eyebrow">Case Inspection Mode</p>
-            <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight mt-1">
+            <p className="eyebrow text-[#f97316]">Case Inspection Mode</p>
+            <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight mt-1 text-zinc-950">
               {mode === 'executive' ? 'Executive & Business Impact' : 'Engineering Telemetry & Specs'}
             </h2>
           </div>
 
-          <div className="flex items-center rounded-full border border-[#f8f5ee]/15 bg-[#1a120b] p-1 shadow-inner self-start sm:self-auto">
+          <div className="flex items-center rounded-full border border-zinc-200 bg-zinc-100 p-1 shadow-sm self-start sm:self-auto">
             <button
               onClick={() => setMode('executive')}
               className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-mono transition-all ${
                 mode === 'executive'
-                  ? 'bg-[#f8f5ee] text-[#100904] font-semibold'
-                  : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
+                  ? 'bg-white text-zinc-950 font-semibold shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-950'
               }`}
             >
               <Briefcase className="size-3.5" />
@@ -129,8 +129,8 @@ export default function CaseStudy() {
               onClick={() => setMode('engineering')}
               className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-mono transition-all ${
                 mode === 'engineering'
-                  ? 'bg-[#e85a2d] text-[#f8f5ee] font-semibold shadow-[0_0_15px_rgba(232,90,45,0.35)]'
-                  : 'text-[#f8f5ee]/60 hover:text-[#f8f5ee]'
+                  ? 'bg-[#f97316] text-white font-semibold shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-950'
               }`}
             >
               <Code2 className="size-3.5" />
@@ -153,28 +153,28 @@ export default function CaseStudy() {
               >
                 <div className="lg:col-span-8 space-y-8">
                   <div>
-                    <h3 className="font-mono text-xs uppercase tracking-wider text-[#e85a2d] mb-2">
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-[#f97316] mb-2 font-semibold">
                       The Operational Challenge
                     </h3>
-                    <p className="text-base sm:text-lg text-[#f8f5ee]/80 leading-relaxed font-sans">
+                    <p className="text-base sm:text-lg text-zinc-700 leading-relaxed font-sans">
                       {project.executive.problem}
                     </p>
                   </div>
 
                   <div>
-                    <h3 className="font-mono text-xs uppercase tracking-wider text-[#e85a2d] mb-2">
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-[#f97316] mb-2 font-semibold">
                       Strategic Engineering Approach
                     </h3>
-                    <p className="text-base sm:text-lg text-[#f8f5ee]/80 leading-relaxed font-sans">
+                    <p className="text-base sm:text-lg text-zinc-700 leading-relaxed font-sans">
                       {project.executive.solution}
                     </p>
                   </div>
 
                   <div>
-                    <h3 className="font-mono text-xs uppercase tracking-wider text-[#e85a2d] mb-2">
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-[#f97316] mb-2 font-semibold">
                       Business & Compliance Impact
                     </h3>
-                    <p className="text-base sm:text-lg text-[#f8f5ee]/80 leading-relaxed font-sans">
+                    <p className="text-base sm:text-lg text-zinc-700 leading-relaxed font-sans">
                       {project.executive.impact}
                     </p>
                   </div>
@@ -183,30 +183,30 @@ export default function CaseStudy() {
                 {/* Client Quote & Metadata Sidebar */}
                 <div className="lg:col-span-4 space-y-6">
                   {project.executive.quote && (
-                    <div className="rounded-2xl border border-[#f8f5ee]/10 bg-[#1a120b] p-6">
-                      <p className="text-sm italic text-[#f8f5ee]/75 leading-relaxed font-serif">
+                    <div className="rounded-2xl border border-zinc-200 bg-zinc-50/70 p-6 shadow-sm">
+                      <p className="text-sm italic text-zinc-700 leading-relaxed font-serif">
                         “{project.executive.quote.text}”
                       </p>
-                      <div className="mt-4 pt-4 border-t border-[#f8f5ee]/10">
-                        <p className="font-semibold text-xs text-[#f8f5ee]">
+                      <div className="mt-4 pt-4 border-t border-zinc-200">
+                        <p className="font-semibold text-xs text-zinc-950">
                           {project.executive.quote.author}
                         </p>
-                        <p className="text-[0.7rem] font-mono text-[#f8f5ee]/50">
+                        <p className="text-[0.7rem] font-mono text-zinc-500">
                           {project.executive.quote.role}
                         </p>
                       </div>
                     </div>
                   )}
 
-                  <div className="rounded-2xl border border-[#f8f5ee]/10 bg-white/[0.02] p-6">
-                    <p className="font-mono text-xs uppercase tracking-wider text-[#f8f5ee]/40 mb-3">
+                  <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-6 shadow-sm">
+                    <p className="font-mono text-xs uppercase tracking-wider text-zinc-400 mb-3">
                       Core Technology Stack
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {project.techStack.map((t, idx) => (
                         <span
                           key={idx}
-                          className="rounded-full border border-[#f8f5ee]/10 bg-[#1a120b] px-3 py-1 text-[0.72rem] font-mono text-[#f8f5ee]/80"
+                          className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-[0.72rem] font-mono text-zinc-800 shadow-sm"
                         >
                           {t}
                         </span>
@@ -225,20 +225,20 @@ export default function CaseStudy() {
                 className="space-y-10"
               >
                 {/* Architecture Overview */}
-                <div className="rounded-2xl border border-[#f8f5ee]/10 bg-[#1a120b] p-6 sm:p-8">
-                  <div className="flex items-center gap-2 text-xs font-mono text-[#e85a2d] uppercase tracking-wider mb-3">
+                <div className="rounded-2xl border border-zinc-200 bg-zinc-50/70 p-6 sm:p-8 shadow-sm">
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#f97316] uppercase tracking-wider mb-3 font-semibold">
                     <Database className="size-4" />
                     <span>System Architecture & Data Flow</span>
                   </div>
-                  <p className="text-sm sm:text-base text-[#f8f5ee]/80 leading-relaxed font-sans">
+                  <p className="text-sm sm:text-base text-zinc-700 leading-relaxed font-sans">
                     {project.engineering.architecture}
                   </p>
 
-                  <div className="mt-6 pt-6 border-t border-[#f8f5ee]/10">
-                    <p className="font-mono text-xs uppercase tracking-wider text-[#f8f5ee]/40 mb-2">
+                  <div className="mt-6 pt-6 border-t border-zinc-200">
+                    <p className="font-mono text-xs uppercase tracking-wider text-zinc-400 mb-2">
                       Schema & State Modeling:
                     </p>
-                    <p className="text-xs sm:text-sm text-[#f8f5ee]/70 leading-relaxed font-sans">
+                    <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-sans">
                       {project.engineering.schemaOverview}
                     </p>
                   </div>
@@ -249,35 +249,35 @@ export default function CaseStudy() {
                   {project.engineering.benchmarks.map((b, bi) => (
                     <div
                       key={bi}
-                      className="rounded-2xl border border-[#e85a2d]/20 bg-[#e85a2d]/5 p-5"
+                      className="rounded-2xl border border-[#f97316]/25 bg-[#f97316]/5 p-5 shadow-sm"
                     >
-                      <span className="font-display text-2xl sm:text-3xl font-semibold text-[#f8f5ee]">
+                      <span className="font-display text-2xl sm:text-3xl font-semibold text-zinc-950">
                         {b.value}
                       </span>
-                      <p className="font-mono text-[0.7rem] uppercase tracking-wider text-[#f8f5ee]/50 mt-1">
+                      <p className="font-mono text-[0.7rem] uppercase tracking-wider text-zinc-500 mt-1">
                         {b.metric}
                       </p>
                     </div>
                   ))}
                 </div>
 
-                {/* Representative Code Snippet */}
+                {/* Representative Code Snippet (Developer Contrast: dark editor) */}
                 {project.engineering.codeSnippet && (
-                  <div className="rounded-2xl border border-[#f8f5ee]/15 bg-[#0a0603] overflow-hidden shadow-2xl">
-                    <div className="flex items-center justify-between border-b border-[#f8f5ee]/10 bg-[#1a120b] px-4 py-2.5">
-                      <span className="font-mono text-xs text-[#f8f5ee]/60 flex items-center gap-2">
-                        <Terminal className="size-3.5 text-[#e85a2d]" />
+                  <div className="rounded-2xl border border-zinc-800 bg-[#0c0a09] overflow-hidden shadow-2xl">
+                    <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
+                      <span className="font-mono text-xs text-zinc-400 flex items-center gap-2">
+                        <Terminal className="size-3.5 text-[#f97316]" />
                         Production Script / Architecture Implementation
                       </span>
 
                       <button
                         onClick={copyCode}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[0.7rem] font-mono text-[#f8f5ee]/60 hover:text-[#f8f5ee] transition-colors"
+                        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[0.7rem] font-mono text-zinc-400 hover:text-white transition-colors"
                       >
                         {copiedSnippet ? (
                           <>
-                            <Check className="size-3 text-[#e85a2d]" />
-                            <span className="text-[#e85a2d]">Copied</span>
+                            <Check className="size-3 text-[#f97316]" />
+                            <span className="text-[#f97316]">Copied</span>
                           </>
                         ) : (
                           <>
@@ -288,7 +288,7 @@ export default function CaseStudy() {
                       </button>
                     </div>
 
-                    <pre className="p-5 font-mono text-xs text-[#f8f5ee]/85 overflow-x-auto leading-relaxed">
+                    <pre className="p-5 font-mono text-xs text-zinc-200 overflow-x-auto leading-relaxed">
                       <code>{project.engineering.codeSnippet}</code>
                     </pre>
                   </div>
@@ -302,18 +302,18 @@ export default function CaseStudy() {
       {/* ─────────────────────────────────────────────────────────────
           4. SCOPE & DELIVERABLES CHECKLIST
       ───────────────────────────────────────────────────────────── */}
-      <section className="gutter mx-auto max-w-5xl mt-20 pt-12 border-t border-[#f8f5ee]/10">
-        <p className="eyebrow mb-2">Scope of Delivery</p>
-        <h2 className="display-h3 mb-8">What Shipped to Production.</h2>
+      <section className="gutter mx-auto max-w-5xl mt-20 pt-12 border-t border-zinc-200">
+        <p className="eyebrow mb-2 text-[#f97316]">Scope of Delivery</p>
+        <h2 className="display-h3 mb-8 text-zinc-950">What Shipped to Production.</h2>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {project.deliverables.map((deliv, di) => (
             <div
               key={di}
-              className="flex items-start gap-3 rounded-2xl border border-[#f8f5ee]/10 bg-[#1a120b]/60 p-4"
+              className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm"
             >
-              <CheckCircle2 className="size-4 text-[#e85a2d] shrink-0 mt-0.5" />
-              <span className="text-xs sm:text-sm text-[#f8f5ee]/80 leading-relaxed font-sans">
+              <CheckCircle2 className="size-4 text-[#f97316] shrink-0 mt-0.5" />
+              <span className="text-xs sm:text-sm text-zinc-700 leading-relaxed font-sans">
                 {deliv}
               </span>
             </div>
@@ -324,20 +324,20 @@ export default function CaseStudy() {
       {/* ─────────────────────────────────────────────────────────────
           5. NEXT / PREVIOUS CASE STUDY PAGINATION
       ───────────────────────────────────────────────────────────── */}
-      <section className="gutter mx-auto max-w-5xl mt-24 pt-12 border-t border-[#f8f5ee]/10">
+      <section className="gutter mx-auto max-w-5xl mt-24 pt-12 border-t border-zinc-200">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <Link
             href={`/portfolio/${prevProject.slug}`}
             className="group flex items-center gap-3 text-left w-full sm:w-auto"
           >
-            <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#f8f5ee]/15 group-hover:border-[#e85a2d] transition-colors">
-              <ArrowLeft className="size-4 group-hover:text-[#e85a2d]" />
+            <span className="inline-flex size-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 group-hover:border-[#f97316] text-zinc-700 group-hover:text-[#f97316] transition-colors shadow-sm">
+              <ArrowLeft className="size-4" />
             </span>
             <div>
-              <span className="font-mono text-[0.68rem] uppercase text-[#f8f5ee]/40 block">
+              <span className="font-mono text-[0.68rem] uppercase text-zinc-400 block">
                 Previous Case
               </span>
-              <span className="font-display text-lg sm:text-xl font-semibold text-[#f8f5ee] group-hover:text-[#e85a2d] transition-colors">
+              <span className="font-display text-lg sm:text-xl font-semibold text-zinc-950 group-hover:text-[#f97316] transition-colors">
                 {prevProject.title}
               </span>
             </div>
@@ -348,15 +348,15 @@ export default function CaseStudy() {
             className="group flex items-center gap-3 text-right w-full sm:w-auto sm:justify-end"
           >
             <div>
-              <span className="font-mono text-[0.68rem] uppercase text-[#f8f5ee]/40 block">
+              <span className="font-mono text-[0.68rem] uppercase text-zinc-400 block">
                 Next Case
               </span>
-              <span className="font-display text-lg sm:text-xl font-semibold text-[#f8f5ee] group-hover:text-[#e85a2d] transition-colors">
+              <span className="font-display text-lg sm:text-xl font-semibold text-zinc-950 group-hover:text-[#f97316] transition-colors">
                 {nextProject.title}
               </span>
             </div>
-            <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#f8f5ee]/15 group-hover:border-[#e85a2d] transition-colors">
-              <ArrowRight className="size-4 group-hover:text-[#e85a2d]" />
+            <span className="inline-flex size-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 group-hover:border-[#f97316] text-zinc-700 group-hover:text-[#f97316] transition-colors shadow-sm">
+              <ArrowRight className="size-4" />
             </span>
           </Link>
         </div>

@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --c-walnut: #100904;
-  --c-walnut-surface: #1a120b;
-  --c-walnut-card: #241a12;
-  --c-cream: #f8f5ee;
-  --c-cream-muted: #dcd6c8;
-  --c-ember: #e85a2d;
-  --c-ember-glow: rgba(232, 90, 45, 0.35);
-  --c-hairline: rgba(248, 245, 238, 0.12);
-  --c-hairline-bright: rgba(248, 245, 238, 0.25);
-  --c-hairline-walnut: rgba(16, 9, 4, 0.12);
-  --c-surface: rgba(248, 245, 238, 0.035);
+  --c-walnut: #ffffff;
+  --c-walnut-surface: #fafafa;
+  --c-walnut-card: #ffffff;
+  --c-cream: #09090b;
+  --c-cream-muted: #71717a;
+  --c-ember: #f97316;
+  --c-ember-glow: rgba(249, 115, 22, 0.2);
+  --c-hairline: rgba(0, 0, 0, 0.08);
+  --c-hairline-bright: rgba(0, 0, 0, 0.14);
+  --c-hairline-walnut: rgba(0, 0, 0, 0.06);
+  --c-surface: rgba(0, 0, 0, 0.02);
   --grid-gap: clamp(1rem, 2.5vw, 2.5rem);
 }
 
@@ -23,8 +23,8 @@ body,
   overflow-x: clip;
   position: relative;
   -webkit-text-size-adjust: 100%;
-  background-color: var(--c-walnut);
-  color: var(--c-cream);
+  background-color: #ffffff;
+  color: #09090b;
   font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -41,7 +41,7 @@ html {
   display: none;
 }
 
-/* Typography tokens - Webroco Exact Match */
+/* Typography tokens - Crisp Studio Light Mode */
 .font-display {
   font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
 }
@@ -61,28 +61,28 @@ html {
 .display-h1 {
   font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(2.5rem, 6.8vw, 6.2rem);
-  font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: -0.065em;
-  color: var(--c-cream);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: #09090b;
 }
 
 .display-h2 {
   font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1.85rem, 4.4vw, 3.8rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  color: var(--c-cream);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #09090b;
 }
 
 .display-h3 {
   font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1.35rem, 2.6vw, 2.2rem);
   font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.04em;
-  color: var(--c-cream);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #09090b;
 }
 
 .eyebrow {
@@ -90,7 +90,7 @@ html {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(248, 245, 238, 0.5);
+  color: #71717a;
 }
 
 .label-mono {
@@ -98,18 +98,19 @@ html {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  color: #71717a;
 }
 
 .text-lead {
   font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-  line-height: 1.45;
-  color: rgba(248, 245, 238, 0.75);
+  line-height: 1.5;
+  color: #52525b;
 }
 
 .text-body {
   font-size: clamp(0.925rem, 1.1vw, 1.05rem);
   line-height: 1.6;
-  color: rgba(248, 245, 238, 0.65);
+  color: #71717a;
 }
 
 .gutter {
@@ -117,27 +118,28 @@ html {
   padding-right: clamp(1.25rem, 4.5vw, 5rem);
 }
 
-/* Webroco Signature Expanding Arrow Button (ea-btn) */
+/* Crisp Studio Expanding Arrow Button (ea-btn) */
 .ea-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   border-radius: 9999px;
-  background-color: var(--c-walnut);
-  border: 1px solid var(--c-hairline-bright);
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7;
   padding: 0.375rem;
-  color: var(--c-cream);
+  color: #09090b;
   height: 3.5rem;
   min-width: 15.5rem;
   cursor: pointer;
   user-select: none;
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px var(--c-hairline);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
 }
 
 .ea-btn:hover {
-  border-color: var(--c-ember);
+  border-color: #f97316;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.18);
 }
 
 .ea-btn:active {
@@ -292,18 +294,191 @@ html {
 .editorial-input {
   width: 100%;
   padding: 0.95rem 1.25rem;
-  background: rgba(248, 245, 238, 0.035);
-  border: 1px solid var(--c-hairline);
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
   border-radius: 9999px;
-  color: var(--c-cream);
+  color: #09090b;
   font-family: 'Figtree', sans-serif;
   font-size: 0.95rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .editorial-input:focus {
   outline: none;
-  border-color: var(--c-ember);
-  background: rgba(248, 245, 238, 0.06);
-  box-shadow: 0 0 25px rgba(232, 90, 45, 0.2);
+  border-color: #f97316;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+/* Rich Blog Markdown Styling */
+.blog-markdown {
+  color: #27272a;
+  font-family: 'Figtree', sans-serif;
+  line-height: 1.8;
+}
+
+.blog-markdown h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #09090b;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.15;
+}
+
+.blog-markdown h2 {
+  font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #09090b;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e4e4e7;
+  line-height: 1.2;
+}
+
+.blog-markdown h3 {
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #18181b;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.blog-markdown h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #27272a;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-markdown p {
+  font-size: 1.05rem;
+  color: #3f3f46;
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+
+.blog-markdown ul {
+  list-style-type: disc;
+  padding-left: 1.75rem;
+  margin-bottom: 1.5rem;
+  space-y: 0.6rem;
+}
+
+.blog-markdown ol {
+  list-style-type: decimal;
+  padding-left: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-markdown li {
+  font-size: 1.02rem;
+  color: #3f3f46;
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
+}
+
+.blog-markdown blockquote {
+  border-left: 4px solid #f97316;
+  background-color: rgba(249, 115, 22, 0.05);
+  border-radius: 0 1rem 1rem 0;
+  padding: 1rem 1.25rem;
+  margin: 1.75rem 0;
+  color: #18181b;
+  font-style: italic;
+}
+
+.blog-markdown blockquote p {
+  margin-bottom: 0;
+  color: inherit;
+}
+
+.blog-markdown code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.88em;
+  background-color: #f4f4f5;
+  color: #ea580c;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e4e4e7;
+}
+
+.blog-markdown pre {
+  background-color: #09090b;
+  color: #f4f4f5;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  overflow-x: auto;
+  margin: 1.75rem 0;
+  border: 1px solid #27272a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.blog-markdown pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.blog-markdown hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid #e4e4e7;
+}
+
+.blog-markdown table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.blog-markdown thead {
+  background-color: #f4f4f5;
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: #71717a;
+}
+
+.blog-markdown th {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid #e4e4e7;
+  color: #09090b;
+}
+
+.blog-markdown td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f4f4f5;
+  color: #3f3f46;
+  line-height: 1.5;
+}
+
+.blog-markdown tr:last-child td {
+  border-bottom: none;
+}
+
+.blog-markdown tr:hover td {
+  background-color: #fafafa;
+}
+
+.blog-markdown strong {
+  font-weight: 600;
+  color: #09090b;
 }

@@ -95,22 +95,22 @@ const AIChat = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.94 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-3 w-[calc(100vw-2rem)] sm:w-96 max-w-[400px] bg-[#1a120b] border border-[#f8f5ee]/15 rounded-2xl overflow-hidden shadow-[0_1.5rem_4rem_rgba(16,9,4,0.5)]"
+            className="mb-3 w-[calc(100vw-2rem)] sm:w-96 max-w-[400px] bg-white border border-zinc-200 rounded-2xl overflow-hidden shadow-2xl"
           >
             {/* Header */}
-            <div className="bg-[#100904] p-3.5 sm:p-4 flex justify-between items-center border-b border-[#f8f5ee]/10">
+            <div className="bg-zinc-50 p-3.5 sm:p-4 flex justify-between items-center border-b border-zinc-200">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[#e85a2d]/15 border border-[#e85a2d]/30 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-4 h-4 text-[#e85a2d]" />
+                <div className="w-7 h-7 rounded-lg bg-[#f97316]/10 border border-[#f97316]/25 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4 text-[#f97316]" />
                 </div>
                 <div>
-                  <h3 className="font-display text-sm font-semibold text-[#f8f5ee]">Sabtain Assistant</h3>
-                  <span className="text-[10px] font-mono text-[#e85a2d] block -mt-0.5">● Ready to answer</span>
+                  <h3 className="font-display text-sm font-semibold text-zinc-950">Sabtain Assistant</h3>
+                  <span className="text-[10px] font-mono text-[#f97316] block -mt-0.5 font-medium">● Ready to answer</span>
                 </div>
               </div>
               <button 
                 onClick={() => setIsOpen(false)} 
-                className="text-[#f8f5ee]/60 hover:text-white p-1 rounded-lg hover:bg-white/5 transition-colors cursor-pointer" 
+                className="text-zinc-400 hover:text-zinc-950 p-1 rounded-lg hover:bg-zinc-100 transition-colors cursor-pointer" 
                 aria-label="Close chat"
               >
                 <X className="w-5 h-5" />
@@ -125,7 +125,7 @@ const AIChat = () => {
                   onClick={() => {
                     setInput(prompt);
                   }}
-                  className="whitespace-nowrap px-2.5 py-1 rounded-full bg-white/[0.04] border border-[#f8f5ee]/10 hover:border-[#e85a2d] hover:text-[#e85a2d] text-[#f8f5ee]/80 transition-colors cursor-pointer"
+                  className="whitespace-nowrap px-2.5 py-1 rounded-full bg-zinc-50 border border-zinc-200 hover:border-[#f97316] hover:text-[#f97316] text-zinc-700 transition-colors cursor-pointer shadow-sm"
                 >
                   {prompt}
                 </button>
@@ -135,7 +135,7 @@ const AIChat = () => {
             {/* Messages */}
             <div 
               ref={chatContainerRef}
-              className="h-56 sm:h-72 overflow-y-auto p-3.5 sm:p-4 space-y-3 font-sans text-xs"
+              className="h-56 sm:h-72 overflow-y-auto p-3.5 sm:p-4 space-y-3 font-sans text-xs bg-white"
             >
               {messages.map((msg, idx) => (
                 <div
@@ -145,8 +145,8 @@ const AIChat = () => {
                   <div
                     className={`max-w-[88%] p-3 rounded-xl leading-relaxed whitespace-pre-line ${
                       msg.role === 'user'
-                        ? 'bg-[#e85a2d] text-[#f8f5ee] font-medium rounded-tr-none'
-                        : 'bg-[#100904] text-[#f8f5ee]/85 rounded-tl-none border border-[#f8f5ee]/10'
+                        ? 'bg-[#f97316] text-white font-medium rounded-tr-none shadow-sm'
+                        : 'bg-zinc-50 text-zinc-800 rounded-tl-none border border-zinc-200 shadow-sm'
                     }`}
                   >
                     {msg.text}
@@ -155,17 +155,17 @@ const AIChat = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-[#100904] p-2.5 rounded-xl rounded-tl-none border border-[#f8f5ee]/10 flex gap-1.5 items-center">
-                    <span className="w-1.5 h-1.5 bg-[#e85a2d] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 bg-[#e85a2d] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 bg-[#e85a2d] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div className="bg-zinc-50 p-2.5 rounded-xl rounded-tl-none border border-zinc-200 flex gap-1.5 items-center shadow-sm">
+                    <span className="w-1.5 h-1.5 bg-[#f97316] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 bg-[#f97316] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 bg-[#f97316] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               )}
             </div>
 
             {/* Input */}
-            <div className="p-2.5 sm:p-3 border-t border-[#f8f5ee]/10 bg-[#100904]">
+            <div className="p-2.5 sm:p-3 border-t border-zinc-200 bg-white">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -178,12 +178,12 @@ const AIChat = () => {
                     }
                   }}
                   placeholder="Ask about WHO, WOAH, stack..."
-                  className="flex-1 min-w-0 bg-transparent text-[#f8f5ee] placeholder-[#f8f5ee]/40 text-xs focus:outline-none px-2 font-sans"
+                  className="flex-1 min-w-0 bg-zinc-50 border border-zinc-200 rounded-xl text-zinc-950 placeholder:text-zinc-400 text-xs focus:outline-none focus:border-[#f97316] px-3 py-2 font-sans"
                 />
                 <button
                   onClick={handleSend}
                   disabled={isLoading || !input.trim()}
-                  className="bg-[#e85a2d] p-2 rounded-xl text-[#f8f5ee] hover:bg-[#ff6937] transition-all disabled:opacity-40 cursor-pointer shrink-0"
+                  className="bg-[#f97316] p-2 rounded-xl text-white hover:bg-[#ea580c] transition-all disabled:opacity-40 cursor-pointer shrink-0 shadow-sm"
                   aria-label="Send message"
                 >
                   <Send className="w-3.5 h-3.5" />
@@ -199,15 +199,15 @@ const AIChat = () => {
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-[#100904] text-[#f8f5ee] flex items-center justify-center shadow-xl border border-[#f8f5ee]/20 hover:border-[#e85a2d] transition-colors z-50 group cursor-pointer"
+        className="w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-white text-zinc-950 flex items-center justify-center shadow-xl border border-zinc-200 hover:border-[#f97316] transition-colors z-50 group cursor-pointer"
         aria-label="Open Assistant"
       >
         {isOpen ? (
-          <X className="w-5 h-5" />
+          <X className="w-5 h-5 text-zinc-700" />
         ) : (
           <div className="relative">
-            <MessageCircle className="w-5 h-5 text-[#f8f5ee] group-hover:text-[#e85a2d] transition-colors" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#e85a2d] rounded-full animate-ping" />
+            <MessageCircle className="w-5 h-5 text-zinc-700 group-hover:text-[#f97316] transition-colors" />
+            <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#f97316] rounded-full animate-ping" />
           </div>
         )}
       </motion.button>

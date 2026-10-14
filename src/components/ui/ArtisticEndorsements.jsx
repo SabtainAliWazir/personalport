@@ -103,25 +103,25 @@ export default function ArtisticEndorsements() {
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* ─────────────────────────────────────────────────────────────
-          THE ARTISTIC ENDORSEMENTS MONOLITH (Luxury Gallery Showcase)
+          CRISP STUDIO LIGHT ENDORSEMENTS MONOLITH
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-[2.25rem] sm:rounded-[3rem] border border-[#f8f5ee]/15 bg-[#140e08] p-6 sm:p-12 lg:p-16 text-[#f8f5ee] shadow-[0_3rem_6rem_rgba(16,9,4,0.6)]">
+      <div className="relative overflow-hidden rounded-[2.25rem] sm:rounded-[3rem] border border-zinc-200/90 bg-white p-6 sm:p-12 lg:p-16 text-zinc-900 shadow-[0_16px_50px_rgba(0,0,0,0.06)]">
         
-        {/* Ambient Warm Golden & Terracotta Glows */}
+        {/* Subtle Ambient Radial Glows */}
         <div 
-          className="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-[#e85a2d]/15 blur-[120px]" 
+          className="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-[#f97316]/10 blur-[120px]" 
           aria-hidden="true" 
         />
         <div 
-          className="pointer-events-none absolute -left-32 -bottom-32 size-96 rounded-full bg-[#f8f5ee]/5 blur-[120px]" 
+          className="pointer-events-none absolute -left-32 -bottom-32 size-96 rounded-full bg-sky-500/5 blur-[120px]" 
           aria-hidden="true" 
         />
 
         {/* Ambient Fine Halftone Pattern */}
         <div 
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          className="pointer-events-none absolute inset-0 opacity-[0.02]"
           style={{
-            backgroundImage: 'radial-gradient(#f8f5ee 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(#000000 1px, transparent 1px)',
             backgroundSize: '24px 24px'
           }}
           aria-hidden="true"
@@ -129,32 +129,32 @@ export default function ArtisticEndorsements() {
 
         <div className="relative z-10">
           {/* Top Status Capsule Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#f8f5ee]/10 pb-6 mb-8 sm:mb-12">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200/80 pb-6 mb-8 sm:mb-12">
             <div className="flex items-center gap-3">
-              <span className="grid size-9 place-items-center rounded-full bg-[#e85a2d]/20 text-[#e85a2d] border border-[#e85a2d]/40 shadow-[0_0_15px_rgba(232,90,45,0.3)]">
+              <span className="grid size-9 place-items-center rounded-full bg-orange-50 text-[#f97316] border border-orange-200 shadow-sm">
                 <Award className="size-4" />
               </span>
               <div>
-                <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#e85a2d] font-semibold flex items-center gap-2">
-                  <span>Executive Testimonials</span>
+                <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#f97316] font-semibold flex items-center gap-2">
+                  <span>Client Feedback &amp; Stories</span>
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 </p>
-                <p className="font-mono text-[0.68rem] text-[#f8f5ee]/50 mt-0.5">
-                  Direct Endorsements & Proof of Delivery
+                <p className="font-mono text-[0.68rem] text-zinc-500 mt-0.5">
+                  Direct reviews from founders, program leads, and business owners
                 </p>
               </div>
             </div>
 
             {/* Slide Navigation Buttons & Indicators */}
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-[#f8f5ee]/50">
+              <span className="font-mono text-xs text-zinc-400">
                 0{activeIndex + 1} / 0{TESTIMONIALS.length}
               </span>
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="grid size-9 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-[#f8f5ee]/70 hover:border-[#e85a2d] hover:text-[#f8f5ee] transition-all cursor-pointer"
+                  className="grid size-9 place-items-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 hover:border-[#f97316] hover:text-[#f97316] transition-all cursor-pointer shadow-sm"
                   aria-label="Previous testimonial"
                 >
                   <ChevronLeft className="size-4" />
@@ -162,7 +162,7 @@ export default function ArtisticEndorsements() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="grid size-9 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-[#f8f5ee]/70 hover:border-[#e85a2d] hover:text-[#f8f5ee] transition-all cursor-pointer"
+                  className="grid size-9 place-items-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700 hover:border-[#f97316] hover:text-[#f97316] transition-all cursor-pointer shadow-sm"
                   aria-label="Next testimonial"
                 >
                   <ChevronRight className="size-4" />
@@ -185,34 +185,34 @@ export default function ArtisticEndorsements() {
                 {/* Floating Quotation Marks & Scope Pill */}
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <Quote className="size-8 text-[#e85a2d]/40" />
-                    <span className="font-mono text-xs uppercase tracking-wider text-[#e85a2d] font-semibold">
+                    <Quote className="size-8 text-[#f97316]/35" />
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#f97316] font-semibold">
                       {activeMeta.projectScope}
                     </span>
                   </div>
 
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 font-mono text-[0.68rem] text-emerald-400 font-semibold backdrop-blur-md">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 font-mono text-[0.68rem] text-emerald-700 font-semibold shadow-sm">
                     <ShieldCheck className="size-3.5" />
                     <span>{activeMeta.verifiedTag}</span>
                   </span>
                 </div>
 
                 {/* Grand Artistic Quote Typography */}
-                <blockquote className="font-serif italic text-xl sm:text-3xl lg:text-4xl text-[#f8f5ee] leading-relaxed sm:leading-snug max-w-5xl">
+                <blockquote className="font-serif italic text-xl sm:text-3xl lg:text-4xl text-zinc-950 font-normal leading-relaxed sm:leading-snug max-w-5xl">
                   “{activeTestimonial.quote}”
                 </blockquote>
 
                 {/* Measurable Impact Metrics Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/10">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-zinc-200/80">
                   {activeMeta.impactMetrics.map((metric, mi) => (
                     <div 
                       key={mi}
-                      className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 flex items-center justify-between"
+                      className="rounded-xl border border-zinc-200 bg-zinc-50/70 p-3.5 flex items-center justify-between shadow-sm"
                     >
-                      <span className="font-mono text-xs text-[#f8f5ee]/60">
+                      <span className="font-mono text-xs text-zinc-500">
                         {metric.label}
                       </span>
-                      <span className="font-display text-sm font-bold text-[#e85a2d]">
+                      <span className="font-display text-sm font-bold text-[#f97316]">
                         {metric.value}
                       </span>
                     </div>
@@ -222,26 +222,26 @@ export default function ArtisticEndorsements() {
                 {/* Author Signature & Profile Box */}
                 <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="grid size-12 sm:size-14 place-items-center rounded-2xl bg-[#e85a2d]/20 border border-[#e85a2d]/40 text-[#e85a2d] font-display font-bold text-base sm:text-lg shadow-[0_0_20px_rgba(232,90,45,0.3)] shrink-0">
+                    <div className="grid size-12 sm:size-14 place-items-center rounded-2xl bg-orange-50 border border-orange-200 text-[#f97316] font-display font-bold text-base sm:text-lg shadow-sm shrink-0">
                       {activeMeta.initials}
                     </div>
 
                     <div>
-                      <h3 className="font-display text-lg sm:text-xl font-semibold text-[#f8f5ee]">
+                      <h3 className="font-display text-lg sm:text-xl font-bold text-zinc-950">
                         {activeTestimonial.author}
                       </h3>
-                      <p className="font-mono text-xs text-[#f8f5ee]/60 flex items-center gap-1.5 mt-0.5">
-                        <Building2 className="size-3 text-[#e85a2d]" />
+                      <p className="font-mono text-xs text-zinc-500 flex items-center gap-1.5 mt-0.5">
+                        <Building2 className="size-3 text-[#f97316]" />
                         <span>{activeTestimonial.role}</span>
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1 text-amber-400">
+                  <div className="flex items-center gap-1 text-amber-500">
                     {Array.from({ length: 5 }).map((_, si) => (
                       <Star key={si} className="size-4 fill-amber-400 text-amber-400" />
                     ))}
-                    <span className="ml-2 font-mono text-xs font-bold text-[#f8f5ee]">
+                    <span className="ml-2 font-mono text-xs font-bold text-zinc-900">
                       5.0 Delivery Rating
                     </span>
                   </div>
@@ -253,7 +253,7 @@ export default function ArtisticEndorsements() {
           {/* ─────────────────────────────────────────────────────────────
               INTERACTIVE CLIENT DOSSIER CARDS WITH STORY PROGRESS BARS
           ───────────────────────────────────────────────────────────── */}
-          <div className="mt-10 sm:mt-14 pt-8 border-t border-white/10 grid gap-4 md:grid-cols-3">
+          <div className="mt-10 sm:mt-14 pt-8 border-t border-zinc-200/80 grid gap-4 md:grid-cols-3">
             {TESTIMONIALS.map((t, idx) => {
               const meta = CLIENT_META[idx];
               const isCurrent = idx === activeIndex;
@@ -263,17 +263,17 @@ export default function ArtisticEndorsements() {
                   key={idx}
                   type="button"
                   onClick={() => handleSelect(idx)}
-                  className={`group relative text-left rounded-2xl p-4 sm:p-5 border transition-all duration-300 cursor-pointer overflow-hidden ${
+                  className={`group relative text-left rounded-2xl p-4 sm:p-5 border transition-all duration-200 cursor-pointer overflow-hidden ${
                     isCurrent
-                      ? 'border-[#e85a2d] bg-[#1c140d] text-[#f8f5ee] shadow-[0_0_25px_rgba(232,90,45,0.25)]'
-                      : 'border-white/10 bg-white/[0.02] text-[#f8f5ee]/60 hover:border-white/20 hover:text-[#f8f5ee]'
+                      ? 'border-[#f97316] bg-orange-50/50 text-zinc-950 shadow-sm'
+                      : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-950'
                   }`}
                 >
                   {/* Glowing Animated Story Progress Bar at Top of Active Card */}
                   {isCurrent && (
-                    <div className="absolute top-0 inset-x-0 h-1 bg-white/10 overflow-hidden">
+                    <div className="absolute top-0 inset-x-0 h-1 bg-zinc-200 overflow-hidden">
                       <div 
-                        className="h-full bg-gradient-to-r from-[#e85a2d] to-[#ff7e53] transition-all duration-75 shadow-[0_0_8px_rgba(232,90,45,0.8)]"
+                        className="h-full bg-gradient-to-r from-[#f97316] to-[#fb923c] transition-all duration-75"
                         style={{ width: `${progress}%` }}
                       />
                     </div>
@@ -281,23 +281,23 @@ export default function ArtisticEndorsements() {
 
                   <div className="flex items-center justify-between mb-2.5">
                     <span className={`font-mono text-[0.68rem] font-bold ${
-                      isCurrent ? 'text-[#e85a2d]' : 'text-[#f8f5ee]/40'
+                      isCurrent ? 'text-[#f97316]' : 'text-zinc-400'
                     }`}>
                       0{idx + 1} Endorsement
                     </span>
 
                     <span className={`size-2 rounded-full ${
-                      isCurrent ? 'bg-[#e85a2d] animate-ping' : 'bg-white/20'
+                      isCurrent ? 'bg-[#f97316] animate-ping' : 'bg-zinc-200'
                     }`} />
                   </div>
 
                   <h4 className={`font-display text-sm sm:text-base font-semibold transition-colors ${
-                    isCurrent ? 'text-[#f8f5ee]' : 'text-[#f8f5ee]/80 group-hover:text-[#f8f5ee]'
+                    isCurrent ? 'text-zinc-950' : 'text-zinc-800 group-hover:text-zinc-950'
                   }`}>
                     {t.author}
                   </h4>
 
-                  <p className="font-mono text-[0.68rem] text-[#f8f5ee]/50 truncate mt-0.5">
+                  <p className="font-mono text-[0.68rem] text-zinc-500 truncate mt-0.5">
                     {meta.company}
                   </p>
                 </button>
@@ -306,14 +306,14 @@ export default function ArtisticEndorsements() {
           </div>
 
           {/* Bottom Senior Verification Bar */}
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[#f8f5ee]/45 pt-4 border-t border-white/10">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-zinc-500 pt-4 border-t border-zinc-200/80">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-              <span className="font-semibold text-[#f8f5ee]">Senior Engineering Standard:</span>
+              <span className="font-semibold text-zinc-900">Senior Engineering Standard:</span>
               <span>Direct personal execution on every deliverable</span>
             </div>
 
-            <div className="flex items-center gap-2 text-emerald-400 font-semibold">
+            <div className="flex items-center gap-2 text-emerald-600 font-semibold">
               <CheckCircle2 className="size-3.5" />
               <span>100% Verified Delivery Record</span>
             </div>
