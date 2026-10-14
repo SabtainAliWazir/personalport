@@ -24,7 +24,19 @@ export default function Blog() {
           .order('published_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          setPosts(data);
+          const enriched = data.map((item) => {
+            const fallback = FALLBACK_BLOG_POSTS.find((p) => p.slug === item.slug);
+            const hasRichFallback = fallback && fallback.content && fallback.content.length > (item.content?.length || 0);
+            return {
+              ...item,
+              title: hasRichFallback ? fallback.title : item.title,
+              summary: hasRichFallback ? fallback.summary : item.summary,
+              simple_analogy: hasRichFallback ? fallback.simple_analogy : item.simple_analogy,
+              read_time: hasRichFallback ? fallback.read_time : item.read_time,
+              cover_image: item.cover_image || getBlogCoverImage(item.slug)
+            };
+          });
+          setPosts(enriched);
         }
       } catch (err) {
         console.error('Error loading Supabase posts:', err);
@@ -47,7 +59,7 @@ export default function Blog() {
   });
 
   return (
-    <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24 selection:bg-[#f97316] selection:text-white">
+    <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
       
       {/* ─────────────────────────────────────────────────────────────
           1. BLOG HERO: THE SIMPLE HUMAN COMMUNICATION PROMISE

@@ -18,6 +18,11 @@ export default function BlogPost() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    // Force scroll to top on post change
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
     async function loadPost() {
       if (!isSupabaseConfigured || !supabase || !slug) return;
       setLoading(true);
@@ -29,7 +34,18 @@ export default function BlogPost() {
           .single();
 
         if (!error && data) {
-          setPost(data);
+          const fallback = FALLBACK_BLOG_POSTS.find((p) => p.slug === slug);
+          const hasRichFallback = fallback && fallback.content && fallback.content.length > (data.content?.length || 0);
+
+          setPost({
+            ...data,
+            title: hasRichFallback ? fallback.title : data.title,
+            summary: hasRichFallback ? fallback.summary : data.summary,
+            simple_analogy: hasRichFallback ? fallback.simple_analogy : data.simple_analogy,
+            read_time: hasRichFallback ? fallback.read_time : data.read_time,
+            content: hasRichFallback ? fallback.content : data.content,
+            cover_image: data.cover_image || getBlogCoverImage(slug)
+          });
         }
       } catch (err) {
         console.error('Error fetching blog post:', err);
@@ -42,7 +58,11 @@ export default function BlogPost() {
 
   const htmlContent = useMemo(() => {
     if (!post?.content) return '';
-    return marked.parse(post.content);
+    // Normalize literal escaped backslash-n into real newlines
+    const normalized = post.content
+      .replace(/\\n/g, '\n')
+      .replace(/\\t/g, '  ');
+    return marked.parse(normalized);
   }, [post?.content]);
 
   const handleShare = () => {
@@ -69,7 +89,7 @@ export default function BlogPost() {
   const coverSrc = post.cover_image || getBlogCoverImage(post.slug);
 
   return (
-    <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24 selection:bg-[#f97316] selection:text-white">
+    <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
       <article className="gutter mx-auto max-w-[52rem] w-full">
         
         {/* Navigation Breadcrumb & Share */}
