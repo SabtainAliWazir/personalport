@@ -1,16 +1,22 @@
 -- ==============================================================================
--- Run this in your Supabase SQL Editor (https://supabase.com/dashboard/project/zxxfjyoummwcwdglekll/sql)
--- This updates the 3 blog posts with the full, rich content (removing literal \n\n)
+-- Sabtain Ali Portfolio · Supabase Database Sync Query
+-- Run this in your Supabase SQL Editor:
+-- https://supabase.com/dashboard/project/zxxfjyoummwcwdglekll/sql
+-- Uses PostgreSQL Dollar-Quoting ($post$...$post$) to prevent syntax errors
 -- ==============================================================================
 
-UPDATE public.posts 
-SET 
-  title = 'What is an API? The Restaurant Waiter Analogy (Full-Stack Guide)',
-  summary = 'Learn how APIs work in modern software engineering through the simple restaurant waiter analogy. Covers HTTP methods (GET, POST, PUT, DELETE), status codes, JSON payloads, and how frontend apps talk to backend databases.',
-  category = 'System Architecture',
-  read_time = '6 min read',
-  simple_analogy = 'An API is like a 5-star restaurant waiter who takes your order from the dining table, carries it safely to the kitchen chefs, and brings back your steaming meal.',
-  content = '# What is an API? The Restaurant Waiter Analogy
+-- 1. Post: What is an API?
+INSERT INTO public.posts (slug, title, summary, simple_analogy, category, read_time, published_at, content, is_published)
+VALUES (
+  'what-is-an-api-restaurant-waiter',
+  'What is an API? The Restaurant Waiter Analogy (Full-Stack Guide)',
+  'Learn how APIs work in modern software engineering through the simple restaurant waiter analogy. Covers HTTP methods (GET, POST, PUT, DELETE), status codes, JSON payloads, and how frontend apps talk to backend databases.',
+  'An API is like a 5-star restaurant waiter who takes your order from the dining table, carries it safely to the kitchen chefs, and brings back your steaming meal.',
+  'System Architecture',
+  '6 min read',
+  '2026-10-14',
+  $post$
+# What is an API? The Restaurant Waiter Analogy
 
 Have you ever wondered how your phone’s weather app knows it is raining outside? 
 
@@ -20,7 +26,7 @@ That digital courier is called an **API** (**Application Programming Interface**
 
 In modern software engineering, APIs are the connective tissue of the entire internet. Every time you book an Uber ride, pay with PayPal, log into a website using Google, or stream music on Spotify, dozens of APIs are exchanging messages behind the scenes.
 
-Let''s break down how APIs actually work using an everyday real-world analogy: **A 5-Star Restaurant**.
+Let's break down how APIs actually work using an everyday real-world analogy: **A 5-Star Restaurant**.
 
 ---
 
@@ -29,7 +35,7 @@ Let''s break down how APIs actually work using an everyday real-world analogy: *
 Imagine walking into a bustling, high-end Italian restaurant on a Friday evening:
 
 ### The Diner (The Client / Frontend)
-You sit down at a table with an appetite. In web development, **you are the Client** - this can be a user''s web browser running React, an iPhone app, or an Apple Watch. You want information (or food), but you don’t have direct access to the ingredients.
+You sit down at a table with an appetite. In web development, **you are the Client** - this can be a user's web browser running React, an iPhone app, or an Apple Watch. You want information (or food), but you don’t have direct access to the ingredients.
 
 ### The Kitchen & Chefs (The Server & Database)
 Behind the double doors is the restaurant kitchen. The kitchen has industrial ovens, sharp knives, raw ingredients, and proprietary recipes. In software, this is the **Backend Server and Database** (like PostgreSQL or Node.js). 
@@ -55,7 +61,7 @@ When your browser or mobile app talks to an API, it uses standardized verbs know
 | :--- | :--- | :--- | :--- |
 | **GET** | *"Can I look at the dessert menu?"* | Fetch and read data without changing anything on the server. | `GET /api/v1/menu` |
 | **POST** | *"I would like to place an order for table 4."* | Create brand new data on the server. | `POST /api/v1/orders` |
-| **PUT / PATCH** | *"Please change my order from cow''s milk to oat milk."* | Update or modify an existing record. | `PATCH /api/v1/orders/42` |
+| **PUT / PATCH** | *"Please change my order from cow's milk to oat milk."* | Update or modify an existing record. | `PATCH /api/v1/orders/42` |
 | **DELETE** | *"I have an emergency and must cancel my order."* | Remove a record from the database. | `DELETE /api/v1/orders/42` |
 
 ---
@@ -65,22 +71,37 @@ When your browser or mobile app talks to an API, it uses standardized verbs know
 When the waiter returns from the kitchen, they also give you a status report:
 
 - **`200 OK`**: *"Your pizza is served! Bon appetit."* Request succeeded.
-- **`201 Created`**: *"Your order has been recorded into the chef''s queue."* Successfully created a new record.
+- **`201 Created`**: *"Your order has been recorded into the chef's queue."* Successfully created a new record.
 - **`400 Bad Request`**: *"Excuse me sir, you ordered purple dragon steak which is not on our menu."* Invalid client data.
 - **`401 Unauthorized`**: *"Excuse me, this is the VIP lounge. Please show your reservation pass."* Missing authentication token.
 - **`404 Not Found`**: *"The chef looked everywhere in the pantry, but that dish does not exist."*
-- **`500 Internal Server Error`**: *"The kitchen oven caught fire!"* Server crash on backend.'
-WHERE slug = 'what-is-an-api-restaurant-waiter';
+- **`500 Internal Server Error`**: *"The kitchen oven caught fire!"* Server crash on backend.
+  $post$,
+  true
+)
+ON CONFLICT (slug) DO UPDATE SET
+  title = EXCLUDED.title,
+  summary = EXCLUDED.summary,
+  simple_analogy = EXCLUDED.simple_analogy,
+  category = EXCLUDED.category,
+  read_time = EXCLUDED.read_time,
+  published_at = EXCLUDED.published_at,
+  content = EXCLUDED.content,
+  is_published = EXCLUDED.is_published;
 
 
-UPDATE public.posts 
-SET 
-  title = 'Why Databases Need Indexes: The Library Secret (Database Optimization)',
-  summary = 'Discover why database indexes are essential for high-performance software. Learn how B-Tree indexes turn slow linear scans into sub-millisecond queries, complete with real SQL examples and case studies.',
-  category = 'Database Engineering',
-  read_time = '7 min read',
-  simple_analogy = 'A database index is like the alphabetical index at the very back of a 1,000-page encyclopedia that tells you the exact page number in 2 seconds.',
-  content = '# Why Databases Need Indexes: The Library Secret
+-- 2. Post: Why Databases Need Indexes
+INSERT INTO public.posts (slug, title, summary, simple_analogy, category, read_time, published_at, content, is_published)
+VALUES (
+  'why-databases-need-indexes-the-book-secret',
+  'Why Databases Need Indexes: The Library Secret (Database Optimization)',
+  'Discover why database indexes are essential for high-performance software. Learn how B-Tree indexes turn slow linear scans into sub-millisecond queries, complete with real SQL examples and case studies.',
+  'A database index is like the alphabetical index at the very back of a 1,000-page encyclopedia that tells you the exact page number in 2 seconds.',
+  'Database Engineering',
+  '7 min read',
+  '2026-10-13',
+  $post$
+# Why Databases Need Indexes: The Library Secret
 
 Imagine your school teacher hands you an enormous 1,000-page encyclopedia of animals. She sets a stopwatch on her desk, looks you in the eyes, and says:
 
@@ -137,18 +158,33 @@ Instead of an unsorted pile of users, this companion structure stores every emai
 [zoe@...]      --> Disk Block #912
 ```
 
-Now, when Alex logs in, the database doesn''t read 8.4 million rows. It looks up Alex in the sorted index and jumps directly to disk block #842 in **under 1 millisecond**.'
-WHERE slug = 'why-databases-need-indexes-the-book-secret';
+Now, when Alex logs in, the database doesn't read 8.4 million rows. It looks up Alex in the sorted index and jumps directly to disk block #842 in **under 1 millisecond**.
+  $post$,
+  true
+)
+ON CONFLICT (slug) DO UPDATE SET
+  title = EXCLUDED.title,
+  summary = EXCLUDED.summary,
+  simple_analogy = EXCLUDED.simple_analogy,
+  category = EXCLUDED.category,
+  read_time = EXCLUDED.read_time,
+  published_at = EXCLUDED.published_at,
+  content = EXCLUDED.content,
+  is_published = EXCLUDED.is_published;
 
 
-UPDATE public.posts 
-SET 
-  title = 'WebSockets vs HTTP: Walkie-Talkies vs Mailing Letters (Real-Time Guide)',
-  summary = 'Understand the deep architectural differences between HTTP request-response cycles and persistent full-duplex WebSockets. Learn when to use WebSockets for live chat, IoT telemetry, and notifications.',
-  category = 'Real-Time Systems',
-  read_time = '6 min read',
-  simple_analogy = 'HTTP is like mailing paper letters back and forth through the postal service. WebSockets are like holding an open two-way walkie-talkie where both people can talk simultaneously.',
-  content = '# WebSockets vs HTTP: Walkie-Talkies vs Mailing Letters
+-- 3. Post: WebSockets vs HTTP
+INSERT INTO public.posts (slug, title, summary, simple_analogy, category, read_time, published_at, content, is_published)
+VALUES (
+  'websockets-walkie-talkie-vs-letters',
+  'WebSockets vs HTTP: Walkie-Talkies vs Mailing Letters (Real-Time Guide)',
+  'Understand the deep architectural differences between HTTP request-response cycles and persistent full-duplex WebSockets. Learn when to use WebSockets for live chat, IoT telemetry, and notifications.',
+  'HTTP is like mailing paper letters back and forth through the postal service. WebSockets are like holding an open two-way walkie-talkie where both people can talk simultaneously.',
+  'Real-Time Systems',
+  '6 min read',
+  '2026-10-12',
+  $post$
+# WebSockets vs HTTP: Walkie-Talkies vs Mailing Letters
 
 Have you ever wondered how multiplayer video games, WhatsApp chat, or stock market trading dashboards update your screen instantaneously without you having to press "Refresh"?
 
@@ -185,10 +221,22 @@ Now imagine instead of envelopes, you and Maya each have a high-tech **Walkie-Ta
 
 Neither of you needs to write envelopes or wait for mail carriers anymore. Whenever Maya takes a bite of food, she presses the button and speaks into your ear in real time. Whenever you have a question, you speak right back.
 
-In computer science, this is called a **Persistent, Full-Duplex TCP Connection**.'
-WHERE slug = 'websockets-walkie-talkie-vs-letters';
+In computer science, this is called a **Persistent, Full-Duplex TCP Connection**.
+  $post$,
+  true
+)
+ON CONFLICT (slug) DO UPDATE SET
+  title = EXCLUDED.title,
+  summary = EXCLUDED.summary,
+  simple_analogy = EXCLUDED.simple_analogy,
+  category = EXCLUDED.category,
+  read_time = EXCLUDED.read_time,
+  published_at = EXCLUDED.published_at,
+  content = EXCLUDED.content,
+  is_published = EXCLUDED.is_published;
 
 
+-- 4. Post: Gemini Argon
 INSERT INTO public.posts (slug, title, summary, simple_analogy, category, read_time, published_at, content, is_published)
 VALUES (
   'what-is-gemini-argon-chess-grandmaster-analogy',
@@ -198,7 +246,8 @@ VALUES (
   'Artificial Intelligence',
   '7 min read',
   '2026-10-15',
-  '# What is Gemini Argon? The Chess Grandmaster Analogy
+  $post$
+# What is Gemini Argon? The Chess Grandmaster Analogy
 
 Have you ever asked an AI coding assistant to fix a tricky bug in your application, only to watch it instantly spit out confident code that completely breaks your production server?
 
@@ -212,7 +261,7 @@ That is why Google DeepMind engineered **Gemini 4 Argon**.
 
 Gemini Argon represents a fundamental shift in artificial intelligence: **Test-Time Deliberation and Deep Multi-Step Reasoning**.
 
-Let''s unpack how Gemini Argon works using an everyday real-world analogy: **The Speed Ping-Pong Player vs The World Chess Grandmaster**.
+Let's unpack how Gemini Argon works using an everyday real-world analogy: **The Speed Ping-Pong Player vs The World Chess Grandmaster**.
 
 ---
 
@@ -237,13 +286,13 @@ The grandmaster looks at the board. She does not reach out and slam a piece down
 
 **Gemini Argon is that Chess Grandmaster**. 
 
-When you present Gemini Argon with a hard engineering problem, it doesn''t instantly blurt out code. It generates invisible **Reasoning Tokens** (a dynamic internal scratchpad), tests its own logic against potential edge cases, catches its own mistakes, and only outputs the verified solution to your screen.
+When you present Gemini Argon with a hard engineering problem, it doesn't instantly blurt out code. It generates invisible **Reasoning Tokens** (a dynamic internal scratchpad), tests its own logic against potential edge cases, catches its own mistakes, and only outputs the verified solution to your screen.
 
 ---
 
 ## 2. What are "Thinking Tokens" (Adaptive Compute)?
 
-In classical computer science, every database query or algorithm has a compute budget. You wouldn''t use the same quick algorithm to sort 10 numbers as you would to index 100 million records.
+In classical computer science, every database query or algorithm has a compute budget. You wouldn't use the same quick algorithm to sort 10 numbers as you would to index 100 million records.
 
 Historically, AI models had a fixed compute budget: easy question = fast answer; hard question = same fast answer.
 
@@ -275,25 +324,25 @@ Instead of having to manually copy-paste snippets or configure complex vector da
 
 ## 4. Hands-On Test: How I Put Gemini Argon Through Real Software Engineering Scenarios
 
-As a senior full-stack engineer who builds production systems for international health organizations, I don''t care about synthetic academic benchmarks. I care about **real engineering resilience**.
+As a senior full-stack engineer who builds production systems for international health organizations, I don't care about synthetic academic benchmarks. I care about **real engineering resilience**.
 
 Here is what happened when I tested Gemini Argon mode across three demanding tasks:
 
 ### Test 1: Complex B-Tree Database Index Optimization
-I provided a real PostgreSQL execution plan (\`EXPLAIN ANALYZE\`) with an un-indexed table experiencing high sequential scan latency under heavy concurrency.
-- **Traditional LLMs**: Recommended adding separate single-column indexes on every column in the \`WHERE\` clause (which would balloon disk write amplification).
+I provided a real PostgreSQL execution plan (`EXPLAIN ANALYZE`) with an un-indexed table experiencing high sequential scan latency under heavy concurrency.
+- **Traditional LLMs**: Recommended adding separate single-column indexes on every column in the `WHERE` clause (which would balloon disk write amplification).
 - **Gemini Argon**: Spent 8 seconds in deliberate reasoning. It correctly pointed out that adding three separate indexes would degrade insert throughput by 35%. Instead, it engineered a **single composite index** matching the exact query selectivity order, dropping query latency from 840ms to 1.8ms.
 
 ### Test 2: Asynchronous WebSocket Telemetry Race Conditions
 I asked it to analyze a live communication bug where packets arriving out-of-order could corrupt client-side React UI state during network reconnections.
-- **Gemini Argon**: Did not just patch the React \`useEffect\` hook. It drafted a complete client-side **Sequence Monotonic Numbering Protocol** with a replay buffer that guarantees idempotent state reconciliation even over unstable mobile cellular networks.
+- **Gemini Argon**: Did not just patch the React `useEffect` hook. It drafted a complete client-side **Sequence Monotonic Numbering Protocol** with a replay buffer that guarantees idempotent state reconciliation even over unstable mobile cellular networks.
 
 ### Test 3: Autonomous Multi-Step Tool Execution in Google Antigravity
-When paired with developer environments like Google Antigravity, Gemini Argon doesn''t just write text. It acts as an autonomous pairing engineer:
+When paired with developer environments like Google Antigravity, Gemini Argon doesn't just write text. It acts as an autonomous pairing engineer:
 1. It reads your codebase.
 2. It detects the root cause of an error.
 3. It edits the target files.
-4. It runs \`npm run build\` and verification test suites in the background.
+4. It runs `npm run build` and verification test suites in the background.
 5. If a test fails, it inspects the compiler output, corrects the typo, and reruns until the build passes cleanly.
 
 ---
@@ -317,7 +366,8 @@ Here is the practical decision matrix:
 
 1. **Reasoning Beats Raw Speed**: For complex software engineering, an AI that pauses for 5 seconds to verify its logic is infinitely more valuable than an AI that writes incorrect code in 0.5 seconds.
 2. **Context is King**: The 1 million token context window eliminates the blind spots that plague smaller models, allowing Argon to reason across entire production codebases.
-3. **The Era of Agentic Engineering**: We have moved from simple chat autocomplete to autonomous reasoning partners that can think, plan, execute tools, and verify results before touching production.',
+3. **The Era of Agentic Engineering**: We have moved from simple chat autocomplete to autonomous reasoning partners that can think, plan, execute tools, and verify results before touching production.
+  $post$,
   true
 )
 ON CONFLICT (slug) DO UPDATE SET
@@ -329,4 +379,3 @@ ON CONFLICT (slug) DO UPDATE SET
   published_at = EXCLUDED.published_at,
   content = EXCLUDED.content,
   is_published = EXCLUDED.is_published;
-
