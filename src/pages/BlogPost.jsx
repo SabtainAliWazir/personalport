@@ -3,7 +3,7 @@ import { useRouter, Link } from '../router/RouterContext';
 import { supabase, isSupabaseConfigured, FALLBACK_BLOG_POSTS, getBlogCoverImage } from '../lib/supabase';
 import { 
   ArrowLeft, Calendar, Clock, Lightbulb, Share2, 
-  Terminal, Sparkles, CheckCircle2, MessageSquare, Check
+  Terminal, Sparkles, CheckCircle2, MessageSquare, Check, Home
 } from 'lucide-react';
 import { marked } from 'marked';
 
@@ -93,14 +93,32 @@ export default function BlogPost() {
       <article className="gutter mx-auto max-w-[52rem] w-full">
         
         {/* Navigation Breadcrumb & Share */}
-        <div className="flex items-center justify-between mb-8">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 font-mono text-xs text-zinc-700 hover:border-[#f97316] hover:text-zinc-950 transition-all shadow-sm"
-          >
-            <ArrowLeft className="size-3.5 text-[#f97316]" />
-            <span>Back to All Stories</span>
-          </Link>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-zinc-100">
+          <nav aria-label="Breadcrumb">
+            <ol itemScope itemType="https://schema.org/BreadcrumbList" className="flex flex-wrap items-center gap-1.5 sm:gap-2 font-mono text-xs text-zinc-500">
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="inline-flex items-center">
+                <Link href="/" itemProp="item" className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-[#f97316] transition-colors">
+                  <Home className="size-3 text-zinc-400" />
+                  <span itemProp="name">Home</span>
+                </Link>
+                <meta itemProp="position" content="1" />
+              </li>
+              <li className="text-zinc-300 select-none">/</li>
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="inline-flex items-center">
+                <Link href="/blog" itemProp="item" className="text-zinc-600 hover:text-[#f97316] transition-colors">
+                  <span itemProp="name">Blog</span>
+                </Link>
+                <meta itemProp="position" content="2" />
+              </li>
+              <li className="text-zinc-300 select-none">/</li>
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="inline-flex items-center">
+                <span itemProp="name" className="text-zinc-900 font-semibold truncate max-w-[14rem] sm:max-w-none">
+                  {post.category}
+                </span>
+                <meta itemProp="position" content="3" />
+              </li>
+            </ol>
+          </nav>
 
           <button
             onClick={handleShare}
