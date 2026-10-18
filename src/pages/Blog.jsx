@@ -36,7 +36,14 @@ export default function Blog() {
               cover_image: item.cover_image || getBlogCoverImage(item.slug)
             };
           });
-          setPosts(enriched);
+
+          // Include any newly authored fallback posts that haven't been inserted into Supabase yet
+          const supabaseSlugs = new Set(data.map((item) => item.slug));
+          const missingFallbackPosts = FALLBACK_BLOG_POSTS.filter(
+            (fallback) => !supabaseSlugs.has(fallback.slug)
+          );
+
+          setPosts([...enriched, ...missingFallbackPosts]);
         }
       } catch (err) {
         console.error('Error loading Supabase posts:', err);
