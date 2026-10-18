@@ -482,3 +482,14 @@ html {
   font-weight: 600;
   color: #09090b;
 }
+
+.blog-markdown img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 1.25rem;
+  border: 1px solid #e4e4e7;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin: 2.25rem auto 1rem auto;
+}
