@@ -7,7 +7,9 @@ import {
 } from 'lucide-react';
 
 export default function Blog() {
-  const [posts, setPosts] = useState(FALLBACK_BLOG_POSTS);
+  const [posts, setPosts] = useState(() => {
+    return [...FALLBACK_BLOG_POSTS].sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+  });
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,10 @@ export default function Blog() {
             (fallback) => !supabaseSlugs.has(fallback.slug)
           );
 
-          setPosts([...enriched, ...missingFallbackPosts]);
+          const combined = [...enriched, ...missingFallbackPosts].sort(
+            (a, b) => new Date(b.published_at) - new Date(a.published_at)
+          );
+          setPosts(combined);
         }
       } catch (err) {
         console.error('Error loading Supabase posts:', err);
