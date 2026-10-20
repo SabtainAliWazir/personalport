@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
+import SEOHead from '../components/SEOHead';
 import { 
   Terminal, Copy, Check, MapPin, Clock, ArrowRight 
 } from 'lucide-react';
@@ -33,6 +34,11 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
+      <SEOHead
+        title="Contact & Start a Project"
+        description="Get in touch with Sabtain Ali for high-performance web development, WHO data platforms, custom AI integrations, and full-stack architecture."
+        canonical="/contact"
+      />
       {/* ─────────────────────────────────────────────────────────────
           1. CONTACT HERO HEADER
       ───────────────────────────────────────────────────────────── */}

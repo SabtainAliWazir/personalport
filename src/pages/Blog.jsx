@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from '../router/RouterContext';
 import { supabase, isSupabaseConfigured, FALLBACK_BLOG_POSTS, getBlogCoverImage } from '../lib/supabase';
+import SEOHead from '../components/SEOHead';
 import { 
   BookOpen, Sparkles, Clock, Calendar, ArrowRight, 
   Search, Lightbulb, Compass, Database, Terminal 
@@ -72,6 +73,11 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
+      <SEOHead
+        title="Blog & Engineering Stories"
+        description="Clear, human-first breakdowns of software architecture, AI agents, databases, and network protocols explained with everyday analogies by Sabtain Ali."
+        canonical="/blog"
+      />
       
       {/* ─────────────────────────────────────────────────────────────
           1. BLOG HERO: THE SIMPLE HUMAN COMMUNICATION PROMISE

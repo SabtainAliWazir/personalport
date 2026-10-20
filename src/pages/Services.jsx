@@ -4,6 +4,7 @@ import { SERVICES, SERVICE_RAIL, TECH_MARQUEE } from '../data/portfolioData';
 import ServiceHUDCanvas from '../components/ui/ServiceHUDCanvas';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import GlareCard from '../components/ui/GlareCard';
+import SEOHead from '../components/SEOHead';
 import { 
   ArrowRight, ArrowDown, ChevronDown, CheckCircle2, 
   Sparkles, Layers, ShieldCheck, Activity, Terminal, Database, Code2, Eye 
@@ -62,6 +63,11 @@ export default function Services() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
+      <SEOHead
+        title="Capabilities & Full-Stack Services"
+        description="High-performance web architecture, React & TypeScript frontend engineering, Laravel 11 backends, real-time WebSockets, and enterprise AI automation by Sabtain Ali."
+        canonical="/service"
+      />
       {/* ─────────────────────────────────────────────────────────────
           1. SERVICES CHAPTER HERO HEADER
       ───────────────────────────────────────────────────────────── */}

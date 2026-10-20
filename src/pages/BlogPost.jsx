@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter, Link } from '../router/RouterContext';
 import { supabase, isSupabaseConfigured, FALLBACK_BLOG_POSTS, getBlogCoverImage } from '../lib/supabase';
+import SEOHead from '../components/SEOHead';
 import { 
   ArrowLeft, Calendar, Clock, Lightbulb, Share2, 
   Terminal, Sparkles, CheckCircle2, MessageSquare, Check, Home
@@ -88,8 +89,46 @@ export default function BlogPost() {
 
   const coverSrc = post.cover_image || getBlogCoverImage(post.slug);
 
+  const articleSchema = useMemo(() => {
+    if (!post) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.summary,
+      "image": `https://www.devcop.xyz${coverSrc}`,
+      "datePublished": post.published_at,
+      "dateModified": post.published_at,
+      "author": {
+        "@type": "Person",
+        "name": "Sabtain Ali",
+        "url": "https://www.devcop.xyz",
+        "jobTitle": "Senior Full Stack Software Engineer"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Sabtain Ali",
+        "url": "https://www.devcop.xyz"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://www.devcop.xyz/blog/${post.slug}`
+      }
+    };
+  }, [post, coverSrc]);
+
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
+      <SEOHead
+        title={post.title}
+        description={post.summary}
+        canonical={`/blog/${post.slug}`}
+        image={coverSrc}
+        type="article"
+        publishedTime={post.published_at}
+        category={post.category}
+        articleSchema={articleSchema}
+      />
       <article className="gutter mx-auto max-w-[52rem] w-full">
         
         {/* Navigation Breadcrumb & Share */}

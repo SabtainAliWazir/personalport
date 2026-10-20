@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter, Link } from '../router/RouterContext';
 import { PROJECTS } from '../data/portfolioData';
 import GlareCard from '../components/ui/GlareCard';
+import SEOHead from '../components/SEOHead';
 import { 
   ArrowLeft, ArrowRight, ExternalLink, Database, 
   CheckCircle2, Code2, Briefcase, Terminal, Copy, Check 
@@ -30,6 +31,12 @@ export default function CaseStudy() {
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
+      <SEOHead
+        title={`${project.title} · Case Study`}
+        description={project.summary || project.subtitle}
+        canonical={`/portfolio/${project.slug}`}
+        image={project.heroImage || project.image}
+      />
       {/* ─────────────────────────────────────────────────────────────
           1. CASE STUDY HEADER & NAVIGATION
       ───────────────────────────────────────────────────────────── */}

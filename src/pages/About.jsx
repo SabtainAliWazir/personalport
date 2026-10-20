@@ -2,11 +2,17 @@ import React from 'react';
 import { useRouter, Link } from '../router/RouterContext';
 import { EXPERIENCE, CERTIFICATIONS } from '../data/portfolioData';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
+import SEOHead from '../components/SEOHead';
 import { ShieldCheck, Award, Briefcase, MapPin, Calendar } from 'lucide-react';
 
 export default function About() {
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
+      <SEOHead
+        title="About Sabtain Ali · Senior Full-Stack Engineer"
+        description="Biography, engineering philosophy, and background of Sabtain Ali. 4+ years developing mission-critical systems for WHO and international enterprise clients."
+        canonical="/about"
+      />
       {/* ─────────────────────────────────────────────────────────────
           1. EDITORIAL BIOGRAPHY & PHILOSOPHY
       ───────────────────────────────────────────────────────────── */}

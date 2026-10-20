@@ -6,6 +6,7 @@ import CapabilitiesExhibition from '../components/ui/CapabilitiesExhibition';
 import ArtisticEndorsements from '../components/ui/ArtisticEndorsements';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import GlareCard from '../components/ui/GlareCard';
+import SEOHead from '../components/SEOHead';
 import { 
   ArrowRight, ArrowUpRight, Activity, ShieldCheck, Zap, 
   Database, Cpu, CheckCircle2, Star, Sparkles, Terminal, Layers
@@ -17,6 +18,11 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-white text-zinc-900 overflow-hidden">
+      <SEOHead
+        title="Sabtain Ali · Senior Full Stack Developer & Software Engineer"
+        description="Portfolio of Sabtain Ali, Senior Full Stack Developer & AI Engineer. 4+ years building high-performance web applications, WHO data pipelines, React & TypeScript interfaces, and Laravel 11 backends."
+        canonical="/"
+      />
       {/* ─────────────────────────────────────────────────────────────
           1. HERO SECTION (Crisp Studio Light Mode)
       ───────────────────────────────────────────────────────────── */}

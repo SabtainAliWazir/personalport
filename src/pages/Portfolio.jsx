@@ -4,6 +4,7 @@ import { useRouter, Link } from '../router/RouterContext';
 import { PROJECTS } from '../data/portfolioData';
 import Perspective3DCard from '../components/ui/Perspective3DCard';
 import ProjectTelemetryModal from '../components/ui/ProjectTelemetryModal';
+import SEOHead from '../components/SEOHead';
 import { 
   ArrowRight, ArrowLeft, Filter, ExternalLink, Sparkles, 
   Terminal, Play, Pause, ChevronLeft, ChevronRight, 
@@ -118,6 +119,11 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-white text-zinc-900 pt-28 sm:pt-32 lg:pt-24 pb-4 selection:bg-[#f97316] selection:text-white flex flex-col justify-between">
+      <SEOHead
+        title="Selected Engineering Works & Case Studies"
+        description="Explore production case studies by Sabtain Ali: WHO e-ACR epidemiology pipelines, WOAH animal health surveillance, autonomous AI agents, and enterprise web applications."
+        canonical="/portfolio"
+      />
       
       {/* Dynamic Atmospheric Ambient Glow */}
       <div 
