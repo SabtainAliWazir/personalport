@@ -3162,9 +3162,9 @@ Imagine you purchase a cutting-edge, high-end digital thermostat to control the 
 - You want the convenience of checking the house temperature while you are away on vacation.
 - But instead of setting up a secure password or routing the device through a private Wi-Fi network, the contractor decides to take a shortcut:
 - **The contractor drills a hole through your front door and mounts the master control screen on your front porch, facing the public sidewalk.**
-- To make matters worse, the contractor leaves the factory default unlock code on the screen: **`1234`**.
+- To make matters worse, the contractor leaves the factory default unlock code on the screen: **\`1234\`**.
 
-Now, anyone walking down your street at 3 AM on a freezing night can walk onto your porch, press `1234`, and crank your house heating to 120°F while you are sound asleep upstairs.
+Now, anyone walking down your street at 3 AM on a freezing night can walk onto your porch, press \`1234\`, and crank your house heating to 120°F while you are sound asleep upstairs.
 
 By morning, your chocolates have melted, your houseplants have wilted, and your pipes are boiling hot.
 
@@ -3241,7 +3241,7 @@ Search engines like **Shodan** and **Censys** crawl the entire IPv4 internet 24 
 The attackers simply searched for the unique HTTP headers and banners of industrial refrigeration management units (such as the Danfoss AK-SM 800 series). In seconds, they had an interactive map of thousands of commercial grocery store controllers across Europe.
 
 ### Step 2: The Factory Password Trap
-Many of these devices were installed by third-party refrigeration contractors who never changed the factory default credentials. The attackers wrote a simple script that attempted standard default passwords (`admin`, `1234`, `pass`, `danfoss`). In hundreds of cases, the script succeeded immediately.
+Many of these devices were installed by third-party refrigeration contractors who never changed the factory default credentials. The attackers wrote a simple script that attempted standard default passwords (\`admin\`, \`1234\`, \`pass\`, \`danfoss\`). In hundreds of cases, the script succeeded immediately.
 
 ### Step 3: Triggering Defrost Mode
 Commercial freezers naturally build up frost on their internal evaporator coils. To fix this, industrial freezers feature built-in **electrical defrost heating elements** that turn on for 15 minutes a few times a week to melt ice off the coils before returning to freezing.
@@ -3296,7 +3296,7 @@ There is never an acceptable engineering excuse to assign a public IPv4 address 
 - Remote technicians must connect through an **encrypted VPN with Multi-Factor Authentication (MFA)** or a Zero-Trust Network Access (ZTNA) tunnel like Cloudflare Tunnels or WireGuard.
 
 ### Rule 2: Force Password Changes on First Boot
-Hardware manufacturers and software engineers must design setup wizards that refuse to activate until the user replaces the default password with a cryptographically strong credential. If a device can be controlled with `admin / admin`, it is an open door waiting for an intruder.
+Hardware manufacturers and software engineers must design setup wizards that refuse to activate until the user replaces the default password with a cryptographically strong credential. If a device can be controlled with \`admin / admin\`, it is an open door waiting for an intruder.
 
 ### Rule 3: Install Analog Physical Failsafes
 Software can be hacked, compromised, or bugged. Hardware physics cannot.
@@ -3312,7 +3312,7 @@ Supermarkets did not get hacked because their internal IT team was incompetent; 
 
 1. **The Line Between Software and Physics is Gone**: A computer bug or insecure port does not just corrupt bits on a hard drive; it melts food, stops assembly lines, and spoils emergency blood banks.
 2. **Convenience is the Enemy of Security**: Wiring industrial controllers directly to the internet without a VPN saved technicians twenty minutes of setup time, but cost retail stores tens of millions of euros.
-3. **Default Passwords are Zero-Day Vulnerabilities in Disguise**: Automated bots crawl the entire internet searching for `admin/admin`. If you do not change it, you have effectively opened your front door to the world.
+3. **Default Passwords are Zero-Day Vulnerabilities in Disguise**: Automated bots crawl the entire internet searching for \`admin/admin\`. If you do not change it, you have effectively opened your front door to the world.
 4. **Hardwire Your Safety**: In any system where software controls physical temperature, voltage, or pressure, never allow code to be the sole guardian. Always back software logic with unhackable mechanical circuit breakers.`
   }
 ];
