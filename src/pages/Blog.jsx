@@ -1,32 +1,48 @@
 import { useState } from 'react';
 import { Link } from '../router/RouterContext';
 import SEOHead from '../components/SEOHead';
+import { BLOG_INDEX_PATH, BLOG_PAGE_SIZE, blogPagePath } from '../data/blogPagination';
 import {
   Sparkles, Clock, Calendar, ArrowRight,
   Search, Lightbulb, Compass, Database, Terminal
 } from 'lucide-react';
 
-export default function Blog({ posts }) {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+export default function Blog({ posts, categories, page, pageCount, totalPosts, searchIndex }) {
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [catalog, setCatalog] = useState(searchIndex);
+  const [indexStatus, setIndexStatus] = useState('idle');
+  const [resultLimit, setResultLimit] = useState(BLOG_PAGE_SIZE);
 
-  const categories = ['All', ...new Set(posts.map((p) => p.category))];
+  const query = searchQuery.trim().toLowerCase();
+  const isFiltering = Boolean(selectedCategory || query);
+  const filteredPosts = isFiltering ? (catalog || []).filter((post) => {
+    const matchesCategory = !selectedCategory || post.category === selectedCategory;
+    return matchesCategory && [post.title, post.summary, post.simple_analogy].some((value) =>
+      value?.toLowerCase().includes(query)
+    );
+  }) : posts;
+  const visiblePosts = isFiltering ? filteredPosts.slice(0, resultLimit) : posts;
 
-  const filteredPosts = posts.filter((post) => {
-    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
-    const matchesSearch = 
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (post.simple_analogy || '').toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  async function loadSearchIndex() {
+    if (catalog || indexStatus === 'loading') return;
+    setIndexStatus('loading');
+    try {
+      const response = await fetch(BLOG_INDEX_PATH);
+      if (!response.ok) throw new Error('Blog index unavailable');
+      setCatalog(await response.json());
+      setIndexStatus('idle');
+    } catch {
+      setIndexStatus('error');
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
       <SEOHead
-        title="Blog & Engineering Stories"
+        title={page === 1 ? 'Blog & Engineering Stories' : `Blog & Engineering Stories – Page ${page}`}
         description="Clear, human-first breakdowns of software architecture, AI agents, databases, and network protocols explained with everyday analogies by Sabtain Ali."
-        canonical="/blog"
+        canonical={blogPagePath(page)}
       />
       
       {/* ─────────────────────────────────────────────────────────────
@@ -44,8 +60,6 @@ export default function Blog({ posts }) {
           <p className="text-lead font-sans text-zinc-600 leading-relaxed">
             I believe that if you cannot explain a technical concept to a 10-year-old child, you do not truly understand it yet. Every day, I break down software architecture, databases, and APIs using everyday real-life analogies.
           </p>
-
-
         </div>
 
         {/* Search & Category Filter Controls */}
@@ -53,17 +67,23 @@ export default function Blog({ posts }) {
           
           {/* Category Chips */}
           <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] py-1">
-            {categories.map((cat) => (
+            {['', ...categories].map((cat) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                type="button"
+                aria-pressed={selectedCategory === cat}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setResultLimit(BLOG_PAGE_SIZE);
+                  if (cat) void loadSearchIndex();
+                }}
                 className={`rounded-full px-4 py-1.5 text-xs font-mono transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   selectedCategory === cat
                     ? 'border border-[#f97316] bg-[#f97316]/10 text-zinc-950 font-semibold shadow-sm'
                     : 'border border-zinc-200 bg-zinc-50 text-zinc-600 hover:border-zinc-300 hover:text-zinc-950'
                 }`}
               >
-                {cat}
+                {cat || 'All'}
               </button>
             ))}
           </div>
@@ -72,10 +92,16 @@ export default function Blog({ posts }) {
           <div className="relative w-full sm:w-72">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 size-3.5 text-zinc-400" />
             <input
-              type="text"
+              type="search"
+              aria-label="Search all articles"
               placeholder="Search concepts or analogies..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(event) => {
+                const value = event.target.value;
+                setSearchQuery(value);
+                setResultLimit(BLOG_PAGE_SIZE);
+                if (value.trim()) void loadSearchIndex();
+              }}
               className="w-full rounded-full border border-zinc-200 bg-zinc-50 py-2 pl-9 pr-4 text-xs font-sans text-zinc-950 placeholder:text-zinc-400 focus:border-[#f97316] focus:bg-white focus:outline-none transition-all shadow-sm"
             />
           </div>
@@ -86,17 +112,28 @@ export default function Blog({ posts }) {
           2. POSTS GRID
       ───────────────────────────────────────────────────────────── */}
       <section className="gutter mx-auto max-w-[78rem] mt-12">
-        {filteredPosts.length === 0 ? (
+        {isFiltering && !catalog ? (
+          <div className="rounded-3xl border border-zinc-200 bg-zinc-50 p-12 text-center">
+            {indexStatus === 'error' ? (
+              <>
+                <p role="alert">The article search couldn’t load.</p>
+                <button type="button" onClick={loadSearchIndex} className="mt-3 font-semibold underline">Try again</button>
+              </>
+            ) : (
+              <p role="status">Searching all articles…</p>
+            )}
+          </div>
+        ) : visiblePosts.length === 0 ? (
           <div className="rounded-3xl border border-zinc-200 bg-zinc-50 p-12 text-center space-y-3 shadow-sm">
             <Compass className="size-8 text-[#f97316] mx-auto opacity-70" />
-            <h3 className="font-display text-lg font-semibold text-zinc-950">No articles found</h3>
+            <h2 className="font-display text-lg font-semibold text-zinc-950">No articles found</h2>
             <p className="text-xs text-zinc-500 font-sans">
               Try a different search word or category filter.
             </p>
           </div>
         ) : (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filteredPosts.map((post) => (
+            {visiblePosts.map((post) => (
               <article
                 key={post.slug || post.id}
                 className="group relative flex flex-col justify-between rounded-3xl border border-zinc-200 bg-white p-5 sm:p-6 transition-all duration-300 hover:border-[#f97316]/50 hover:shadow-xl shadow-sm"
@@ -174,6 +211,36 @@ export default function Blog({ posts }) {
               </article>
             ))}
           </div>
+        )}
+        {isFiltering ? (
+          catalog && (
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm">
+              <p role="status">Showing {visiblePosts.length} of {filteredPosts.length} matching articles</p>
+              {visiblePosts.length < filteredPosts.length && (
+                <button
+                  type="button"
+                  onClick={() => setResultLimit((limit) => limit + BLOG_PAGE_SIZE)}
+                  className="rounded-full border border-zinc-300 px-5 py-2 font-semibold hover:border-orange-600"
+                >
+                  Load more results
+                </button>
+              )}
+            </div>
+          )
+        ) : pageCount > 1 && (
+          <nav aria-label="Blog pagination" className="mt-10 flex flex-wrap items-center justify-center gap-4 text-sm">
+            {page > 1 && (
+              <Link href={blogPagePath(page - 1)} className="rounded-full border border-zinc-300 px-5 py-2 font-semibold hover:border-orange-600">
+                Newer posts
+              </Link>
+            )}
+            <p className="text-zinc-600">Page {page} of {pageCount} · {totalPosts} articles</p>
+            {page < pageCount && (
+              <Link href={blogPagePath(page + 1)} className="rounded-full border border-zinc-300 px-5 py-2 font-semibold hover:border-orange-600">
+                Older posts
+              </Link>
+            )}
+          </nav>
         )}
       </section>
 

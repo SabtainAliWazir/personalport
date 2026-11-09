@@ -6,6 +6,7 @@
     { "source": "/work/:slug", "destination": "/portfolio/:slug", "permanent": true },
     { "source": "/work", "destination": "/portfolio", "permanent": true },
     { "source": "/services", "destination": "/service", "permanent": true },
-    { "source": "/blogs", "destination": "/blog", "permanent": true }
+    { "source": "/blogs", "destination": "/blog", "permanent": true },
+    { "source": "/blog/page/1", "destination": "/blog", "permanent": true }
   ]
 }

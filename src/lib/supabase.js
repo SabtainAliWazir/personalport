@@ -3348,7 +3348,7 @@ export async function loadPublishedPosts() {
     .map(({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image, content }) =>
       ({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image: coverImage(slug, cover_image), content })
     )
-    .sort((a, b) => (b.published_at || '').localeCompare(a.published_at || ''));
+    .sort((a, b) => (b.published_at || '').localeCompare(a.published_at || '') || a.slug.localeCompare(b.slug));
 }
 
 export function blogIndex(posts) {

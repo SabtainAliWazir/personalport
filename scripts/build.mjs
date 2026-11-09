@@ -1,5 +1,6 @@
 import { build } from 'vite';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { BLOG_INDEX_PATH, blogListings } from '../src/data/blogPagination.js';
 
 const outDir = 'dist';
 const serverDir = 'dist-ssr';
@@ -10,8 +11,9 @@ const { absoluteUrl, blogIndex, loadPublishedPosts, publicPaths, renderPage } =
   await import('../dist-ssr/entry-server.js');
 const template = await readFile(`${outDir}/index.html`, 'utf8');
 const posts = await loadPublishedPosts();
-const paths = publicPaths(posts);
 const index = blogIndex(posts);
+const listings = blogListings(index);
+const paths = publicPaths(posts, listings.keys());
 const postsByPath = new Map(posts.map((post) => [`/blog/${post.slug}`, post]));
 
 function escapeJson(value) {
@@ -19,7 +21,7 @@ function escapeJson(value) {
 }
 
 for (const path of [...paths, '/404']) {
-  const payload = path === '/blog' ? { posts: index } : postsByPath.has(path) ? { post: postsByPath.get(path) } : {};
+  const payload = listings.get(path) ?? (postsByPath.has(path) ? { post: postsByPath.get(path) } : {});
   const markup = await renderPage(path, payload);
   const shellIndex = markup.indexOf('<div id="app-shell"');
   if (shellIndex < 0) throw new Error(`Missing app shell on ${path}`);
@@ -34,6 +36,7 @@ for (const path of [...paths, '/404']) {
   await writeFile(file, html);
 }
 
+await writeFile(`${outDir}${BLOG_INDEX_PATH}`, JSON.stringify(index));
 const entries = paths.map((path) => `  <url><loc>${absoluteUrl(path)}</loc></url>`).join('\n');
 await writeFile(`${outDir}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`);
 await writeFile(`${outDir}/robots.txt`, `User-agent: *\nAllow: /\nSitemap: ${absoluteUrl('/sitemap.xml')}\n`);
