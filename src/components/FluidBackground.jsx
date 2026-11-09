@@ -1,19 +1,16 @@
-import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 
-const StarField = () => {
-  const stars = useMemo(() => {
-    return Array.from({ length: 20 }).map((_, i) => ({
-      id: i,
-      size: Math.random() * 2 + 1,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      duration: Math.random() * 4 + 3,
-      delay: Math.random() * 2,
-      opacity: Math.random() * 0.5 + 0.2
-    }));
-  }, []);
+const stars = Array.from({ length: 20 }, (_, id) => ({
+  id,
+  size: Math.random() * 2 + 1,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  duration: Math.random() * 4 + 3,
+  delay: Math.random() * 2,
+  opacity: Math.random() * 0.5 + 0.2,
+}));
 
+const StarField = () => {
   return (
     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
       {stars.map((star) => (

@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useRouter, Link } from '../../router/RouterContext';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from '../../router/RouterContext';
 import { SERVICES } from '../../data/portfolioData';
 import { ChevronDown, Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
-  const { currentPath } = useRouter();
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -17,15 +16,19 @@ export default function Navbar() {
         setServicesOpen(false);
       }
     }
+    function handleEscape(event) {
+      if (event.key === 'Escape') {
+        setServicesOpen(false);
+        setMobileMenuOpen(false);
+      }
+    }
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    setServicesOpen(false);
-  }, [currentPath]);
 
   const navItems = [
     { label: 'Work', href: '/portfolio', num: '01' },
@@ -61,6 +64,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setServicesOpen(!servicesOpen)}
+                aria-expanded={servicesOpen}
                 onMouseEnter={() => setServicesOpen(true)}
                 className="group inline-flex items-center gap-1 py-1 text-sm font-medium transition-colors hover:text-zinc-950 focus-visible:outline-none cursor-pointer"
               >
@@ -172,6 +176,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
               className="grid size-11 place-items-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 lg:hidden transition-colors"
             >
               {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}

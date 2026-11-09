@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useRouter, Link } from '../../router/RouterContext';
+import { useState } from 'react';
+import { Link } from '../../router/RouterContext';
 import ExpandingArrowButton from './ExpandingArrowButton';
 import { Copy, Check, ArrowUpRight, Mail, Terminal } from 'lucide-react';
 
@@ -105,22 +105,22 @@ export default function Footer() {
             <p className="label-mono text-xs text-zinc-400 mb-4">Core Focus</p>
             <ul className="space-y-2 text-sm text-zinc-600 font-sans">
               <li>
-                <Link href="/service#full-stack-engineering" className="hover:text-[#f97316] transition-colors">
+                <Link href="/service#full-stack-development" className="hover:text-[#f97316] transition-colors">
                   Full Stack Architecture
                 </Link>
               </li>
               <li>
-                <Link href="/service#data-pipelines-integrity" className="hover:text-[#f97316] transition-colors">
+                <Link href="/service#who-surveillance" className="hover:text-[#f97316] transition-colors">
                   WHO Surveillance Pipelines
                 </Link>
               </li>
               <li>
-                <Link href="/service#real-time-systems" className="hover:text-[#f97316] transition-colors">
+                <Link href="/service#real-time-websockets" className="hover:text-[#f97316] transition-colors">
                   WebSocket Real-Time Hubs
                 </Link>
               </li>
               <li>
-                <Link href="/service#ai-agents-automation" className="hover:text-[#f97316] transition-colors">
+                <Link href="/service#ai-agents" className="hover:text-[#f97316] transition-colors">
                   Autonomous AI Agents
                 </Link>
               </li>

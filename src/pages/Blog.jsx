@@ -1,64 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from '../router/RouterContext';
-import { supabase, isSupabaseConfigured, FALLBACK_BLOG_POSTS, getBlogCoverImage } from '../lib/supabase';
 import SEOHead from '../components/SEOHead';
-import { 
-  BookOpen, Sparkles, Clock, Calendar, ArrowRight, 
-  Search, Lightbulb, Compass, Database, Terminal 
+import {
+  Sparkles, Clock, Calendar, ArrowRight,
+  Search, Lightbulb, Compass, Database, Terminal
 } from 'lucide-react';
 
-export default function Blog() {
-  const [posts, setPosts] = useState(() => {
-    return [...FALLBACK_BLOG_POSTS].sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
-  });
+export default function Blog({ posts }) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function loadPosts() {
-      if (!isSupabaseConfigured || !supabase) return;
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('posts')
-          .select('*')
-          .eq('is_published', true)
-          .order('published_at', { ascending: false });
-
-        if (!error && data && data.length > 0) {
-          const enriched = data.map((item) => {
-            const fallback = FALLBACK_BLOG_POSTS.find((p) => p.slug === item.slug);
-            const hasRichFallback = fallback && fallback.content && fallback.content.length > (item.content?.length || 0);
-            return {
-              ...item,
-              title: hasRichFallback ? fallback.title : item.title,
-              summary: hasRichFallback ? fallback.summary : item.summary,
-              simple_analogy: hasRichFallback ? fallback.simple_analogy : item.simple_analogy,
-              read_time: hasRichFallback ? fallback.read_time : item.read_time,
-              cover_image: item.cover_image || getBlogCoverImage(item.slug)
-            };
-          });
-
-          // Include any newly authored fallback posts that haven't been inserted into Supabase yet
-          const supabaseSlugs = new Set(data.map((item) => item.slug));
-          const missingFallbackPosts = FALLBACK_BLOG_POSTS.filter(
-            (fallback) => !supabaseSlugs.has(fallback.slug)
-          );
-
-          const combined = [...enriched, ...missingFallbackPosts].sort(
-            (a, b) => new Date(b.published_at) - new Date(a.published_at)
-          );
-          setPosts(combined);
-        }
-      } catch (err) {
-        console.error('Error loading Supabase posts:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPosts();
-  }, []);
 
   const categories = ['All', ...new Set(posts.map((p) => p.category))];
 
@@ -67,7 +17,7 @@ export default function Blog() {
     const matchesSearch = 
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.simple_analogy.toLowerCase().includes(searchQuery.toLowerCase());
+      (post.simple_analogy || '').toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -95,12 +45,7 @@ export default function Blog() {
             I believe that if you cannot explain a technical concept to a 10-year-old child, you do not truly understand it yet. Every day, I break down software architecture, databases, and APIs using everyday real-life analogies.
           </p>
 
-          {!isSupabaseConfigured && (
-            <div className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 border border-zinc-200 px-3 py-1.5 font-mono text-[0.68rem] text-zinc-500 shadow-sm">
-              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Showing sample daily stories · Connect Supabase in .env to publish live posts</span>
-            </div>
-          )}
+
         </div>
 
         {/* Search & Category Filter Controls */}
@@ -163,7 +108,7 @@ export default function Blog() {
                     className="block overflow-hidden rounded-2xl bg-zinc-100 aspect-[16/9] mb-5 relative group/img border border-zinc-100"
                   >
                     <img
-                      src={post.cover_image || getBlogCoverImage(post.slug)}
+                      src={post.cover_image}
                       alt={post.title}
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

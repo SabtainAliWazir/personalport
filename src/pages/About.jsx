@@ -1,5 +1,4 @@
-import React from 'react';
-import { useRouter, Link } from '../router/RouterContext';
+import { Link } from '../router/RouterContext';
 import { EXPERIENCE, CERTIFICATIONS } from '../data/portfolioData';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import SEOHead from '../components/SEOHead';

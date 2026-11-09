@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from '../../router/RouterContext';
 import { SERVICES } from '../../data/portfolioData';
@@ -84,7 +84,6 @@ const SERVICE_META = {
 
 export default function AnimatedCapabilitiesGrid() {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [hoveredCardId, setHoveredCardId] = useState(null);
   const containerRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -167,7 +166,6 @@ export default function AnimatedCapabilitiesGrid() {
               metricText: 'Full-Stack Architecture'
             };
             const IconComponent = meta.icon;
-            const isHovered = hoveredCardId === service.id;
 
             return (
               <motion.article
@@ -177,8 +175,6 @@ export default function AnimatedCapabilitiesGrid() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.35, delay: idx * 0.04 }}
-                onMouseEnter={() => setHoveredCardId(service.id)}
-                onMouseLeave={() => setHoveredCardId(null)}
                 className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#f8f5ee]/10 bg-[#100904] transition-all duration-500 hover:border-[#e85a2d]/60 hover:shadow-[0_1.5rem_4rem_rgba(16,9,4,0.7)]"
               >
                 {/* Visual Editorial Image Header with Cinematic Hover Zoom */}

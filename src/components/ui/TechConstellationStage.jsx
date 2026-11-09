@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, Database, ShieldCheck, Activity, Terminal, 
@@ -122,35 +122,30 @@ const TECH_NODES = [
   }
 ];
 
+const PIPELINE_FLOW_SEQUENCE = [
+  'react-next',
+  'laravel-api',
+  'redis-cache',
+  'mysql-db',
+  'who-surveillance',
+  'woah-websockets',
+  'ai-agents'
+];
+
 export default function TechConstellationStage() {
   const [activeNodeId, setActiveNodeId] = useState('who-surveillance');
   const [isSimulatingFlow, setIsSimulatingFlow] = useState(true);
-  const [packetProgress, setPacketProgress] = useState(0);
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const stepIndex = useRef(0);
   const canvasRef = useRef(null);
 
   const activeNode = TECH_NODES.find((n) => n.id === activeNodeId) || TECH_NODES[0];
-
-  // Pipeline Flow Simulation sequence
-  const pipelineFlowSequence = [
-    'react-next',
-    'laravel-api',
-    'redis-cache',
-    'mysql-db',
-    'who-surveillance',
-    'woah-websockets',
-    'ai-agents'
-  ];
 
   // Automated Flow Step Cycling
   useEffect(() => {
     if (!isSimulatingFlow) return;
     const interval = setInterval(() => {
-      setActiveStepIndex((prev) => {
-        const next = (prev + 1) % pipelineFlowSequence.length;
-        setActiveNodeId(pipelineFlowSequence[next]);
-        return next;
-      });
+      stepIndex.current = (stepIndex.current + 1) % PIPELINE_FLOW_SEQUENCE.length;
+      setActiveNodeId(PIPELINE_FLOW_SEQUENCE[stepIndex.current]);
     }, 2800);
     return () => clearInterval(interval);
   }, [isSimulatingFlow]);

@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_URL) || (typeof process !== 'undefined' ? process.env?.VITE_SUPABASE_URL : '');
-const supabaseAnonKey = (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_ANON_KEY) || (typeof process !== 'undefined' ? process.env?.VITE_SUPABASE_ANON_KEY : '');
+const supabaseUrl = (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_URL) || globalThis.process?.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_ANON_KEY) || globalThis.process?.env.VITE_SUPABASE_ANON_KEY;
 
-export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
-export const supabase = isSupabaseConfigured
+const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
@@ -30,9 +30,12 @@ export const BLOG_IMAGES = {
   'how-hackers-melted-european-supermarkets-iot-refrigeration-hack': '/images/blog/supermarket-refrigeration-cyberattack.png',
 };
 
-export const getBlogCoverImage = (slug) => {
-  return BLOG_IMAGES[slug] || '/images/blog/api-restaurant-waiter.png';
-};
+const localCovers = new Set(Object.values(BLOG_IMAGES));
+
+function coverImage(slug, image) {
+  const cover = image || BLOG_IMAGES[slug] || BLOG_IMAGES['what-is-an-api-restaurant-waiter'];
+  return localCovers.has(cover) ? cover.replace(/\.png$/, '.webp') : cover;
+}
 
 // Comprehensive educational starter posts explained simply (Child-friendly analogies + Deep SEO Architecture)
 export const FALLBACK_BLOG_POSTS = [
@@ -1051,7 +1054,7 @@ If you have tried using modern generative AI models like **FLUX.1**, **Midjourne
 - You hit generate.
 - The output looks like a muddy, generic plastic toy with unnatural glossy reflections and warped wheels.
 
-Meanwhile, top AI designers and prompt engineers write short, elegant sentences and produce breathtaking, photorealistic images that look like they were shot on a \$50,000 Hasselblad camera for Vogue or Apple.
+Meanwhile, top AI designers and prompt engineers write short, elegant sentences and produce breathtaking, photorealistic images that look like they were shot on a $50,000 Hasselblad camera for Vogue or Apple.
 
 What is their secret? And why does adding buzzwords like *"photorealistic, 8k, trending on artstation"* actually make your images look **worse**?
 
@@ -3318,10 +3321,38 @@ Supermarkets did not get hacked because their internal IT team was incompetent; 
 ];
 
 
+export async function loadPublishedPosts() {
+  const posts = new Map(FALLBACK_BLOG_POSTS.map((post) => [post.slug, post]));
+  if (supabase) {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('is_published', true)
+      .abortSignal(AbortSignal.timeout(12000));
+    if (error) {
+      if (globalThis.process?.env.VERCEL === '1') {
+        throw new Error(`Could not load published blog posts: ${error.message}`);
+      }
+      console.warn('Could not load Supabase posts. Using the checked-in articles.');
+    } else {
+      for (const post of data) {
+        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug)) continue;
+        const fallback = posts.get(post.slug);
+        if (!fallback || (post.content?.length || 0) >= fallback.content.length) {
+          posts.set(post.slug, post);
+        }
+      }
+    }
+  }
+  return [...posts.values()]
+    .map(({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image, content }) =>
+      ({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image: coverImage(slug, cover_image), content })
+    )
+    .sort((a, b) => (b.published_at || '').localeCompare(a.published_at || ''));
+}
 
-
-
-
-
-
-
+export function blogIndex(posts) {
+  return posts.map(({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image }) =>
+    ({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image })
+  );
+}

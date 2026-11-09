@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from '../../router/RouterContext';
 import { 
@@ -104,6 +104,7 @@ export default function DeveloperWorkflowStage() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const ctx = canvas.getContext('2d');
     let animationId;
     let width = (canvas.width = canvas.offsetWidth);
@@ -130,10 +131,8 @@ export default function DeveloperWorkflowStage() {
       color: Math.random() > 0.35 ? '#e85a2d' : '#f8f5ee'
     }));
 
-    let time = 0;
 
     const render = () => {
-      time += 0.01;
       ctx.clearRect(0, 0, width, height);
 
       // Connective subtle filament lines
@@ -180,7 +179,7 @@ export default function DeveloperWorkflowStage() {
         ctx.globalAlpha = 1;
       });
 
-      animationId = requestAnimationFrame(render);
+      if (!reducedMotion.matches) animationId = requestAnimationFrame(render);
     };
 
     render();

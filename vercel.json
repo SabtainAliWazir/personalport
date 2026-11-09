@@ -1,8 +1,11 @@
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/work/:slug", "destination": "/portfolio/:slug", "permanent": true },
+    { "source": "/work", "destination": "/portfolio", "permanent": true },
+    { "source": "/services", "destination": "/service", "permanent": true },
+    { "source": "/blogs", "destination": "/blog", "permanent": true }
   ]
 }

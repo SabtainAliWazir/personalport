@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Zap, Database, Cpu, Activity, ShieldCheck, Terminal, 
+  Zap, Database, Activity, ShieldCheck, Terminal,
   Code2, Layers, Globe, Sparkles, CheckCircle2, Server, ArrowRight,
-  Boxes, Workflow, Flame, Check
+  Boxes, Flame, Check
 } from 'lucide-react';
 
 export default function ServiceHUDCanvas({ serviceId = 'wordpress-development' }) {
   const [wpTab, setWpTab] = useState('blocks'); // 'blocks' | 'graphql' | 'performance'
-  const [copiedCode, setCopiedCode] = useState(false);
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-[1.25rem] border border-zinc-800 bg-[#0c0a09] p-5 sm:p-6 text-zinc-100 shadow-2xl flex flex-col justify-between">

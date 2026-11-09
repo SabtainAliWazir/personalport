@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter, Link } from '../router/RouterContext';
+import { Link } from '../router/RouterContext';
 import { PROJECTS } from '../data/portfolioData';
 import Perspective3DCard from '../components/ui/Perspective3DCard';
 import ProjectTelemetryModal from '../components/ui/ProjectTelemetryModal';
 import SEOHead from '../components/SEOHead';
-import { 
-  ArrowRight, ArrowLeft, Filter, ExternalLink, Sparkles, 
-  Terminal, Play, Pause, ChevronLeft, ChevronRight, 
-  ShieldCheck, Database, Code2, Volume2, VolumeX, Activity, 
-  ArrowUpRight, Cpu, Layers
+import {
+  ArrowRight, ArrowLeft, ExternalLink, Sparkles,
+  Terminal, Play, Pause, ChevronLeft, ChevronRight,
+  ShieldCheck, Database, Code2, Volume2, VolumeX, Activity,
+  ArrowUpRight, Layers
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -47,7 +47,8 @@ const playTactileSound = (freq = 800, type = 'sine', duration = 0.04) => {
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + duration);
-  } catch (e) {
+    osc.onended = () => { void ctx.close(); };
+  } catch {
     // Ignore audio errors
   }
 };
@@ -57,7 +58,7 @@ export default function Portfolio() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [inspectProject, setInspectProject] = useState(null);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const filmstripRef = useRef(null);
 
   const handleSound = (freq) => {
@@ -67,11 +68,6 @@ export default function Portfolio() {
   const filteredProjects = activeCategory === 'All Works'
     ? PROJECTS
     : PROJECTS.filter((p) => p.category === activeCategory || p.categoryTag.includes(activeCategory));
-
-  // Reset current index when category changes
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [activeCategory]);
 
   const activeProject = filteredProjects[currentIndex] || filteredProjects[0] || PROJECTS[0];
   const theme = PROJECT_THEMES[activeProject.slug] || { glow: 'rgba(249, 115, 22, 0.22)', accent: '#f97316' };
@@ -85,25 +81,17 @@ export default function Portfolio() {
     return () => clearInterval(timer);
   }, [isAutoPlaying, filteredProjects.length]);
 
-  // Keyboard navigation (Left / Right arrow keys)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'ArrowRight') {
-        handleNext();
-      } else if (e.key === 'ArrowLeft') {
-        handlePrev();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [filteredProjects.length]);
-
   // Scroll active thumbnail into view
   useEffect(() => {
     if (!filmstripRef.current) return;
     const activeEl = filmstripRef.current.querySelector(`[data-thumb-index="${currentIndex}"]`);
     if (activeEl) {
-      activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      const strip = filmstripRef.current;
+      const offset = activeEl.getBoundingClientRect().left - strip.getBoundingClientRect().left;
+      strip.scrollBy({
+        left: offset - (strip.clientWidth - activeEl.offsetWidth) / 2,
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      });
     }
   }, [currentIndex]);
 
@@ -118,7 +106,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen lg:overflow-hidden bg-white text-zinc-900 pt-28 sm:pt-32 lg:pt-24 pb-4 selection:bg-[#f97316] selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white text-zinc-900 pt-28 sm:pt-32 lg:pt-24 pb-4 selection:bg-[#f97316] selection:text-white flex flex-col justify-between">
       <SEOHead
         title="Selected Engineering Works & Case Studies"
         description="Explore production case studies by Sabtain Ali: WHO e-ACR epidemiology pipelines, WOAH animal health surveillance, autonomous AI agents, and enterprise web applications."
@@ -142,7 +130,7 @@ export default function Portfolio() {
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs uppercase tracking-[0.16em] text-[#f97316] font-semibold flex items-center gap-2">
               <span className="size-2 rounded-full bg-[#f97316] animate-ping" />
-              <span>Software Engineering Projects</span>
+              <h1>Software Engineering Projects</h1>
             </span>
             <span className="text-zinc-300">|</span>
             <span className="font-mono text-xs text-zinc-500">
@@ -157,6 +145,7 @@ export default function Portfolio() {
                 key={cat}
                 onClick={() => {
                   setActiveCategory(cat);
+                  setCurrentIndex(0);
                   handleSound(750);
                 }}
                 className={`shrink-0 rounded-full px-3 py-1 text-[0.68rem] font-mono transition-all duration-200 cursor-pointer whitespace-nowrap ${
@@ -219,7 +208,16 @@ export default function Portfolio() {
       {/* ─────────────────────────────────────────────────────────────
           2. THE MAIN CINEMA SHOWCASE
       ───────────────────────────────────────────────────────────── */}
-      <main className="relative z-10 gutter mx-auto max-w-[82rem] w-full flex-1 flex flex-col justify-center my-auto py-2">
+      <section
+        aria-label="Interactive project showcase"
+        onKeyDown={(event) => {
+          if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+          if (event.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+          event.preventDefault();
+          if (event.key === 'ArrowRight') handleNext();
+          else handlePrev();
+        }}
+        className="relative z-10 gutter mx-auto max-w-[82rem] w-full flex-1 flex flex-col justify-center my-auto py-2">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeProject.slug}
@@ -376,19 +374,19 @@ export default function Portfolio() {
             </div>
           </motion.div>
         </AnimatePresence>
-      </main>
+      </section>
 
       {/* ─────────────────────────────────────────────────────────────
           3. SLIM HORIZONTAL FILMSTRIP DOCK
       ───────────────────────────────────────────────────────────── */}
-      <footer className="relative z-10 gutter mx-auto max-w-[82rem] w-full shrink-0 pt-2">
+      <div className="relative z-10 gutter mx-auto max-w-[82rem] w-full shrink-0 pt-2">
         <div className="flex items-center justify-between font-mono text-[0.68rem] text-zinc-500 mb-2 px-1">
           <span className="flex items-center gap-2">
             <span className="size-1.5 rounded-full bg-[#f97316]" />
             <span>Horizontal Filmstrip Deck · Click any card to inspect</span>
           </span>
           <span className="hidden sm:inline text-[#f97316] font-semibold">
-            Press keyboard [←] [→] arrow keys
+            Use the arrow keys within the showcase
           </span>
         </div>
 
@@ -418,8 +416,9 @@ export default function Portfolio() {
                 {/* Thumbnail */}
                 <div className="relative size-10 sm:size-11 rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200 shrink-0">
                   <img
-                    src={project.heroImage}
-                    alt={project.title}
+                    src={project.heroImage.replace('.webp', '-thumb.webp')}
+                    alt=""
+                    loading="lazy"
                     className="h-full w-full object-cover filter brightness-[0.95]"
                   />
                   {isActive && (
@@ -444,11 +443,26 @@ export default function Portfolio() {
             );
           })}
         </div>
-      </footer>
+      </div>
 
       {/* ─────────────────────────────────────────────────────────────
           4. INTERACTIVE PROJECT TELEMETRY & ARCHITECTURE MODAL
       ───────────────────────────────────────────────────────────── */}
+      <section aria-labelledby="all-projects" className="relative z-10 gutter mx-auto mt-14 mb-12 max-w-[82rem] w-full">
+        <h2 id="all-projects" className="display-h2">All case studies</h2>
+        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {PROJECTS.map((project) => (
+            <li key={project.slug}>
+              <Link href={`/portfolio/${project.slug}`} className="block h-full rounded-2xl border border-zinc-200 p-5 hover:border-orange-500">
+                <span className="text-sm text-zinc-600">{project.client}</span>
+                <span className="mt-1 block text-lg font-semibold">{project.title}</span>
+                <span className="mt-2 block text-sm text-zinc-700">{project.subtitle}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <ProjectTelemetryModal
         project={inspectProject}
         isOpen={Boolean(inspectProject)}

@@ -1,29 +1,20 @@
-import React from 'react';
-import { useRouter } from '../../router/RouterContext';
 
 export default function ExpandingArrowButton({
   href,
   onClick,
   children = 'Start a project',
   className = '',
-  accentColor = '#e85a2d'
+  accentColor = '#e85a2d',
+  type = 'button',
+  disabled = false,
 }) {
-  const { navigate } = useRouter();
-
-  const handleClick = (e) => {
-    if (onClick) {
-      onClick(e);
-      return;
-    }
-    if (href) {
-      e.preventDefault();
-      navigate(href);
-    }
-  };
+  const Element = href ? 'a' : 'button';
+  const attributes = href ? { href } : { type, disabled };
 
   return (
-    <button
-      onClick={handleClick}
+    <Element
+      {...attributes}
+      onClick={onClick}
       className={`ea-btn select-none group ${className}`}
       style={{
         '--c-ember': accentColor,
@@ -68,6 +59,6 @@ export default function ExpandingArrowButton({
       <span className="ea-label">
         {children}
       </span>
-    </button>
+    </Element>
   );
 }

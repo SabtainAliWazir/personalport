@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const PROJECTS = [
   {
     id: '01',
@@ -10,7 +8,8 @@ export const PROJECTS = [
     categoryTag: 'WHO • Data Integrity',
     year: '2024–2025',
     subtitle: 'Electronic Annual Certification Report Database & Automated Reconciliation Engine',
-    heroImage: '/images/who_eacr.png',
+    heroImage: '/images/who_eacr.webp',
+    heroImageWidth: 1024,
     liveLink: 'https://polmis.emro.who.int/eacr',
     shortDesc: 'An automated health surveillance web system built for the World Health Organization (WHO EMRO) in Laravel 11 and MySQL. It automatically verifies medical lab data across 22 member countries with zero discrepancies.',
     metrics: [
@@ -81,7 +80,8 @@ public function reconcileSurveillanceData(int $countryId, int $reportingYear): R
     categoryTag: 'WOAH • Real-Time Sockets',
     year: '2024–2025',
     subtitle: 'Global Delegation Mission Budgeting & Low-Latency Collaborative Chat Engine',
-    heroImage: '/images/woah_pvsis.png',
+    heroImage: '/images/woah_pvsis.webp',
+    heroImageWidth: 1024,
     liveLink: 'https://pvs.woah.org/',
     shortDesc: 'A real-time web platform and multi-currency budgeting portal built with React, Node.js, and WebSockets connecting international animal health delegates across 180+ member countries.',
     metrics: [
@@ -143,7 +143,8 @@ io.of('/missions').on('connection', (socket) => {
     categoryTag: 'LegalTech & WhatsApp Bot',
     year: '2024',
     subtitle: 'High-Conversion Digital Legal Platform with Autonomous WhatsApp Consultation Intake',
-    heroImage: '/images/khandowa_law.png',
+    heroImage: '/images/khandowa_law.webp',
+    heroImageWidth: 1024,
     liveLink: 'https://www.khandowalaw.com/',
     shortDesc: 'A high-conversion digital web platform in React.js and TypeScript, integrating an intelligent automated WhatsApp Business API bot for instant client consultation intake, schedule dispatch, and lead routing.',
     metrics: [
@@ -204,7 +205,7 @@ export async function handleWhatsAppConsultationWebhook(req, res) {
     categoryTag: 'AI & Automation',
     year: '2024–2025',
     subtitle: 'Autonomous Inbound Sales Qualification & Calendar Booking Agent',
-    heroImage: '/images/salescloseai.png',
+    heroImage: '/images/salescloseai.webp',
     liveLink: 'https://salescloser.com/',
     shortDesc: 'Enterprise-grade autonomous AI sales agent engineered to qualify high-intent inbound leads, engage prospects via natural language conversations, and automate closing workflows.',
     metrics: [
@@ -270,7 +271,7 @@ const salesAgentTools = [
     categoryTag: 'SaaS Platform',
     year: '2024',
     subtitle: 'Autonomous Business Operations & Workflow Orchestration Hub',
-    heroImage: '/images/scalewiseai.png',
+    heroImage: '/images/scalewiseai.webp',
     liveLink: 'https://scalewise.com/',
     shortDesc: 'A centralized operations platform enabling high-growth companies to automate redundant departmental workflows, manage cross-functional pipelines, and track performance KPIs.',
     metrics: [
@@ -333,7 +334,7 @@ export class WorkflowExecutionEngine {
     categoryTag: 'High-Volume Retail',
     year: '2023–2024',
     subtitle: 'High-Volume Multi-Vendor E-Commerce Platform & Cart Engine',
-    heroImage: '/images/shopeedo_image.PNG',
+    heroImage: '/images/shopeedo_image.webp',
     liveLink: 'https://shopeedo.com/',
     shortDesc: 'A high-throughput modern e-commerce platform engineered for lightning-fast catalog search, dynamic inventory checkout, and zero-downtime flash sale spikes.',
     metrics: [
@@ -400,7 +401,7 @@ public function processFlashSaleCheckout(string $sku, int $quantity, int $userId
     categoryTag: 'Geospatial Transit',
     year: '2023–2024',
     subtitle: 'Urban Ridesharing & Real-Time Geospatial Route Matching Platform',
-    heroImage: '/images/commuterslinks.png',
+    heroImage: '/images/commuterslinks.webp',
     liveLink: 'https://commuterslink.com/',
     shortDesc: 'A dynamic geospatial urban mobility platform connecting daily urban commuters with verified ride routes, live GPS telemetry, and shared carbon-saving metrics.',
     metrics: [
@@ -456,7 +457,7 @@ LIMIT 5;`
     categoryTag: 'UK Logistics Engine',
     year: '2023–2024',
     subtitle: 'Cross-Border Freight Logistics, Route Optimization & Fleet Dispatch',
-    heroImage: '/images/britons.png',
+    heroImage: '/images/britons.webp',
     liveLink: 'https://britonsroute.co.uk/',
     shortDesc: 'A freight routing platform engineered for UK and European logistics operators, calculating optimal multi-stop transport corridors, customs clearance schedules, and live delivery telemetry.',
     metrics: [
@@ -514,7 +515,7 @@ public function computeOptimalHGVRoute(Collection $waypoints, VehicleConstraints
     categoryTag: 'Talent & Web',
     year: '2023–2024',
     subtitle: 'Elite Event Staffing Platform & Talent Booking Engine',
-    heroImage: '/images/Premier_Staff.PNG',
+    heroImage: '/images/Premier_Staff.webp',
     liveLink: 'https://premierstaff.com/',
     shortDesc: 'A premier luxury event staffing platform connecting elite event producers with verified brand ambassadors, hospitality personnel, and management teams across major US markets.',
     metrics: [
@@ -742,6 +743,21 @@ export const SERVICES = [
 // ─────────────────────────────────────────────────────────────
 // HORIZONTAL MEDIA RAIL CARDS ("The Through-Line")
 // ─────────────────────────────────────────────────────────────
+export const FEATURED_SERVICES = {
+  'full-stack-development': {
+    title: 'Laravel & React Development',
+    projectSlug: 'who-eacr',
+    intro: 'Build or modernize a web application with a React frontend, a Laravel API, and a database designed around your workflows. This service covers new builds and upgrades to existing systems.',
+    proof: 'For the WHO polio certification platform, I built Laravel and MySQL reconciliation workflows to find discrepancies in surveillance data before certification reports were produced.',
+  },
+  'real-time-websockets': {
+    title: 'Real-Time WebSocket Development',
+    projectSlug: 'woah-pvsis',
+    intro: 'Add live messaging, presence, and synchronized updates to your application with Node.js, Socket.IO, and React. The implementation covers how users reconnect, how rooms are authorized, and what happens when messages fail.',
+    proof: 'For WOAH PVSIS, I built real-time collaboration features for delegates, including live chat and presence, using React, Node.js, and Socket.IO.',
+  },
+};
+
 export const SERVICE_RAIL = [
   { id: '01', caption: 'Find the signal', title: 'Data Pipeline Architecture', tag: 'WHO EMRO', image: '/images/rail/01-signal.webp' },
   { id: '02', caption: 'Shape the interface', title: 'Editorial UI & React 19', tag: 'Design Systems', image: '/images/rail/02-browser-composition.webp' },

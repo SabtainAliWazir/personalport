@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import SEOHead from '../components/SEOHead';
 import { 
   Terminal, Copy, Check, MapPin, Clock, ArrowRight 
 } from 'lucide-react';
 
+const INITIAL_FORM = { name: '', email: '', service: 'Full-Stack Architecture', message: '' };
+
 export default function Contact() {
   const email = 'sabtainaliwazir@gmail.com';
   const whatsappUrl = 'https://wa.me/923329298679?text=Hello%20Sabtain,%20I%20would%20like%20to%20discuss%20an%20engineering%20project.';
 
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    service: 'Full-Stack Architecture',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState(INITIAL_FORM);
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState('');
+  const request = useRef(null);
 
   const copyEmail = () => {
     navigator.clipboard.writeText(email);
@@ -24,13 +23,45 @@ export default function Contact() {
     setTimeout(() => setCopiedEmail(false), 2500);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    const subject = encodeURIComponent(`Project Inquiry: ${formData.service} from ${formData.name}`);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nScope: ${formData.service}\n\nDetails:\n${formData.message}`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-  };
+  const subject = encodeURIComponent(`Project Inquiry: ${formData.service} from ${formData.name}`);
+  const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nScope: ${formData.service}\n\nDetails:\n${formData.message}`);
+  const draftUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    if (status === 'sending') return;
+    const website = new FormData(event.currentTarget).get('website');
+    const payload = JSON.stringify({ ...formData, name: formData.name.trim(), email: formData.email.trim(), website });
+    if (request.current?.payload !== payload) {
+      request.current = { payload, id: globalThis.crypto?.randomUUID?.() };
+    }
+
+    setStatus('sending');
+    setError('');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (request.current.id) headers['Idempotency-Key'] = request.current.id;
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers,
+        body: payload,
+        signal: controller.signal,
+      });
+      const result = await response.json();
+      if (response.ok && result.accepted === true) {
+        setStatus('sent');
+        return;
+      }
+      setError(result.error || 'Your inquiry could not be confirmed. Please try again.');
+    } catch {
+      setError('The form is currently unavailable. You can open an email draft below.');
+    } finally {
+      clearTimeout(timeout);
+    }
+    setStatus('idle');
+  }
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
@@ -171,8 +202,8 @@ export default function Contact() {
               Let&#39;s Discuss Your Project.
             </h2>
 
-            {submitted ? (
-              <div className="rounded-2xl border border-[#f97316]/30 bg-[#f97316]/10 p-8 text-center space-y-4">
+            {status === 'sent' ? (
+              <div role="status" className="rounded-2xl border border-[#f97316]/30 bg-[#f97316]/10 p-8 text-center space-y-4">
                 <div className="inline-flex size-12 items-center justify-center rounded-full bg-[#f97316] text-white">
                   <Check className="size-6" />
                 </div>
@@ -180,23 +211,31 @@ export default function Contact() {
                   Message Sent
                 </h3>
                 <p className="text-sm text-zinc-600 max-w-md mx-auto font-sans">
-                  Thank you! Your email client has opened with your project note. I will get back to you shortly.
+                  Thanks for sending your project brief. I’ll reply to the email address you provided.
                 </p>
                 <button
-                  onClick={() => setSubmitted(false)}
+                  onClick={() => {
+                    request.current = null;
+                    setFormData(INITIAL_FORM);
+                    setStatus('idle');
+                  }}
                   className="mt-4 text-xs font-mono text-[#f97316] underline hover:text-zinc-950"
                 >
                   Send another inquiry
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6 font-sans">
+              <form action="/api/contact" method="post" onSubmit={handleSubmit} aria-busy={status === 'sending'} className="space-y-6 font-sans">
+                <div hidden>
+                  <label htmlFor="contact-website">Leave this field blank</label>
+                  <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" />
+                </div>
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
+                    <label htmlFor="contact-name" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
                       Your Name *
                     </label>
-                    <input
+                    <input id="contact-name" name="name" maxLength={100} autoComplete="name"
                       type="text"
                       required
                       placeholder="e.g. Alex Henderson"
@@ -207,10 +246,10 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
+                    <label htmlFor="contact-email" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
                       Work Email *
                     </label>
-                    <input
+                    <input id="contact-email" name="email" maxLength={254} autoComplete="email"
                       type="email"
                       required
                       placeholder="e.g. alex@company.com"
@@ -222,10 +261,10 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
+                  <label htmlFor="contact-service" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
                     Project Area
                   </label>
-                  <select
+                  <select id="contact-service" name="service"
                     value={formData.service}
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                     className="editorial-input"
@@ -249,10 +288,10 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
+                  <label htmlFor="contact-message" className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-2">
                     Project Overview & Goals *
                   </label>
-                  <textarea
+                  <textarea id="contact-message" name="message" maxLength={4000}
                     required
                     rows={4}
                     placeholder="Tell me about your systems, technical bottleneck, timeline, or scope..."
@@ -262,11 +301,14 @@ export default function Contact() {
                   />
                 </div>
 
-                <div className="pt-2">
-                  <ExpandingArrowButton accentColor="#f97316" className="h-14 min-w-64">
-                    Send Project Brief
+                {error && <p role="alert" className="text-sm font-medium text-red-700">{error}</p>}
+                <div className="flex flex-wrap items-center gap-4 pt-2">
+                  <ExpandingArrowButton type="submit" disabled={status === 'sending'} accentColor="#f97316" className="h-14 min-w-64 disabled:opacity-60">
+                    {status === 'sending' ? 'Sending…' : 'Send Project Brief'}
                   </ExpandingArrowButton>
+                  <a href={draftUrl} className="text-sm font-semibold underline">Open email draft</a>
                 </div>
+                <p className="text-sm text-zinc-600">If you open a draft, send it from your email app.</p>
               </form>
             )}
           </div>

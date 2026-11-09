@@ -1,5 +1,4 @@
-import React from 'react';
-import { useRouter, Link } from '../router/RouterContext';
+import { Link } from '../router/RouterContext';
 import { PROJECTS, SERVICES, TESTIMONIALS, TECH_MARQUEE } from '../data/portfolioData';
 import DeveloperWorkflowStage from '../components/ui/DeveloperWorkflowStage';
 import CapabilitiesExhibition from '../components/ui/CapabilitiesExhibition';
@@ -7,11 +6,34 @@ import ArtisticEndorsements from '../components/ui/ArtisticEndorsements';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import GlareCard from '../components/ui/GlareCard';
 import SEOHead from '../components/SEOHead';
+import { absoluteUrl, AUTHOR_ID, AUTHOR_NAME, PROFILE_IMAGE, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
+
+const homeSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': AUTHOR_ID,
+      name: AUTHOR_NAME,
+      jobTitle: 'Senior Full Stack Developer',
+      url: absoluteUrl('/about'),
+      image: absoluteUrl(PROFILE_IMAGE),
+      sameAs: ['https://www.linkedin.com/in/sabtainali123/', 'https://github.com/SabtainAliWazir'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': absoluteUrl('/#website'),
+      name: SITE_NAME,
+      url: absoluteUrl('/'),
+      description: SITE_DESCRIPTION,
+      author: { '@id': AUTHOR_ID },
+    },
+  ],
+};
 import { 
   ArrowRight, ArrowUpRight, Activity, ShieldCheck, Zap, 
-  Database, Cpu, CheckCircle2, Star, Sparkles, Terminal, Layers
+  Database, CheckCircle2, Star, Sparkles, Terminal, Layers
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export default function Home() {
   const featuredProjects = PROJECTS.slice(0, 4);
@@ -19,9 +41,8 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-white text-zinc-900 overflow-hidden">
       <SEOHead
-        title="Sabtain Ali · Senior Full Stack Developer & Software Engineer"
-        description="Portfolio of Sabtain Ali, Senior Full Stack Developer & AI Engineer. 4+ years building high-performance web applications, WHO data pipelines, React & TypeScript interfaces, and Laravel 11 backends."
         canonical="/"
+        articleSchema={homeSchema}
       />
       {/* ─────────────────────────────────────────────────────────────
           1. HERO SECTION (Crisp Studio Light Mode)
@@ -226,6 +247,9 @@ export default function Home() {
                 <Link href={`/portfolio/${project.slug}`} className="block">
                   <GlareCard
                     src={project.heroImage}
+                    srcSet={`${project.heroImage.replace('.webp', '-thumb.webp')} 320w, ${project.heroImage} ${project.heroImageWidth || 1280}w`}
+                    sizes="(min-width: 1024px) 600px, 90vw"
+                    loading="lazy"
                     alt={project.title}
                     aspectRatio="aspect-[16/10]"
                   >

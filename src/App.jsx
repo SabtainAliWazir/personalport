@@ -1,78 +1,41 @@
-import React, { useEffect } from 'react';
-import './styles/global.css';
-import { RouterProvider, useRouter } from './router/RouterContext';
-import PageTransitionLoader from './components/ui/PageTransitionLoader';
+import { lazy, Suspense, useState } from 'react';
+import { MotionConfig } from 'framer-motion';
+import { RouterProvider } from './router/RouterContext';
 import Navbar from './components/ui/Navbar';
 import Footer from './components/ui/Footer';
-import AIChat from './components/AIChat';
-import CustomCursor from './components/CustomCursor';
 
-// Pages
-import Home from './pages/Home';
-import Portfolio from './pages/Portfolio';
-import CaseStudy from './pages/CaseStudy';
-import Services from './pages/Services';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
+const AIChat = lazy(() => import('./components/AIChat'));
 
-function MainContent() {
-  const { page } = useRouter();
-
-  // Scroll to top immediately whenever the active page view updates
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, [page]);
-
-  const renderPage = () => {
-    switch (page) {
-      case 'home':
-        return <Home />;
-      case 'portfolio':
-        return <Portfolio />;
-      case 'case-study':
-        return <CaseStudy />;
-      case 'services':
-        return <Services />;
-      case 'about':
-        return <About />;
-      case 'contact':
-        return <Contact />;
-      case 'blog':
-        return <Blog />;
-      case 'blog-post':
-        return <BlogPost />;
-      default:
-        return <Home />;
-    }
-  };
+export default function App({ path, Page, pageProps }) {
+  const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-[#0c0a08] text-[#FAF7F2] selection:bg-[#10b981] selection:text-[#0c0a08] flex flex-col justify-between">
-      <Navbar />
-      <main id="main" className="flex-1">
-        {renderPage()}
-      </main>
-      <Footer />
-      <AIChat />
-    </div>
-  );
-}
-
-export default function App() {
-  return (
-    <RouterProvider>
-      {/* Upward Architectural Page Transition Loader (Runs on initial load & every route change) */}
-      <PageTransitionLoader />
-
-      {/* Main App Canvas */}
-      <div className="relative min-h-screen">
-        <CustomCursor />
-        <MainContent />
-      </div>
+    <RouterProvider path={path}>
+      <MotionConfig reducedMotion="user">
+        <div id="app-shell" className="relative min-h-screen bg-white text-zinc-950 selection:bg-orange-200 flex flex-col">
+          <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:z-[10002] focus:top-2 focus:left-4 focus:bg-white focus:p-3">
+            Skip to content
+          </a>
+          <Navbar />
+          <main id="main" tabIndex={-1} className="flex-1">
+            <Page {...pageProps} />
+          </main>
+          <Footer />
+          {chatOpen ? (
+            <Suspense fallback={null}>
+              <AIChat initiallyOpen />
+            </Suspense>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setChatOpen(true)}
+              className="fixed bottom-5 right-5 z-40 rounded-full border border-orange-600 bg-orange-700 px-4 py-3 text-sm font-semibold text-white shadow-lg"
+            >
+              Portfolio assistant
+            </button>
+          )}
+        </div>
+      </MotionConfig>
     </RouterProvider>
   );
 }

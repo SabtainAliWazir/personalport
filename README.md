@@ -1,16 +1,19 @@
-# React + Vite
+# Sabtain Ali Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Run `npm install` and `npm run dev` to work locally. Use `npm run build` and `npm run preview` to inspect the generated pages. Vercel serves the `dist` output, the redirects in `vercel.json`, and the `/api/contact` function. Vite preview serves static pages only.
 
-Currently, two official plugins are available:
+## Publishing and search
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The production build generates HTML for each public route, a sitemap, robots.txt, and the custom 404. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel to include published database posts. Checked-in articles are also public. When a database post and a checked-in article share a slug, the build retains the longer article body to preserve the existing publishing behavior. Trigger a fresh deployment when posts change.
 
-## React Compiler
+After deployment, submit `https://www.devcop.xyz/sitemap.xml` in Google Search Console and inspect the homepage, a project, a service, and a blog article.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Contact form
 
-## Expanding the ESLint configuration
+Set these server-side variables in Vercel and redeploy to enable direct submissions.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL` from a sender domain verified in Resend
+- `CONTACT_TO_EMAIL` for the inbox receiving inquiries
+
+The email draft and WhatsApp links are available on the contact page. To exercise the live endpoint locally, use `vercel dev` with the server-side variables configured.

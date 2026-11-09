@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useRouter, Link } from '../router/RouterContext';
-import { PROJECTS } from '../data/portfolioData';
+import { useState } from 'react';
+import { Link } from '../router/RouterContext';
+import { FEATURED_SERVICES, PROJECTS } from '../data/portfolioData';
 import GlareCard from '../components/ui/GlareCard';
 import SEOHead from '../components/SEOHead';
+import { absoluteUrl, AUTHOR_ID, schema } from '../data/site';
 import { 
   ArrowLeft, ArrowRight, ExternalLink, Database, 
   CheckCircle2, Code2, Briefcase, Terminal, Copy, Check 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function CaseStudy() {
-  const { params } = useRouter();
-  const slug = params?.slug || 'who-eacr';
-  const project = PROJECTS.find((p) => p.slug === slug) || PROJECTS[0];
+export default function CaseStudy({ project }) {
 
   const [mode, setMode] = useState('executive'); // 'executive' | 'engineering'
   const [copiedSnippet, setCopiedSnippet] = useState(false);
 
+  const canonical = `/portfolio/${project.slug}`;
+  const relatedService = Object.entries(FEATURED_SERVICES).find(([, service]) => service.projectSlug === project.slug);
   const currentIndex = PROJECTS.findIndex((p) => p.slug === project.slug);
   const prevProject = currentIndex > 0 ? PROJECTS[currentIndex - 1] : PROJECTS[PROJECTS.length - 1];
   const nextProject = currentIndex < PROJECTS.length - 1 ? PROJECTS[currentIndex + 1] : PROJECTS[0];
@@ -34,7 +34,14 @@ export default function CaseStudy() {
       <SEOHead
         title={`${project.title} · Case Study`}
         description={project.summary || project.subtitle}
-        canonical={`/portfolio/${project.slug}`}
+        canonical={canonical}
+        articleSchema={schema('CreativeWork', {
+          name: project.title,
+          description: project.summary || project.subtitle,
+          url: absoluteUrl(canonical),
+          image: absoluteUrl(project.heroImage),
+          author: { '@id': AUTHOR_ID },
+        })}
         image={project.heroImage || project.image}
       />
       {/* ─────────────────────────────────────────────────────────────
@@ -327,6 +334,15 @@ export default function CaseStudy() {
           ))}
         </div>
       </section>
+
+      {relatedService && (
+        <section className="gutter mx-auto max-w-5xl mt-12">
+          <h2 className="display-h3">Related service</h2>
+          <Link href={`/service/${relatedService[0]}`} className="mt-3 inline-block font-semibold underline">
+            {relatedService[1].title}
+          </Link>
+        </section>
+      )}
 
       {/* ─────────────────────────────────────────────────────────────
           5. NEXT / PREVIOUS CASE STUDY PAGINATION

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -47,8 +47,8 @@ const getAIResponse = (query) => {
   return `Thanks for asking! Sabtain specializes in mission-critical platforms (WHO, WOAH), React & TypeScript platforms, WebSockets, AI/WhatsApp automation, and Laravel architectures. Feel free to ask about his WHO e-ACR data pipeline, WOAH PVSIS modules, or email him at sabtainaliwazir@gmail.com!`;
 };
 
-const AIChat = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const AIChat = ({ initiallyOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(initiallyOpen);
   const [messages, setMessages] = useState([
     { role: 'model', text: "Hello! I'm Sabtain's Assistant. Ask me anything about his engineering work on WHO e-ACR, WOAH PVSIS, Khandowa Law, or tech stack." }
   ]);

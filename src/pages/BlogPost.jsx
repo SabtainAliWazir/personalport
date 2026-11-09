@@ -1,70 +1,54 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useRouter, Link } from '../router/RouterContext';
-import { supabase, isSupabaseConfigured, FALLBACK_BLOG_POSTS, getBlogCoverImage } from '../lib/supabase';
+import { useState, useMemo } from 'react';
+import { Link } from '../router/RouterContext';
+import { absoluteUrl, AUTHOR_ID, AUTHOR_NAME, schema } from '../data/site';
 import SEOHead from '../components/SEOHead';
 import { 
   ArrowLeft, Calendar, Clock, Lightbulb, Share2, 
-  Terminal, Sparkles, CheckCircle2, MessageSquare, Check, Home
+  Terminal, Sparkles, CheckCircle2, Check, Home
 } from 'lucide-react';
-import { marked } from 'marked';
+import { Marked } from 'marked';
 
-export default function BlogPost() {
-  const { params } = useRouter();
-  const slug = params?.slug;
+function safeUrl(href) {
+  try {
+    return ['https:', 'http:', 'mailto:'].includes(new URL(href, absoluteUrl('/')).protocol);
+  } catch {
+    return false;
+  }
+}
 
-  const [post, setPost] = useState(() => {
-    return FALLBACK_BLOG_POSTS.find((p) => p.slug === slug) || FALLBACK_BLOG_POSTS[0];
-  });
-  const [loading, setLoading] = useState(false);
+const markdown = new Marked({
+  renderer: {
+    html() {
+      return '';
+    },
+    link(token) {
+      if (!safeUrl(token.href)) return this.parser.parseInline(token.tokens);
+      return false;
+    },
+    image(token) {
+      if (!safeUrl(token.href)) return '';
+      return false;
+    },
+    heading(token) {
+      if (token.depth === 1) return '<h2>' + this.parser.parseInline(token.tokens) + '</h2>\n';
+      return false;
+    },
+  },
+});
+
+
+export default function BlogPost({ post }) {
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    // Force scroll to top on post change
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-
-    async function loadPost() {
-      if (!isSupabaseConfigured || !supabase || !slug) return;
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('posts')
-          .select('*')
-          .eq('slug', slug)
-          .single();
-
-        if (!error && data) {
-          const fallback = FALLBACK_BLOG_POSTS.find((p) => p.slug === slug);
-          const hasRichFallback = fallback && fallback.content && fallback.content.length > (data.content?.length || 0);
-
-          setPost({
-            ...data,
-            title: hasRichFallback ? fallback.title : data.title,
-            summary: hasRichFallback ? fallback.summary : data.summary,
-            simple_analogy: hasRichFallback ? fallback.simple_analogy : data.simple_analogy,
-            read_time: hasRichFallback ? fallback.read_time : data.read_time,
-            content: hasRichFallback ? fallback.content : data.content,
-            cover_image: data.cover_image || getBlogCoverImage(slug)
-          });
-        }
-      } catch (err) {
-        console.error('Error fetching blog post:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadPost();
-  }, [slug]);
-
+  const content = post.content;
   const htmlContent = useMemo(() => {
-    if (!post?.content) return '';
+    if (!content) return '';
     // Normalize literal escaped backslash-n into real newlines
-    const normalized = post.content
+    const normalized = content
       .replace(/\\n/g, '\n')
       .replace(/\\t/g, '  ');
-    return marked.parse(normalized);
-  }, [post?.content]);
+    return markdown.parse(normalized);
+  }, [content]);
 
   const handleShare = () => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -74,55 +58,23 @@ export default function BlogPost() {
     }
   };
 
-  if (!post) {
-    return (
-      <div className="min-h-screen bg-white text-zinc-950 pt-36 pb-24 text-center gutter">
-        <h1 className="font-display text-2xl font-semibold text-zinc-950">Article not found</h1>
-        <p className="mt-2 text-xs text-zinc-500 font-sans">The story you are looking for does not exist.</p>
-        <Link href="/blog" className="mt-6 inline-flex items-center gap-2 font-mono text-xs text-[#f97316]">
-          <ArrowLeft className="size-3.5" />
-          <span>Back to All Stories</span>
-        </Link>
-      </div>
-    );
-  }
-
-  const coverSrc = post.cover_image || getBlogCoverImage(post.slug);
-
-  const articleSchema = useMemo(() => {
-    if (!post) return null;
-    return {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": post.title,
-      "description": post.summary,
-      "image": `https://www.devcop.xyz${coverSrc}`,
-      "datePublished": post.published_at,
-      "dateModified": post.published_at,
-      "author": {
-        "@type": "Person",
-        "name": "Sabtain Ali",
-        "url": "https://www.devcop.xyz",
-        "jobTitle": "Senior Full Stack Software Engineer"
-      },
-      "publisher": {
-        "@type": "Person",
-        "name": "Sabtain Ali",
-        "url": "https://www.devcop.xyz"
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://www.devcop.xyz/blog/${post.slug}`
-      }
-    };
-  }, [post, coverSrc]);
+  const coverSrc = post.cover_image;
+  const canonical = `/blog/${post.slug}`;
+  const articleSchema = schema('BlogPosting', {
+    headline: post.title,
+    description: post.summary,
+    image: absoluteUrl(coverSrc),
+    datePublished: post.published_at,
+    author: { '@type': 'Person', '@id': AUTHOR_ID, name: AUTHOR_NAME, url: absoluteUrl('/about') },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(canonical) },
+  });
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
       <SEOHead
         title={post.title}
         description={post.summary}
-        canonical={`/blog/${post.slug}`}
+        canonical={canonical}
         image={coverSrc}
         type="article"
         publishedTime={post.published_at}
@@ -228,6 +180,13 @@ export default function BlogPost() {
           className="blog-markdown pt-2 border-b border-zinc-200 pb-12"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
+
+        {post.slug === 'websockets-walkie-talkie-vs-letters' && (
+          <p className="mt-8 text-zinc-700">
+            See how this works in production in the{' '}
+            <Link href="/portfolio/woah-pvsis" className="font-semibold underline">WOAH PVSIS case study</Link>.
+          </p>
+        )}
 
         {/* Author Bio Box */}
         <div className="mt-12 rounded-3xl border border-zinc-200 bg-zinc-50/80 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm">

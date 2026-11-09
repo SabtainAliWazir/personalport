@@ -1,19 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useRouter, Link } from '../router/RouterContext';
-import { SERVICES, SERVICE_RAIL, TECH_MARQUEE } from '../data/portfolioData';
-import ServiceHUDCanvas from '../components/ui/ServiceHUDCanvas';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { Link } from '../router/RouterContext';
+import { FEATURED_SERVICES, SERVICES, SERVICE_RAIL, TECH_MARQUEE } from '../data/portfolioData';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import GlareCard from '../components/ui/GlareCard';
 import SEOHead from '../components/SEOHead';
-import { 
-  ArrowRight, ArrowDown, ChevronDown, CheckCircle2, 
-  Sparkles, Layers, ShieldCheck, Activity, Terminal, Database, Code2, Eye 
+import {
+  ArrowRight, ChevronDown, CheckCircle2,
+  Sparkles, Layers, ShieldCheck, Activity, Terminal, Database, Code2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const ServiceHUDCanvas = lazy(() => import('../components/ui/ServiceHUDCanvas'));
+
+const legacyAnchors = {
+  'full-stack-engineering': 'full-stack-development',
+  'data-pipelines-integrity': 'who-surveillance',
+  'real-time-systems': 'real-time-websockets',
+  'ai-agents-automation': 'ai-agents',
+};
+
 export default function Services() {
-  const { currentPath, hash } = useRouter();
-  const [activeServiceId, setActiveServiceId] = useState(hash || 'wordpress-development');
+  const [activeServiceId, setActiveServiceId] = useState('wordpress-development');
   const [expandedMap, setExpandedMap] = useState(
     SERVICES.reduce((acc, s) => ({ ...acc, [s.id]: true }), {})
   );
@@ -23,19 +30,22 @@ export default function Services() {
     setExpandedMap((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Sync hash from router or window on route load
   useEffect(() => {
-    const targetHash = hash || window.location.hash.replace('#', '');
-    if (targetHash && SERVICES.some((s) => s.id === targetHash)) {
-      setActiveServiceId(targetHash);
-      setTimeout(() => {
-        const el = document.getElementById(targetHash);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 120);
+    function syncServiceFromHash() {
+      const hash = window.location.hash.slice(1);
+      const target = legacyAnchors[hash] || hash;
+      if (!SERVICES.some(({ id }) => id === target)) return;
+      setActiveServiceId(target);
+      if (target !== hash) document.getElementById(target)?.scrollIntoView();
     }
-  }, [hash]);
+
+    const frame = requestAnimationFrame(syncServiceFromHash);
+    window.addEventListener('hashchange', syncServiceFromHash);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', syncServiceFromHash);
+    };
+  }, []);
 
   // IntersectionObserver to sync sticky HUD canvas with active chapter in view
   useEffect(() => {
@@ -310,7 +320,9 @@ export default function Services() {
                       transition={{ duration: 0.3 }}
                       className="h-full w-full"
                     >
-                      <ServiceHUDCanvas serviceId={activeServiceId} />
+                      <Suspense fallback={<p className="p-6 text-sm" role="status">Loading simulator…</p>}>
+                        <ServiceHUDCanvas serviceId={activeServiceId} />
+                      </Suspense>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -360,6 +372,8 @@ export default function Services() {
                       type="button"
                       onClick={() => toggleExpand(service.id)}
                       aria-label={`Toggle ${service.title} details`}
+                      aria-expanded={isExpanded}
+                      aria-controls={`${service.id}-details`}
                       className="grid size-11 shrink-0 place-items-center rounded-full border border-zinc-200 text-zinc-700 transition-all hover:border-[#f97316] hover:text-[#f97316] active:scale-[0.97]"
                     >
                       <span className="font-mono text-lg font-bold">
@@ -372,6 +386,7 @@ export default function Services() {
                   <AnimatePresence initial={false}>
                     {isExpanded && (
                       <motion.div
+                        id={`${service.id}-details`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
@@ -406,8 +421,13 @@ export default function Services() {
                             </ul>
                           </div>
 
-                          {/* Action CTA Pill */}
-                          <div className="mt-8">
+                          {/* Action links */}
+                          <div className="mt-8 flex flex-wrap items-center gap-4">
+                            {FEATURED_SERVICES[service.id] && (
+                              <Link href={`/service/${service.id}`} className="text-sm font-semibold underline">
+                                View service details
+                              </Link>
+                            )}
                             <Link
                               href="/contact"
                               className="group inline-flex items-center gap-3 rounded-full border border-zinc-200 bg-white px-5 py-3 font-mono text-xs uppercase tracking-[0.12em] text-zinc-800 transition-all hover:border-[#f97316] hover:bg-[#f97316] hover:text-white shadow-sm active:scale-[0.97]"

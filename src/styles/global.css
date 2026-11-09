@@ -493,3 +493,11 @@ html {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   margin: 2.25rem auto 1rem auto;
 }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
