@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import SEOHead from '../components/SEOHead';
+import { trackPortfolioEvent } from '../lib/metrics';
 import { 
   Terminal, Copy, Check, MapPin, Clock, ArrowRight 
 } from 'lucide-react';
@@ -39,7 +40,7 @@ export default function Contact() {
     setStatus('sending');
     setError('');
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
+    const timeout = setTimeout(() => controller.abort(), 16000);
     try {
       const headers = { 'Content-Type': 'application/json' };
       if (request.current.id) headers['Idempotency-Key'] = request.current.id;
@@ -156,6 +157,7 @@ export default function Contact() {
               <div className="mt-6">
                 <a
                   href={whatsappUrl}
+                  onClick={() => trackPortfolioEvent('whatsapp_click')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full bg-zinc-950 px-6 py-3 text-xs font-semibold text-white transition-all hover:bg-zinc-800 active:scale-[0.97] shadow-sm"

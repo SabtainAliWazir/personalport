@@ -301,8 +301,8 @@ export default function Portfolio() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    setInspectProject(activeProject);
+                  onClick={(event) => {
+                    setInspectProject({ project: activeProject, opener: event.currentTarget });
                     handleSound(1000);
                   }}
                   className="inline-flex items-center justify-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2.5 font-mono text-xs text-zinc-800 hover:border-[#f97316] hover:text-[#f97316] transition-all cursor-pointer text-center shadow-sm"
@@ -463,11 +463,13 @@ export default function Portfolio() {
         </ul>
       </section>
 
-      <ProjectTelemetryModal
-        project={inspectProject}
-        isOpen={Boolean(inspectProject)}
-        onClose={() => setInspectProject(null)}
-      />
+      {inspectProject && (
+        <ProjectTelemetryModal
+          project={inspectProject.project}
+          opener={inspectProject.opener}
+          onClose={() => setInspectProject(null)}
+        />
+      )}
 
     </div>
   );

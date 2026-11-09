@@ -1,4 +1,5 @@
 import { env } from 'node:process';
+import { consumeQuota, notifyContactFailure, recordPortfolioEvent, requestSubject } from '../server/portfolioOperations.js';
 
 const MAX_BODY_BYTES = 20000;
 
@@ -43,12 +44,23 @@ export default async function contact(req, res) {
     return res.status(503).json({ error: 'The form is currently unavailable. You can open an email draft below.' });
   }
 
+  try {
+    if (!await consumeQuota('contact', requestSubject(req), 5, 600)) {
+      res.setHeader('Retry-After', '600');
+      return res.status(429).json({ error: 'Too many inquiries. Try again in 10 minutes or open an email draft below.' });
+    }
+  } catch (error) {
+    console.error('Contact rate limiter unavailable', error.message);
+    return res.status(503).json({ error: 'The form is currently unavailable. You can open an email draft below.' });
+  }
+
   const idempotencyKey = req.headers['idempotency-key'];
   const headers = {
     Authorization: `Bearer ${RESEND_API_KEY}`,
     'Content-Type': 'application/json',
   };
-  if (typeof idempotencyKey === 'string' && /^[a-f0-9-]{36}$/.test(idempotencyKey)) {
+  const validId = typeof idempotencyKey === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(idempotencyKey);
+  if (validId) {
     headers['Idempotency-Key'] = `portfolio-contact/${idempotencyKey}`;
   }
 
@@ -65,10 +77,14 @@ export default async function contact(req, res) {
       }),
       signal: AbortSignal.timeout(8000),
     });
-    if (delivery.ok) return res.status(200).json({ accepted: true });
+    if (delivery.ok) {
+      await recordPortfolioEvent('inquiry_accepted', validId ? idempotencyKey : undefined);
+      return res.status(200).json({ accepted: true });
+    }
     console.error('Contact email provider rejected the request', delivery.status);
   } catch (error) {
     console.error('Contact email request failed', error.name);
   }
+  await Promise.all([recordPortfolioEvent('inquiry_provider_error'), notifyContactFailure()]);
   return res.status(502).json({ error: 'Your inquiry could not be confirmed. Try again or open an email draft below.' });
 }

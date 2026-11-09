@@ -1,4 +1,3 @@
-import { Link } from '../router/RouterContext';
 import { EXPERIENCE, CERTIFICATIONS } from '../data/portfolioData';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import SEOHead from '../components/SEOHead';
@@ -20,6 +19,9 @@ export default function About() {
         <h1 className="display-h1 max-w-3xl text-zinc-950">
           Full-Stack Software Engineer building scalable web applications.
         </h1>
+        <a href="/documents/sabainali_resume.pdf" download className="mt-6 inline-flex items-center rounded-full border border-zinc-300 px-5 py-3 text-sm font-semibold underline">
+          Download résumé
+        </a>
 
         <div className="mt-12 grid gap-12 lg:grid-cols-12">
           {/* Main Story Narrative */}

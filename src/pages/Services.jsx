@@ -4,6 +4,7 @@ import { FEATURED_SERVICES, SERVICES, SERVICE_RAIL, TECH_MARQUEE } from '../data
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import GlareCard from '../components/ui/GlareCard';
 import SEOHead from '../components/SEOHead';
+import { trackPortfolioEvent } from '../lib/metrics';
 import {
   ArrowRight, ChevronDown, CheckCircle2,
   Sparkles, Layers, ShieldCheck, Activity, Terminal, Database, Code2
@@ -430,6 +431,7 @@ export default function Services() {
                             )}
                             <Link
                               href="/contact"
+                              onClick={() => trackPortfolioEvent('service_contact_click')}
                               className="group inline-flex items-center gap-3 rounded-full border border-zinc-200 bg-white px-5 py-3 font-mono text-xs uppercase tracking-[0.12em] text-zinc-800 transition-all hover:border-[#f97316] hover:bg-[#f97316] hover:text-white shadow-sm active:scale-[0.97]"
                             >
                               <span>Discuss this service</span>
@@ -462,7 +464,7 @@ export default function Services() {
             Available for enterprise contracts, WordPress headless builds, WHO/WOAH-grade pipelines, and autonomous AI agents.
           </p>
           <div className="mt-8 flex justify-center">
-            <ExpandingArrowButton href="/contact" accentColor="#f97316">
+            <ExpandingArrowButton href="/contact" accentColor="#f97316" onClick={() => trackPortfolioEvent('service_contact_click')}>
               Schedule a Consultation
             </ExpandingArrowButton>
           </div>

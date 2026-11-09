@@ -1,11 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
+const blogSource = import.meta.env?.VITE_BLOG_SOURCE || globalThis.process?.env.VITE_BLOG_SOURCE || 'repository';
 const supabaseUrl = (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_URL) || globalThis.process?.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_SUPABASE_ANON_KEY) || globalThis.process?.env.VITE_SUPABASE_ANON_KEY;
 
 const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
-const supabase = isSupabaseConfigured
+const supabase = blogSource === 'supabase' && isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
@@ -3322,29 +3323,28 @@ Supermarkets did not get hacked because their internal IT team was incompetent; 
 
 
 export async function loadPublishedPosts() {
-  const posts = new Map(FALLBACK_BLOG_POSTS.map((post) => [post.slug, post]));
-  if (supabase) {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('is_published', true)
-      .abortSignal(AbortSignal.timeout(12000));
-    if (error) {
-      if (globalThis.process?.env.VERCEL === '1') {
-        throw new Error(`Could not load published blog posts: ${error.message}`);
-      }
-      console.warn('Could not load Supabase posts. Using the checked-in articles.');
-    } else {
-      for (const post of data) {
-        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(post.slug)) continue;
-        const fallback = posts.get(post.slug);
-        if (!fallback || (post.content?.length || 0) >= fallback.content.length) {
-          posts.set(post.slug, post);
-        }
-      }
+  let posts = FALLBACK_BLOG_POSTS;
+  if (blogSource === 'supabase') {
+    if (!supabase) throw new Error('Supabase blog mode requires the URL and anonymous key.');
+    posts = [];
+    const batchSize = 100;
+    for (let offset = 0; ; offset += batchSize) {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('is_published', true)
+        .order('slug')
+        .range(offset, offset + batchSize - 1)
+        .abortSignal(AbortSignal.timeout(12000));
+      if (error) throw new Error(`Could not load published blog posts: ${error.message}`);
+      posts.push(...data);
+      if (data.length < batchSize) break;
     }
+  } else if (blogSource !== 'repository') {
+    throw new Error(`Unknown blog source: ${blogSource}`);
   }
-  return [...posts.values()]
+  return posts
+    .filter(({ slug }) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug))
     .map(({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image, content }) =>
       ({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image: coverImage(slug, cover_image), content })
     )

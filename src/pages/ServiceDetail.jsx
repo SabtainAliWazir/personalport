@@ -2,6 +2,7 @@ import SEOHead from '../components/SEOHead';
 import { PROJECTS } from '../data/portfolioData';
 import { Link } from '../router/RouterContext';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
+import { trackPortfolioEvent } from '../lib/metrics';
 
 export default function ServiceDetail({ service, featured }) {
   const project = PROJECTS.find(({ slug }) => slug === featured.projectSlug);
@@ -27,7 +28,7 @@ export default function ServiceDetail({ service, featured }) {
         </Link>
       </section>
       <div className="mt-12">
-        <ExpandingArrowButton href="/contact">Discuss your project</ExpandingArrowButton>
+        <ExpandingArrowButton href="/contact" onClick={() => trackPortfolioEvent('service_contact_click')}>Discuss your project</ExpandingArrowButton>
       </div>
     </article>
   );

@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { 
   X, Code2, Database, ShieldCheck, Copy, Check, 
   ExternalLink, ArrowRight, Terminal, Activity, Layers
 } from 'lucide-react';
 import { Link } from '../../router/RouterContext';
 
-export default function ProjectTelemetryModal({ project, isOpen, onClose }) {
+export default function ProjectTelemetryModal({ project, opener, onClose }) {
   const [activeTab, setActiveTab] = useState('code'); // 'code' | 'architecture' | 'impact'
   const [copied, setCopied] = useState(false);
+  const dialogRef = useRef(null);
+  const closeRef = useRef(null);
 
-  if (!isOpen || !project) return null;
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    dialog.showModal();
+    closeRef.current.focus();
+    return () => {
+      dialog.close();
+      opener?.focus();
+    };
+  }, [opener]);
 
   const handleCopy = () => {
     if (project.engineering?.codeSnippet) {
@@ -21,25 +30,19 @@ export default function ProjectTelemetryModal({ project, isOpen, onClose }) {
   };
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-zinc-950/60 backdrop-blur-sm"
-        />
-
-        {/* Modal Window */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-4xl overflow-hidden rounded-[2rem] border border-zinc-200 bg-white text-zinc-950 shadow-2xl z-10 my-auto"
-        >
+    <dialog
+      ref={dialogRef}
+      aria-labelledby="telemetry-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      className="fixed inset-0 m-auto max-h-[calc(100dvh_-_1.5rem)] w-[calc(100%_-_1.5rem)] max-w-4xl overflow-y-auto rounded-[2rem] border border-zinc-200 bg-white text-zinc-950 shadow-2xl backdrop:bg-zinc-950/60 backdrop:backdrop-blur-sm"
+    >
+        <div>
           {/* Top Window Bar */}
           <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4 bg-zinc-50">
             <div className="flex items-center gap-3">
@@ -48,14 +51,16 @@ export default function ProjectTelemetryModal({ project, isOpen, onClose }) {
                 <p className="font-mono text-xs text-[#f97316] font-semibold">
                   Under the Hood · Architecture & Code
                 </p>
-                <h3 className="font-display text-base sm:text-lg font-semibold text-zinc-950">
+                <h3 id="telemetry-title" className="font-display text-base sm:text-lg font-semibold text-zinc-950">
                   {project.title} · {project.client}
                 </h3>
               </div>
             </div>
 
             <button
+              ref={closeRef}
               type="button"
+              aria-label="Close project details"
               onClick={onClose}
               className="grid size-9 place-items-center rounded-full border border-zinc-200 bg-white text-zinc-600 hover:border-[#f97316] hover:text-[#f97316] transition-all cursor-pointer shadow-sm"
             >
@@ -247,8 +252,7 @@ export default function ProjectTelemetryModal({ project, isOpen, onClose }) {
               </Link>
             </div>
           </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
+        </div>
+    </dialog>
   );
 }

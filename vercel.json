@@ -2,6 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/contact.js": { "maxDuration": 20 }
+  },
   "redirects": [
     { "source": "/work/:slug", "destination": "/portfolio/:slug", "permanent": true },
     { "source": "/work", "destination": "/portfolio", "permanent": true },

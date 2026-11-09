@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from '../../router/RouterContext';
+import { trackPortfolioEvent } from '../../lib/metrics';
 import ExpandingArrowButton from './ExpandingArrowButton';
 import { Copy, Check, ArrowUpRight, Mail, Terminal } from 'lucide-react';
 
@@ -187,6 +188,7 @@ export default function Footer() {
               <li>
                 <a
                   href="https://wa.me/923329298679"
+                  onClick={() => trackPortfolioEvent('whatsapp_click')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 hover:text-[#f97316] transition-colors"

@@ -3,6 +3,8 @@ import { Link } from '../router/RouterContext';
 import { FEATURED_SERVICES, PROJECTS } from '../data/portfolioData';
 import GlareCard from '../components/ui/GlareCard';
 import SEOHead from '../components/SEOHead';
+import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
+import { trackPortfolioEvent } from '../lib/metrics';
 import { absoluteUrl, AUTHOR_ID, schema } from '../data/site';
 import { 
   ArrowLeft, ArrowRight, ExternalLink, Database, 
@@ -335,14 +337,21 @@ export default function CaseStudy({ project }) {
         </div>
       </section>
 
-      {relatedService && (
-        <section className="gutter mx-auto max-w-5xl mt-12">
-          <h2 className="display-h3">Related service</h2>
-          <Link href={`/service/${relatedService[0]}`} className="mt-3 inline-block font-semibold underline">
-            {relatedService[1].title}
-          </Link>
-        </section>
-      )}
+      <section className="gutter mx-auto max-w-5xl mt-12">
+        <div className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
+          <h2 className="display-h3">Have a similar project?</h2>
+          <div className="mt-5 flex flex-wrap items-center gap-5">
+            <ExpandingArrowButton href="/contact" onClick={() => trackPortfolioEvent('case_study_contact_click')}>
+              Discuss a similar project
+            </ExpandingArrowButton>
+            {relatedService && (
+              <Link href={`/service/${relatedService[0]}`} className="font-semibold underline">
+                {relatedService[1].title}
+              </Link>
+            )}
+          </div>
+        </div>
+      </section>
 
       {/* ─────────────────────────────────────────────────────────────
           5. NEXT / PREVIOUS CASE STUDY PAGINATION

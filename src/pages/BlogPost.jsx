@@ -6,7 +6,8 @@ import {
   ArrowLeft, Calendar, Clock, Lightbulb, Share2, 
   Terminal, Sparkles, CheckCircle2, Check, Home
 } from 'lucide-react';
-import { Marked } from 'marked';
+import { Marked, Renderer } from 'marked';
+import { inlineBlogImage } from '../data/blogImages';
 
 function safeUrl(href) {
   try {
@@ -27,7 +28,8 @@ const markdown = new Marked({
     },
     image(token) {
       if (!safeUrl(token.href)) return '';
-      return false;
+      const image = Renderer.prototype.image.call(this, { ...token, href: inlineBlogImage(token.href) });
+      return image.replace('<img ', '<img loading="lazy" decoding="async" ');
     },
     heading(token) {
       if (token.depth === 1) return '<h2>' + this.parser.parseInline(token.tokens) + '</h2>\n';
