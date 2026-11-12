@@ -1,4 +1,5 @@
 const optimized = new Set([
+  '/images/blog/ai-spaghetti-mansion-vs-modular-blueprint.png',
   '/images/blog/air-gap-vs-stuxnet-breach.png',
   '/images/blog/bad-prompt-vs-good-prompt-ai.png',
   '/images/blog/big-bang-rewrite-vs-strangler-fig.png',
