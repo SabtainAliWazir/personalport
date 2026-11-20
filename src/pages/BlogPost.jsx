@@ -2,9 +2,8 @@ import { useState, useMemo } from 'react';
 import { Link } from '../router/RouterContext';
 import { absoluteUrl, AUTHOR_ID, AUTHOR_NAME, schema } from '../data/site';
 import SEOHead from '../components/SEOHead';
-import { 
-  ArrowLeft, Calendar, Clock, Lightbulb, Share2, 
-  Terminal, Sparkles, CheckCircle2, Check, Home
+import {
+  Calendar, Clock, Share2, Check, Home
 } from 'lucide-react';
 import { Marked, Renderer } from 'marked';
 import { inlineBlogImage } from '../data/blogImages';
@@ -67,6 +66,8 @@ export default function BlogPost({ post }) {
     description: post.summary,
     image: absoluteUrl(coverSrc),
     datePublished: post.published_at,
+    dateModified: post.published_at,
+    articleSection: post.category,
     author: { '@type': 'Person', '@id': AUTHOR_ID, name: AUTHOR_NAME, url: absoluteUrl('/about') },
     mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(canonical) },
   });
@@ -148,7 +149,7 @@ export default function BlogPost({ post }) {
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-5xl font-semibold tracking-[-0.03em] text-zinc-950 leading-[1.1]">
+          <h1 className="font-display text-2xl sm:text-4xl font-semibold tracking-[-0.025em] text-zinc-950 leading-[1.15]">
             {post.title}
           </h1>
 
@@ -166,16 +167,17 @@ export default function BlogPost({ post }) {
           />
         </div>
 
-        {/* The Child-Friendly Analogy Spotlight Banner */}
-        <div className="my-8 rounded-3xl border border-[#f97316]/30 bg-[#f97316]/5 p-6 sm:p-8 space-y-2 shadow-sm">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#f97316] font-semibold">
-            <Sparkles className="size-4" />
-            <span>The Quick Everyday Analogy</span>
+        {/* Key Takeaway (TL;DR) */}
+        {post.simple_analogy && (
+          <div className="my-6 rounded-2xl border-l-4 border-[#f97316] bg-zinc-50 px-5 py-4 space-y-1">
+            <p className="font-mono text-[0.7rem] uppercase tracking-wider text-[#f97316] font-semibold">
+              TL;DR
+            </p>
+            <p className="text-sm sm:text-base text-zinc-700 font-sans leading-relaxed">
+              {post.simple_analogy}
+            </p>
           </div>
-          <p className="font-display text-lg sm:text-xl font-medium text-zinc-900 leading-relaxed italic">
-            "{post.simple_analogy}"
-          </p>
-        </div>
+        )}
 
         {/* Main Article Body (Rendered Markdown) */}
         <div

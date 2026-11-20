@@ -3,8 +3,8 @@ import { Link } from '../router/RouterContext';
 import SEOHead from '../components/SEOHead';
 import { BLOG_INDEX_PATH, BLOG_PAGE_SIZE, blogPagePath } from '../data/blogPagination';
 import {
-  Sparkles, Clock, Calendar, ArrowRight,
-  Search, Lightbulb, Compass, Database, Terminal
+  Clock, Calendar, ArrowRight,
+  Search, Compass, Terminal
 } from 'lucide-react';
 
 export default function Blog({ posts, categories, page, pageCount, totalPosts, searchIndex }) {
@@ -40,7 +40,7 @@ export default function Blog({ posts, categories, page, pageCount, totalPosts, s
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
       <SEOHead
-        title={page === 1 ? 'Blog & Engineering Stories' : `Blog & Engineering Stories – Page ${page}`}
+        title={page === 1 ? 'Blog & Engineering Stories' : `Blog & Engineering Stories · Page ${page}`}
         description="Clear, human-first breakdowns of software architecture, AI agents, databases, and network protocols explained with everyday analogies by Sabtain Ali."
         canonical={blogPagePath(page)}
       />
@@ -51,14 +51,14 @@ export default function Blog({ posts, categories, page, pageCount, totalPosts, s
       <section className="gutter mx-auto max-w-[78rem] pb-12 border-b border-zinc-200">
         <div className="max-w-3xl space-y-4">
           <p className="eyebrow flex items-center gap-2 text-[#f97316] font-semibold">
-            <Lightbulb className="size-3.5" />
-            <span>Tech Concepts Explained Simply</span>
+            <Terminal className="size-3.5" />
+            <span>Engineering Notes & Architecture</span>
           </p>
           <h1 className="display-h1 text-zinc-950">
-            Software ideas explained for humans.
+            Practical software engineering, systems, and AI.
           </h1>
           <p className="text-lead font-sans text-zinc-600 leading-relaxed">
-            I believe that if you cannot explain a technical concept to a 10-year-old child, you do not truly understand it yet. Every day, I break down software architecture, databases, and APIs using everyday real-life analogies.
+            Deep dives into backend architecture, database performance, application security, and production AI systems.
           </p>
         </div>
 
@@ -94,7 +94,7 @@ export default function Blog({ posts, categories, page, pageCount, totalPosts, s
             <input
               type="search"
               aria-label="Search all articles"
-              placeholder="Search concepts or analogies..."
+              placeholder="Search articles, topics, or keywords..."
               value={searchQuery}
               onChange={(event) => {
                 const value = event.target.value;
@@ -176,35 +176,19 @@ export default function Blog({ posts, categories, page, pageCount, totalPosts, s
                     </Link>
                   </h2>
 
-                  {/* Simple Analogy Highlight Callout */}
-                  <div className="mt-4 rounded-2xl border border-[#f97316]/25 bg-[#f97316]/5 p-3.5 space-y-1">
-                    <p className="font-mono text-[0.65rem] uppercase tracking-wider text-[#f97316] font-semibold flex items-center gap-1.5">
-                      <Sparkles className="size-3 text-[#f97316]" />
-                      <span>The Everyday Analogy</span>
-                    </p>
-                    <p className="text-xs text-zinc-800 font-sans leading-relaxed italic">
-                      "{post.simple_analogy}"
-                    </p>
-                  </div>
-
                   {/* Summary */}
-                  <p className="mt-4 text-xs sm:text-sm text-zinc-600 font-sans leading-relaxed">
+                  <p className="mt-3 text-xs sm:text-sm text-zinc-600 font-sans leading-relaxed line-clamp-3">
                     {post.summary}
                   </p>
                 </div>
 
                 {/* Footer Action */}
-                <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between">
-                  <span className="font-mono text-[0.68rem] text-zinc-400 flex items-center gap-1">
-                    <Calendar className="size-3 text-zinc-400" />
-                    {post.published_at}
-                  </span>
-                  
+                <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-end">
                   <Link
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-[#f97316] hover:text-zinc-950 transition-colors"
                   >
-                    <span>Read Story</span>
+                    <span>Read article</span>
                     <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>

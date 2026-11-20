@@ -44,16 +44,14 @@ export const FALLBACK_BLOG_POSTS = [
   {
     id: '1',
     slug: 'what-is-an-api-restaurant-waiter',
-    title: 'What is an API? The Restaurant Waiter Analogy (Full-Stack Guide)',
-    summary: 'Learn how APIs work in modern software engineering through the simple restaurant waiter analogy. Covers HTTP methods (GET, POST, PUT, DELETE), status codes, JSON payloads, and how frontend apps talk to backend databases.',
+    title: 'How REST APIs Work: HTTP Methods, Status Codes & JSON',
+    summary: 'A practical guide to REST APIs, HTTP methods (GET, POST, PUT, DELETE), status codes, JSON payloads, and fast client-server communication.',
     category: 'System Architecture',
     read_time: '6 min read',
     published_at: '2026-10-14',
     cover_image: '/images/blog/api-restaurant-waiter.png',
-    simple_analogy: 'An API is like a 5-star restaurant waiter who takes your order from the dining table, carries it safely to the kitchen chefs, and brings back your steaming meal.',
-    content: `# What is an API? The Restaurant Waiter Analogy
-
-Have you ever wondered how your phone’s weather app knows it is raining outside? 
+    simple_analogy: 'A REST API works like a restaurant waiter carrying structured orders between your browser table and the backend database kitchen.',
+    content: `Have you ever wondered how your phone’s weather app knows it is raining outside? 
 
 The weather app did not launch its own satellite into space. It did not build radar stations across the globe. Instead, it sent a digital courier to ask the National Weather Service: *"Hey, what is the temperature in London right now?"* In less than a fraction of a second, the answer was delivered to your screen.
 
@@ -193,16 +191,14 @@ Instead, we built strict **REST APIs**:
   {
     id: '2',
     slug: 'why-databases-need-indexes-the-book-secret',
-    title: 'Why Databases Need Indexes: The Library Secret (Database Optimization)',
-    summary: 'Discover why database indexes are essential for high-performance software. Learn how B-Tree indexes turn slow linear scans into sub-millisecond queries, complete with real SQL examples and case studies.',
+    title: 'How Database Indexes Work: B-Trees & SQL Query Tuning',
+    summary: 'See how PostgreSQL B-Tree indexes cut query latency from 9.2 seconds to 1.8 milliseconds using EXPLAIN ANALYZE and composite indexing.',
     category: 'Database Engineering',
     read_time: '7 min read',
     published_at: '2026-10-13',
     cover_image: '/images/blog/database-indexes-library.png',
-    simple_analogy: 'A database index is like the alphabetical index at the very back of a 1,000-page encyclopedia that tells you the exact page number in 2 seconds.',
-    content: `# Why Databases Need Indexes: The Library Secret
-
-Imagine your school teacher hands you an enormous 1,000-page encyclopedia of animals. She sets a stopwatch on her desk, looks you in the eyes, and says:
+    simple_analogy: 'A B-Tree index works like the alphabetical index at the back of a textbook, jumping straight to the right row instead of scanning every page.',
+    content: `Imagine your school teacher hands you an enormous 1,000-page encyclopedia of animals. She sets a stopwatch on her desk, looks you in the eyes, and says:
 
 > *"Find the exact page that talks about the Bengal Tiger. You have 5 seconds. Go!"*
 
@@ -340,16 +336,14 @@ The next time we ran \`EXPLAIN ANALYZE\`:
   {
     id: '3',
     slug: 'websockets-walkie-talkie-vs-letters',
-    title: 'WebSockets vs HTTP: Walkie-Talkies vs Mailing Letters (Real-Time Architecture)',
-    summary: 'Discover why live chat, collaborative tools, and financial tickers rely on WebSockets instead of standard HTTP. Learn the difference between request-response polling and full-duplex socket communication.',
+    title: 'WebSockets vs HTTP: Real-Time Architecture Explained',
+    summary: 'Compare HTTP request-response polling against persistent WebSocket connections, handshake headers, and low-latency full-duplex architecture.',
     category: 'Real-Time Systems',
     read_time: '6 min read',
     published_at: '2026-10-12',
     cover_image: '/images/blog/websockets-walkie-talkie.png',
-    simple_analogy: 'Standard HTTP is like mailing paper envelopes back and forth through the post office. WebSockets keep a live walkie-talkie channel open between you and the server.',
-    content: `# WebSockets vs HTTP: Walkie-Talkies vs Mailing Letters
-
-Have you ever used WhatsApp, Slack, or Discord and wondered:
+    simple_analogy: 'HTTP is like mailing individual letters back and forth, while a WebSocket keeps a live two-way radio channel open between client and server.',
+    content: `Have you ever used WhatsApp, Slack, or Discord and wondered:
 > *"How does my friend's message appear on my screen the exact millisecond they hit send, without me ever pressing refresh?"*
 
 To understand why this is a revolutionary feat of engineering, you have to understand how the traditional web was built.
@@ -500,16 +494,14 @@ If two delegates edited the same budget line at the same time using normal HTTP 
   {
     id: '4',
     slug: 'what-is-gemini-argon-chess-grandmaster-analogy',
-    title: 'What is Gemini Argon? The Chess Grandmaster Analogy (Hands-On Review)',
-    summary: 'Discover Google DeepMind’s flagship Gemini Argon frontier reasoning model through the simple chess grandmaster analogy. Learn how test-time reasoning tokens, 1M context windows, and autonomous agentic workflows redefine software engineering.',
+    title: 'Gemini Argon Review: Test-Time Compute & Deep Reasoning',
+    summary: 'Hands-on benchmark of Google DeepMind Gemini Argon: test-time reasoning tokens, 1M context window performance, and complex system debugging.',
     category: 'Artificial Intelligence',
     read_time: '7 min read',
     published_at: '2026-10-15',
     cover_image: '/images/blog/gemini-argon-ai.png',
-    simple_analogy: 'Standard AI models are like ping-pong players reacting instantly, while Gemini Argon is like a world chess grandmaster who pauses, simulates 15 moves ahead, checks every counter-attack, and only then plays the masterstroke.',
-    content: `# What is Gemini Argon? The Chess Grandmaster Analogy
-
-Have you ever asked an AI coding assistant to fix a tricky bug in your application, only to watch it instantly spit out confident code that completely breaks your production server?
+    simple_analogy: 'Instead of streaming the first token it predicts, Gemini Argon allocates test-time compute to verify multiple execution paths before answering.',
+    content: `Have you ever asked an AI coding assistant to fix a tricky bug in your application, only to watch it instantly spit out confident code that completely breaks your production server?
 
 Why does that happen?
 
@@ -631,16 +623,14 @@ Here is the practical decision matrix:
   {
     id: '5',
     slug: 'what-is-an-ai-agent-explained',
-    title: 'What is an AI Agent? The Autonomous Assistant Analogy (Why Agentic AI Is Everywhere)',
-    summary: 'Discover what AI Agents are and why Agentic AI is dominating the tech buzz. Learn how AI has evolved from static chatbots into autonomous systems that plan, use tools, self-correct, and complete real-world goals through the simple Executive Assistant analogy.',
+    title: 'How Autonomous AI Agents Work: Architecture & Tool Use',
+    summary: 'How autonomous AI agents combine LLMs, ReAct reasoning loops, external API tool calling, and memory to execute multi-step engineering tasks.',
     category: 'Artificial Intelligence',
     read_time: '7 min read',
     published_at: '2026-10-18',
     cover_image: '/images/blog/ai-agents-autonomous-assistant.png',
-    simple_analogy: 'A traditional chatbot is like a calculator: you must press every button yourself to get an answer. An AI Agent is like a seasoned executive assistant: you give it a high-level goal, and it independently researches, plans, uses tools, fixes its own mistakes, and delivers the finished result.',
-    content: `# What is an AI Agent? The Autonomous Assistant Analogy
-
-If you have spent any time following technology news recently, you have probably noticed that the word **"Chatbot"** has quietly disappeared, replaced by a much louder obsession: **"AI Agents"** and **"Agentic Workflows"**.
+    simple_analogy: 'A standard chatbot only answers prompts, whereas an AI agent runs in a loop that plans, calls external tools, inspects errors, and finishes the job.',
+    content: `If you have spent any time following technology news recently, you have probably noticed that the word **"Chatbot"** has quietly disappeared, replaced by a much louder obsession: **"AI Agents"** and **"Agentic Workflows"**.
 
 From OpenAI and Anthropic to Google DeepMind and open-source communities, everyone is racing to build agentic systems. Silicon Valley venture firms are pouring billions into startups building "autonomous coding agents", "research agents", and "browser agents".
 
@@ -855,16 +845,14 @@ While the potential is enormous, engineering production-grade agents introduces 
   {
     id: '6',
     slug: 'what-is-rag-retrieval-augmented-generation',
-    title: 'What is RAG (Retrieval-Augmented Generation)? The Open-Book Exam Analogy (Why Your Business Needs It)',
-    summary: 'Discover what RAG is and why it has become the gold standard for enterprise AI. Through the simple Open-Book Exam analogy, learn how Retrieval-Augmented Generation eliminates hallucinations, protects confidential business data, and turns generic AI into a verified expert on your company.',
+    title: 'Retrieval-Augmented Generation (RAG) Architecture Guide',
+    summary: 'Build production Retrieval-Augmented Generation (RAG) pipelines with vector embeddings, semantic search, and grounded citations to stop hallucinations.',
     category: 'Artificial Intelligence',
     read_time: '8 min read',
     published_at: '2026-10-19',
     cover_image: '/images/blog/rag-open-book-exam.png',
-    simple_analogy: 'A regular AI model is like a student taking a closed-book history exam purely from memory: when they forget a fact, they guess. RAG turns the AI into a student taking an open-book exam: before answering, it instantly looks up the exact paragraph from your private company files and quotes verified facts.',
-    content: `# What is RAG (Retrieval-Augmented Generation)? The Open-Book Exam Analogy
-
-If you are a founder, business executive, or product manager looking to integrate Artificial Intelligence into your company, you have likely run into the **"Enterprise AI Dilemma"**:
+    simple_analogy: 'RAG turns a closed-book memory test into an open-book lookup by fetching verified documents from your database before the LLM writes a response.',
+    content: `If you are a founder, business executive, or product manager looking to integrate Artificial Intelligence into your company, you have likely run into the **"Enterprise AI Dilemma"**:
 
 1. You want an AI chatbot that knows your internal products, pricing sheets, employee handbooks, and customer support history.
 2. But public AI models (like ChatGPT or Claude) do not know your private company files.
@@ -1041,16 +1029,14 @@ If you answered **YES** to any of those questions, **RAG is the exact architectu
   {
     id: '7',
     slug: 'art-of-ai-image-prompting-guide',
-    title: 'The Art of Image Prompting: How AI Vision Models Read Your Words (The Hollywood Cinematographer Analogy)',
-    summary: 'Master the art of AI image prompting for modern frontier models like FLUX.1 and Midjourney v6. Through the Blindfolded Cinematographer analogy, discover how vision models parse text tokens, why buzzwords like 8k fail, and how to use the 5-Layer Master Prompt Formula to create studio-quality visuals.',
+    title: 'AI Image Prompting for FLUX.1 & Midjourney: 5-Layer Guide',
+    summary: 'Replace vague buzzwords with a structured 5-layer prompt framework covering subject, camera optics, lighting physics, and material textures.',
     category: 'Artificial Intelligence',
     read_time: '8 min read',
     published_at: '2026-10-20',
     cover_image: '/images/blog/ai-image-prompting-cinematographer.png',
-    simple_analogy: 'Modern AI image generators are like blindfolded Hollywood cinematographers: they cannot read your mind, but they know every lighting rig, lens focal length, and material texture in history. If you shout vague words like "make it epic 8k", they get confused. If you speak their language of lighting, camera angles, and material textures, they craft visual masterpieces.',
-    content: `# The Art of Image Prompting: How AI Vision Models Read Your Words
-
-If you have tried using modern generative AI models like **FLUX.1**, **Midjourney v6**, or **Stable Diffusion 3**, you have probably experienced this frustrating divide:
+    simple_analogy: 'Diffusion models respond to specific camera focal lengths, lighting rigs, and surface materials rather than vague adjectives like "epic 8k".',
+    content: `If you have tried using modern generative AI models like **FLUX.1**, **Midjourney v6**, or **Stable Diffusion 3**, you have probably experienced this frustrating divide:
 
 - You type: *"A futuristic sports car driving through a neon city at night, hyperrealistic, 8k, photorealistic, cinematic lighting, masterpiece."*
 - You hit generate.
@@ -1215,16 +1201,14 @@ Modern 3D isometric architectural illustration of a futuristic glass greenhouse 
   {
     id: '8',
     slug: 'what-is-reverse-engineering-watchmaker-analogy',
-    title: 'What is Reverse Engineering? The Master Watchmaker Analogy (How Engineers Learn by Taking Things Apart)',
-    summary: 'Explore what reverse engineering is and why it powers the most resilient software on earth. Through the Master Watchmaker analogy, learn how engineers deconstruct closed binaries, inspect network protocols, audit security flaws, and build open interoperability without original source code.',
+    title: 'Software Reverse Engineering: Binaries, Protocols & Tools',
+    summary: 'How engineers inspect compiled binaries, decompile assembly in Ghidra, analyze network packets in Wireshark, and audit closed-source systems.',
     category: 'System Architecture',
     read_time: '8 min read',
     published_at: '2026-10-21',
     cover_image: '/images/blog/reverse-engineering-watchmaker.png',
-    simple_analogy: 'Reverse engineering is like being a master Swiss watchmaker handed a locked antique golden pocket watch with no manual or blueprints. Instead of smashing it open, you carefully remove each microscopic screw, examine the interlocking gears and escapement wheel with a magnifying loupe, and draw the exact master schematic of how time was measured inside.',
-    content: `# What is Reverse Engineering? The Master Watchmaker Analogy
-
-Have you ever wondered how software engineers create programs that can open proprietary Microsoft Word files on Linux? 
+    simple_analogy: 'Reverse engineering reconstructs a system blueprint from its compiled binary instructions, memory layout, and network traffic.',
+    content: `Have you ever wondered how software engineers create programs that can open proprietary Microsoft Word files on Linux? 
 
 Microsoft never handed open-source developers their private source code. Nor did Sony hand competitors the confidential schematics for the PlayStation when developers built high-performance emulators. 
 
@@ -1380,16 +1364,14 @@ The most famous real-world example occurred in 1982 when **Compaq** reverse-engi
   {
     id: '9',
     slug: 'modern-php-security-guide-bank-vault-analogy',
-    title: 'Modern PHP Security in 2026: The Bank Vault with Five Secret Backdoors (How Vulnerabilities Happen and How to Lock Them Down)',
-    summary: 'Master the principles of modern PHP security in 2026 through the Bank Vault analogy. Discover why PHP powers 76% of the web yet remains heavily targeted, understand real-world threats like CVE-2024-4577 and memory corruption, and implement bulletproof defenses against SQL injection, object deserialization, file upload execution, and session hijacking.',
+    title: 'PHP Security Guide: Fixing SQLi, RCE & Deserialization',
+    summary: 'Harden PHP 8.4 applications against SQL injection, CVE-2024-4577, insecure deserialization, RCE file uploads, and session hijacking.',
     category: 'Cybersecurity',
     read_time: '9 min read',
     published_at: '2026-10-22',
     cover_image: '/images/blog/php-security-bank-vault.png',
-    simple_analogy: 'Securing a PHP application is like designing a modern bank vault. The vault doors might be forged from 10-ton solid steel (PHP 8.4+), but if the bank leaves the rear delivery chute unlocked, trusts handwritten visitor badges without checking signatures, and allows anyone to yell commands into the teller microphone, intruders can walk right in without ever touching the front door.',
-    content: `# Modern PHP Security in 2026: The Bank Vault with Five Secret Backdoors
-
-Did you know that **over 76% of all websites whose server-side programming language is known run on PHP**?
+    simple_analogy: 'Most PHP breaches exploit unparameterized queries, unsafe file uploads, and exposed endpoints rather than core language flaws.',
+    content: `Did you know that **over 76% of all websites whose server-side programming language is known run on PHP**?
 
 From the world's largest content management platforms (WordPress, Drupal) to modern enterprise architectures running Laravel, Symfony, and FrankenPHP, PHP continues to be the financial and operational engine of the internet.
 
@@ -1670,16 +1652,14 @@ session.sid_bits_per_character = 6
   {
     id: '10',
     slug: 'ai-legacy-modernization-ship-of-theseus',
-    title: 'AI-Driven Legacy Modernization: The Ship of Theseus Analogy (How to Rewrite Monoliths Without Crashing Production)',
-    summary: 'Discover how modern engineering teams modernize mission-critical legacy monoliths using AI and the Ship of Theseus strategy. Explore why Big Bang rewrites fail, how the Strangler Fig pattern routes live traffic safely, and why verification with shadow traffic and property testing is the real engineering superpower in 2026.',
+    title: 'Legacy Code Modernization with the Strangler Fig Pattern',
+    summary: 'Migrate legacy monoliths without downtime using the Strangler Fig routing pattern, shadow traffic verification, and automated characterization tests.',
     category: 'System Architecture',
     read_time: '8 min read',
     published_at: '2026-10-24',
     cover_image: '/images/blog/legacy-modernization-ship-of-theseus.png',
-    simple_analogy: 'Modernizing legacy code is like the ancient paradox of the Ship of Theseus. If you try to build a brand-new ship on land and throw the old one away, you almost always drown before reaching shore. But if you replace each wooden plank with titanium one by one while the ship is still sailing in the open ocean, the vessel transforms without ever sinking.',
-    content: `# AI-Driven Legacy Modernization: The Ship of Theseus Analogy
-
-Every growing company eventually faces the same terrifying engineering dilemma:
+    simple_analogy: 'Instead of halting feature delivery for a risky Big Bang rewrite, the Strangler Fig pattern replaces legacy routes one vertical slice at a time.',
+    content: `Every growing company eventually faces the same terrifying engineering dilemma:
 
 You have a 10-year-old monolithic application that processes millions of dollars in revenue every month. It runs on an aging framework, has zero automated tests, contains 400,000 lines of spaghetti code, and the original founding engineers left the company five years ago.
 
@@ -1862,16 +1842,14 @@ Here is the exact battle-tested playbook senior engineering consultants use to m
   {
     id: '11',
     slug: 'what-is-model-context-protocol-mcp-usb-c-analogy',
-    title: 'What is Model Context Protocol (MCP)? The Universal USB-C Cable for AI (How Agents Connect to Tools & Data)',
-    summary: 'Discover why Model Context Protocol (MCP) is dominating tech timelines and developer forums in 2026. Through the simple USB-C cable analogy, explore how MCP solves the painful M x N integration trap, how MCP clients and servers communicate via JSON-RPC, and how to build production-grade tools for autonomous AI agents.',
+    title: 'Model Context Protocol (MCP): Connecting AI Agents to Tools',
+    summary: 'How Anthropic Model Context Protocol (MCP) standardizes JSON-RPC tool calling between LLMs, local databases, and enterprise APIs.',
     category: 'Artificial Intelligence',
     read_time: '8 min read',
     published_at: '2026-10-25',
     cover_image: '/images/blog/mcp-universal-usb-c-ai.png',
-    simple_analogy: 'Before USB-C was invented, every electronic gadget had its own annoying proprietary cable: round charging pins, mini-USB, micro-USB, and camera cords. If you carried 5 devices, you carried 5 tangled cables. Early AI tools worked the same way, forcing developers to build custom API wrappers for every LLM. Model Context Protocol (MCP) is the universal USB-C cable for AI: a single standard plug that lets any AI model connect instantly to any database, file system, or web tool.',
-    content: `# What is Model Context Protocol (MCP)? The Universal USB-C Cable for AI
-
-If you spend any time on X (formerly Twitter), GitHub, or developer discords in 2026, you have almost certainly seen developers buzzing about **MCP (Model Context Protocol)**.
+    simple_analogy: 'MCP acts like a universal USB-C standard for AI, letting one server expose tools and data to any MCP-compatible client or IDE.',
+    content: `If you spend any time on X (formerly Twitter), GitHub, or developer discords in 2026, you have almost certainly seen developers buzzing about **MCP (Model Context Protocol)**.
 
 Phrases like *"We need to MCP-ify our database"*, *"Anthropic donated MCP to the Linux Foundation"*, and *"MCP is the USB-C moment for AI"* are everywhere.
 
@@ -2100,16 +2078,14 @@ MCP was engineered with strict security boundaries from day one:
   {
     id: '12',
     slug: 'what-is-vibe-coding-architect-analogy',
-    title: 'What is Vibe Coding? The Architect vs The Construction Worker Analogy (Why Everyone is Talking About It in 2026)',
-    summary: 'Understand the viral phenomenon of vibe coding through the simple Architect vs Construction Worker analogy. Learn what vibe coding actually is, why it is trending on every developer timeline, how tools like Cursor and Claude Code enable it, where it works brilliantly, where it fails dangerously, and how senior engineers use it responsibly in production.',
+    title: 'Vibe Coding in Production: Where AI Code Generation Fails',
+    summary: 'Why natural-language vibe coding accelerates prototypes in Cursor and Claude Code, where it breaks in production, and how to review AI code.',
     category: 'Artificial Intelligence',
     read_time: '9 min read',
     published_at: '2026-10-27',
     cover_image: '/images/blog/vibe-coding-architect-analogy.png',
-    simple_analogy: 'Traditional coding is like being both the architect AND the construction worker: you design the blueprint AND lay every single brick by hand. Vibe coding flips this relationship. You become purely the architect, describing in plain English what you want built, while an AI agent acts as a tireless, expert construction crew that lays every brick, wires every circuit, and paints every wall at superhuman speed. Your job shifts from typing semicolons to directing intent.',
-    content: `# What is Vibe Coding? The Architect vs The Construction Worker Analogy
-
-If you have opened X (formerly Twitter), Reddit, LinkedIn, or any developer community in 2026, you have seen one phrase dominate every timeline:
+    simple_analogy: 'Prompting an AI agent generates syntax fast, but human engineers still own the system boundaries, security model, and failure modes.',
+    content: `If you have opened X (formerly Twitter), Reddit, LinkedIn, or any developer community in 2026, you have seen one phrase dominate every timeline:
 
 **"Vibe coding."**
 
@@ -2286,16 +2262,14 @@ The developers who thrive in 2026 and beyond are not the ones who can type the m
   {
     id: '13',
     slug: 'ai-crutch-dilemma-learning-to-code-gps-analogy',
-    title: 'The AI Crutch Dilemma: Am I Actually Learning to Code or Just Prompting? (The GPS vs The Master Navigator Analogy)',
-    summary: 'Are junior developers truly learning to code in 2026, or are they falling into the AI Crutch trap? Through the GPS vs Master Navigator analogy, explore the real cognitive danger of prompt dependency, why top tech companies still test fundamentals, and how to build lasting engineering intuition while using AI tools.',
+    title: 'How to Learn Software Engineering Without an AI Crutch',
+    summary: 'Avoid prompt dependency as a developer. Practical habits to build deep mental models of algorithms, debugging, and system design alongside AI.',
     category: 'Career & Engineering',
     read_time: '8 min read',
     published_at: '2026-10-28',
     cover_image: '/images/blog/ai-crutch-gps-navigator.png',
-    simple_analogy: 'Using AI code assistants without learning core fundamentals is like driving through a foreign metropolis relying 100% on a turn-by-turn phone GPS. You reach your destination effortlessly, but you build zero mental map of the city. The moment the battery dies, a tunnel cuts the satellite signal, or a road is blocked by construction, you are hopelessly lost. A master navigator uses GPS to save time, but they carry the complete topographic map inside their head.',
-    content: `# The AI Crutch Dilemma: Am I Actually Learning to Code or Just Prompting?
-
-If you browse developer forums on Reddit like r/learnprogramming, r/webdev, or r/cscareerquestions, you will find a quiet panic echoing through thousands of threads:
+    simple_analogy: 'Relying on AI autocomplete without understanding data structures and debugging is like following turn-by-turn GPS without knowing how to read a map.',
+    content: `If you browse developer forums on Reddit like r/learnprogramming, r/webdev, or r/cscareerquestions, you will find a quiet panic echoing through thousands of threads:
 
 > *"I just built three full-stack web apps using Cursor and Claude. They look fantastic, users are signing up, and Stripe is processing payments. But yesterday, during a technical interview, the interviewer asked me to reverse a linked list and fetch an API in plain vanilla JavaScript with zero AI assistance... and I froze. My mind was completely blank. Am I actually a software engineer, or am I just a prompt operator who has no idea how to build software?"*
 
@@ -2464,16 +2438,14 @@ If you can reconstruct the logic without peeking, congratulations: you did not j
   {
     id: '14',
     slug: 'ai-evals-guardrails-driving-test-analogy',
-    title: 'AI Evals & Guardrails: The Driving Test Analogy (Why AI Agents Pass the Demo but Crash in Production)',
-    summary: 'Explore why AI agents that look brilliant in local demos fail catastrophically in production. Through the Driving Test analogy, discover how industry leaders test and protect generative AI systems, moving from subjective vibe checks to deterministic evals, LLM-as-a-Judge rubrics, and unbreachable runtime guardrails.',
+    title: 'AI Evals & Runtime Guardrails for Production LLM Apps',
+    summary: 'Stop shipping fragile AI agents. Implement deterministic unit evals, LLM-as-a-Judge scoring rubrics, and runtime input/output guardrails.',
     category: 'Artificial Intelligence',
     read_time: '9 min read',
     published_at: '2026-10-29',
     cover_image: '/images/blog/ai-evals-driving-test.png',
-    simple_analogy: 'Testing an AI agent with informal prompts is like testing a teenage driver in an empty church parking lot on a sunny Sunday: they dodge two plastic cones at 10 mph and look like a genius. But production is a blizzard on a 6-lane interstate at rush hour. AI Evals are the standardized closed-course driving test with emergency maneuvers, and Guardrails are the anti-lock brakes and automatic collision avoidance systems that prevent fatal crashes.',
-    content: `# AI Evals & Guardrails: The Driving Test Analogy
-
-If you spend any time following AI engineering leads on X (formerly Twitter) in 2026, you will notice a massive shift in how the best builders talk about Large Language Models:
+    simple_analogy: 'Manual prompt checks only test the happy path; automated eval suites and runtime guardrails catch regressions and prompt injections before users do.',
+    content: `If you spend any time following AI engineering leads on X (formerly Twitter) in 2026, you will notice a massive shift in how the best builders talk about Large Language Models:
 
 Nobody is bragging about prompt hacks anymore. Instead, the entire developer timeline is dominated by one urgent mantra:
 
@@ -2715,16 +2687,14 @@ export async function runBenchmarkSuite(testCases: Array<{ input: string; expect
   {
     id: '15',
     slug: 'why-is-the-modern-web-so-slow-overpacked-suitcase-analogy',
-    title: 'Why is the Modern Web So Slow? The Overpacked Suitcase Analogy (JavaScript Bloat, Hydration Lag, and the HTML-First Renaissance)',
-    summary: 'Ever wonder why websites feel sluggish even on a 1-gigabit fiber connection? Explore the real causes of modern web bloat through the Overpacked Suitcase analogy. Discover the hidden cost of the JavaScript hydration tax, 45 tracking beacons, and how the HTML-first renaissance is rebuilding a lightning-fast internet in 2026.',
+    title: 'Why Modern Websites Are Slow: JS Bloat & Hydration Costs',
+    summary: 'Measure the real performance cost of SPA JavaScript bundles, React hydration blocking, and third-party trackers versus HTML-first architecture.',
     category: 'Web Performance',
     read_time: '8 min read',
     published_at: '2026-11-01',
     cover_image: '/images/blog/web-bloat-overpacked-suitcase.png',
-    simple_analogy: 'Going on a 2-day beach weekend with a light backpack containing swim trunks and sunscreen (pure HTML) lets you stroll out of the airport in 2 minutes. But modern web development insists on dragging 6 giant overweight hard-shell suitcases packed with a winter parka, an electric lawnmower, a desktop monitor, and 45 GPS tracking tags attached to the zippers (megabytes of JavaScript bundles, hydration scripts, and ad trackers). By the time you hoist them all into the taxi, the weekend is already half over.',
-    content: `# Why is the Modern Web So Slow? The Overpacked Suitcase Analogy
-
-Here is an infuriating paradox of modern technology:
+    simple_analogy: 'Shipping megabytes of client-side JavaScript and third-party trackers blocks the main thread before a user can click a single button.',
+    content: `Here is an infuriating paradox of modern technology:
 
 In 2004, you probably had a dial-up or early DSL internet connection running at **1.5 Megabits per second**. You opened Wikipedia, clicked an article, and the page appeared on your CRT monitor almost instantly.
 
@@ -2922,16 +2892,14 @@ If you want your website to load under 1 second on a budget Android phone on 4G,
   {
     id: '16',
     slug: 'how-code-destroyed-machines-stuxnet-story',
-    title: 'How Code Physically Destroyed Machines: The Story of Stuxnet (The Hollywood Security Camera Loop Analogy)',
-    summary: 'Discover how 500 kilobytes of computer code crossed an air-gapped military perimeter, weaponized four zero-day vulnerabilities, and physically destroyed 1,000 uranium enrichment centrifuges. Explore the technical anatomy of Stuxnet, SCADA industrial control systems, and why the line between software and physical physics vanished forever.',
+    title: 'How Stuxnet Worked: Zero-Days, PLCs & SCADA Cyber Warfare',
+    summary: 'Technical teardown of Stuxnet: how 500KB of code crossed an air gap using four Windows zero-days to sabotage Siemens S7-315 PLC centrifuges.',
     category: 'Cybersecurity & Systems',
     read_time: '9 min read',
     published_at: '2026-11-02',
     cover_image: '/images/blog/stuxnet-cyber-weapon.png',
-    simple_analogy: 'Imagine a crew of master diamond thieves breaking into a subterranean bank vault. Instead of blowing up the front door, they tap into the security camera cables and feed a 10-second prerecorded video loop of a quiet, empty hallway directly onto the guard monitors. While the guards sip coffee watching peaceful screens, the vault is emptied. Stuxnet did exactly this to industrial hardware: while spinning nuclear centrifuges to catastrophic mechanical failure, it fed fake normal sensor telemetry to the control room monitors so scientists watched green dials until the floor began vibrating.',
-    content: `# How Code Physically Destroyed Machines: The Story of Stuxnet
-
-In the summer of 2009, inside an ultra-secret underground nuclear enrichment facility in Natanz, Iran, Iranian nuclear scientists noticed an inexplicable disaster:
+    simple_analogy: 'Stuxnet intercepted PLC commands to spin centrifuges past destructive limits while replaying recorded normal telemetry to control-room screens.',
+    content: `In the summer of 2009, inside an ultra-secret underground nuclear enrichment facility in Natanz, Iran, Iranian nuclear scientists noticed an inexplicable disaster:
 
 Their high-tech uranium enrichment centrifuges were violently tearing themselves apart.
 
@@ -3128,16 +3096,14 @@ Stuxnet did not breach the Iranian government directly. It breached five small, 
   {
     id: '17',
     slug: 'how-hackers-melted-european-supermarkets-iot-refrigeration-hack',
-    title: 'How Hackers Melted European Supermarkets Overnight: The IoT Refrigeration Attack (The Thermostat on the Front Porch Analogy)',
-    summary: 'Discover how hackers remotely infiltrated industrial cooling controllers across hundreds of European grocery stores, heating freezers to 50°C and spoiling millions of euros of food. Through the Thermostat on the Front Porch analogy, learn how Operational Technology (OT), default credentials, and exposed IoT ports threaten modern critical infrastructure.',
+    title: 'The European Supermarket IoT Hack: OT Security Lessons',
+    summary: 'How attackers scanned Shodan for exposed Danfoss refrigeration controllers with default passwords and forced 700+ European stores into defrost mode.',
     category: 'Cybersecurity & IoT',
     read_time: '9 min read',
     published_at: '2026-11-05',
     cover_image: '/images/blog/supermarket-refrigeration-cyberattack.png',
-    simple_analogy: 'Imagine installing a central heating and air conditioning system in your house, but mounting the master temperature dial on your front porch facing the public sidewalk, with a sticker that says: "Passcode: 1234". Anyone walking by at 3 AM can walk up, crank the heat to 120°F while you sleep, and turn your freezer into an oven. That is exactly what hundreds of European supermarkets did: they connected industrial cooling controllers directly to the public internet with default factory passwords so technicians could check temperatures remotely, letting hackers melt their food with a single mouse click.',
-    content: `# How Hackers Melted European Supermarkets Overnight: The IoT Refrigeration Attack
-
-In early November 2026, grocery store managers and bakery clerks across France, Belgium, Germany, the Netherlands, and Sweden arrived for their early morning shifts to an unbelievable scene of devastation:
+    simple_analogy: 'Exposing industrial controllers directly to the public internet with default credentials lets automated port scanners manipulate physical hardware.',
+    content: `In early November 2026, grocery store managers and bakery clerks across France, Belgium, Germany, the Netherlands, and Sweden arrived for their early morning shifts to an unbelievable scene of devastation:
 
 The glass display freezers lining the grocery aisles were completely fogged over with thick condensation.
 
@@ -3323,16 +3289,14 @@ Supermarkets did not get hacked because their internal IT team was incompetent; 
   {
     id: '18',
     slug: 'winchester-mystery-house-ai-code-technical-debt',
-    title: 'The Winchester Mystery House of AI Code: The Looming Crisis of Technical Debt',
-    summary: 'In 2026, autonomous AI coding agents can scaffold 20,000 lines of code in minutes. Yet six months later, engineering teams are trapped inside sprawling repositories nobody understands. Using the Winchester Mystery House analogy, explore empirical studies on AI code churn, logic duplication, and five architectural rules to survive agentic software engineering.',
+    title: 'AI Code Technical Debt: Churn, Duplication & Fixes',
+    summary: 'Empirical data from GitClear and DORA on AI code churn and logic duplication, plus five engineering guardrails to keep repositories maintainable.',
     category: 'Software Engineering & AI',
     read_time: '9 min read',
     published_at: '2026-11-12',
     cover_image: '/images/blog/winchester-house-ai-code-debt.png',
-    simple_analogy: 'Imagine hiring a tireless construction crew with amnesia who build at supersonic speed without a master blueprint. Every day you ask for a sunroom or bathroom, and they hammer it onto whatever wall is closest, creating staircases that hit flat ceilings and doors that swing open into empty air. Six months later you live inside a giant labyrinth where fixing one leaky sink floods three floors because nobody remembers where the pipes go. That is the Winchester Mystery House of AI-generated code.',
-    content: `# The Winchester Mystery House of AI Code: The Looming Crisis of Technical Debt
-
-In San Jose, California stands one of the strangest architectural monuments in American history: **The Winchester Mystery House**.
+    simple_analogy: 'Context-blind AI prompts add isolated features without a master blueprint, creating duplicated logic and high short-term code churn.',
+    content: `In San Jose, California stands one of the strangest architectural monuments in American history: **The Winchester Mystery House**.
 
 Starting in 1886, heiress Sarah Winchester hired crews of carpenters to build on her mansion 24 hours a day, 7 days a week, for **38 continuous years**. 
 
