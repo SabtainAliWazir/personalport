@@ -225,9 +225,10 @@ html {
 .group-roll-wrap {
   position: relative;
   display: inline-block;
-  height: 1.15em;
+  height: 1.45em;
+  line-height: 1.45em;
   overflow: hidden;
-  vertical-align: bottom;
+  vertical-align: middle;
 }
 
 /* Marquee Animation */
