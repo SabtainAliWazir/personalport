@@ -12,6 +12,7 @@ const optimized = new Set([
   '/images/blog/insecure-vs-hardened-php.png',
   '/images/blog/proprietary-integrations-vs-mcp.png',
   '/images/blog/traditional-vs-vibe-coding.png',
+  '/images/blog/unconstrained-reasoning-vs-codestop.png',
   '/images/blog/vibe-check-vs-rigorous-evals.png',
 ]);
 
