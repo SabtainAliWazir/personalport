@@ -7,8 +7,8 @@ export default function About() {
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
       <SEOHead
-        title="About Sabtain Ali · Senior Full-Stack Engineer"
-        description="Biography, engineering philosophy, and background of Sabtain Ali. 4+ years developing mission-critical systems for WHO and international enterprise clients."
+        title="About Sabtain Ali · Full-Stack Developer"
+        description="Background and experience of Sabtain Ali, a full-stack developer who built the CommutersLink Pakistan carpooling backend and web apps for WHO and WOAH."
         canonical="/about"
       />
       {/* ─────────────────────────────────────────────────────────────
@@ -27,13 +27,13 @@ export default function About() {
           {/* Main Story Narrative */}
           <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-zinc-700 leading-relaxed font-sans">
             <p>
-              I am a <strong className="text-zinc-950 font-semibold">Senior Full-Stack Software Engineer</strong> with 4+ years of professional experience building high-performance web applications, custom REST APIs, and automated data pipelines.
+              I am a <strong className="text-zinc-950 font-semibold">full-stack developer</strong> based in Islamabad with over 4 years of experience building web apps, backend APIs, and databases.
             </p>
             <p>
-              Currently at <strong className="text-zinc-950 font-semibold">SysReforms International</strong>, I engineer core data verification engines and automated certification platforms for the <strong className="text-[#f97316] font-semibold">World Health Organization (WHO e-ACR)</strong> and the <strong className="text-[#f97316] font-semibold">World Organisation for Animal Health (WOAH PVSIS)</strong>. My code processes millions of health records with zero errors and powers real-time socket chat for international delegates across 180+ countries.
+              At <strong className="text-zinc-950 font-semibold">SysReforms International</strong>, I built the backend for <strong className="text-[#f97316] font-semibold">CommutersLink</strong> (a Pakistan carpooling app), including Google Maps API distance/route logic and travel-partner suggestions. I also work on web tools for <strong className="text-zinc-950 font-semibold">WHO</strong> and <strong className="text-zinc-950 font-semibold">WOAH</strong> teams - handling Laravel and MySQL data checks, React pages, and live messaging with Node.js and Socket.io.
             </p>
             <p>
-              Whether working with startups or international organizations, I build clean, test-driven software using <strong className="text-zinc-950 font-semibold">React, TypeScript, Node.js, and Laravel 11</strong> that delivers 99+ Google Core Web Vitals scores and real business growth.
+              Outside of my day job, I help startups and small businesses build web apps, WhatsApp bots, and faster websites using <strong className="text-zinc-950 font-semibold">React, TypeScript, Node.js, and Laravel</strong>.
             </p>
           </div>
 
@@ -172,11 +172,11 @@ export default function About() {
             Ready to build together?
           </h2>
           <p className="mt-4 max-w-md mx-auto text-sm text-zinc-600 font-sans">
-            Let&#39;s engineer high-performance software with senior-level precision.
+            Open to full-time full-stack roles and select freelance work.
           </p>
           <div className="mt-8 flex justify-center">
             <ExpandingArrowButton href="/contact" accentColor="#f97316">
-              Initiate Contact
+              Get in touch
             </ExpandingArrowButton>
           </div>
         </div>

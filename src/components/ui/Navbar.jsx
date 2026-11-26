@@ -112,7 +112,7 @@ export default function Navbar() {
                     className="absolute left-1/2 top-full mt-3 w-[min(24rem,calc(100vw-2rem))] -translate-x-1/2 origin-top rounded-2xl bg-white p-2.5 text-zinc-900 shadow-[0_12px_40px_rgba(0,0,0,0.1)] border border-zinc-200/80"
                   >
                     <p className="px-4 pb-1 pt-2 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-zinc-400 font-semibold">
-                      Core Engineering Capabilities
+                      What I build
                     </p>
                     <div className="mt-1 space-y-0.5">
                       {SERVICES.slice(0, 4).map((srv) => (
@@ -139,7 +139,7 @@ export default function Navbar() {
                       href="/service"
                       className="group mt-1 flex items-center justify-between rounded-xl border-t border-zinc-100 px-4 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50"
                     >
-                      <span>All capabilities</span>
+                      <span>All services</span>
                       <span className="text-[#f97316] transition-transform duration-200 group-hover:translate-x-1">
                         →
                       </span>
@@ -227,7 +227,7 @@ export default function Navbar() {
 
               {/* Mobile Quick Service List */}
               <div className="mt-[5vh]">
-                <p className="label-mono mb-[1.5vh] text-zinc-400">Core Capabilities</p>
+                <p className="label-mono mb-[1.5vh] text-zinc-400">What I build</p>
                 <div className="grid grid-cols-1 gap-2">
                   {SERVICES.slice(0, 3).map((srv) => (
                     <Link

@@ -3,13 +3,26 @@ import { PROJECTS } from '../data/portfolioData';
 import { Link } from '../router/RouterContext';
 import ExpandingArrowButton from '../components/ui/ExpandingArrowButton';
 import { trackPortfolioEvent } from '../lib/metrics';
+import { absoluteUrl, AUTHOR_ID, schema } from '../data/site';
 
 export default function ServiceDetail({ service, featured }) {
   const project = PROJECTS.find(({ slug }) => slug === featured.projectSlug);
+  const metaDescription = featured.metaDescription || featured.intro;
 
   return (
     <article className="gutter mx-auto max-w-5xl py-32">
-      <SEOHead title={featured.title} description={featured.intro} canonical={`/service/${service.id}`} image={service.image} />
+      <SEOHead
+        title={featured.title}
+        description={metaDescription}
+        canonical={`/service/${service.id}`}
+        image={service.image}
+        articleSchema={schema('Service', {
+          name: featured.title,
+          description: metaDescription,
+          provider: { '@id': AUTHOR_ID },
+          url: absoluteUrl(`/service/${service.id}`),
+        })}
+      />
       <Link href="/service" className="text-sm font-semibold underline">All services</Link>
       <h1 className="display-h1 mt-5">{featured.title}</h1>
       <p className="mt-5 max-w-3xl text-lg text-zinc-700">{featured.intro}</p>

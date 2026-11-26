@@ -31,7 +31,14 @@ export async function loadRoute(path, payload) {
   const [, section, slug, ...rest] = path.split('/');
   const isBlogListing = isBlogListingPath(path);
   let loadPage = Object.hasOwn(pages, path) ? pages[path] : undefined;
-  if (!rest.length && slug && section === 'portfolio') {
+  if (path === '/') {
+    if (import.meta.env.DEV && payload === undefined) {
+      const { loadPublishedPosts, blogIndex } = await import('../lib/supabase.js');
+      const posts = await loadPublishedPosts();
+      payload = { recentPosts: blogIndex(posts).slice(0, 4) };
+    }
+    pageProps = payload || {};
+  } else if (!rest.length && slug && section === 'portfolio') {
     const project = PROJECTS.find((item) => item.slug === slug);
     if (project) {
       loadPage = () => import('../pages/CaseStudy.jsx');
@@ -50,7 +57,18 @@ export async function loadRoute(path, payload) {
         const listing = blogListings(index).get(path);
         if (listing) payload = { ...listing, searchIndex: index };
       } else {
-        payload = { post: posts.find((item) => item.slug === slug) };
+        const post = posts.find((item) => item.slug === slug);
+        if (post) {
+          const index = blogIndex(posts);
+          const others = index.filter((item) => item.slug !== post.slug);
+          const relatedPosts = [
+            ...others.filter((item) => item.category === post.category),
+            ...others.filter((item) => item.category !== post.category),
+          ].slice(0, 3);
+          payload = { post, relatedPosts };
+        } else {
+          payload = { post: undefined };
+        }
       }
     }
     if (isBlogListing && payload?.posts) loadPage = () => import('../pages/Blog.jsx');

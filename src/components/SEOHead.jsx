@@ -4,7 +4,12 @@ export default function SEOHead({
   title, description = SITE_DESCRIPTION, canonical, image = PROFILE_IMAGE,
   type = 'website', publishedTime, category, articleSchema, noindex = false,
 }) {
-  const fullTitle = title && !title.includes('Sabtain Ali') ? `${title} · Sabtain Ali` : title || SITE_TITLE;
+  const fullTitle =
+    type === 'article'
+      ? title || SITE_TITLE
+      : title && !title.includes('Sabtain Ali')
+        ? `${title} · Sabtain Ali`
+        : title || SITE_TITLE;
   const url = canonical ? absoluteUrl(canonical) : null;
   const imageUrl = absoluteUrl(image);
 

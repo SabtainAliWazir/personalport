@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from '../router/RouterContext';
 import SEOHead from '../components/SEOHead';
 import { BLOG_INDEX_PATH, BLOG_PAGE_SIZE, blogPagePath } from '../data/blogPagination';
+import { absoluteUrl, AUTHOR_ID, schema } from '../data/site';
 import {
   Clock, Calendar, ArrowRight,
   Search, Compass, Terminal
@@ -41,8 +42,21 @@ export default function Blog({ posts, categories, page, pageCount, totalPosts, s
     <div className="min-h-screen bg-white text-zinc-950 pt-36 sm:pt-44 pb-24 selection:bg-[#f97316] selection:text-white">
       <SEOHead
         title={page === 1 ? 'Blog & Engineering Stories' : `Blog & Engineering Stories · Page ${page}`}
-        description="Clear, human-first breakdowns of software architecture, AI agents, databases, and network protocols explained with everyday analogies by Sabtain Ali."
+        description={
+          page === 1
+            ? 'Practical engineering articles by Sabtain Ali on backend architecture, databases, web performance, security, and production AI systems.'
+            : `Page ${page} of software engineering articles by Sabtain Ali covering backend systems, databases, security, and AI architecture.`
+        }
         canonical={blogPagePath(page)}
+        articleSchema={
+          page === 1
+            ? schema('CollectionPage', {
+                name: 'Engineering Blog · Sabtain Ali',
+                url: absoluteUrl('/blog'),
+                author: { '@id': AUTHOR_ID },
+              })
+            : undefined
+        }
       />
       
       {/* ─────────────────────────────────────────────────────────────

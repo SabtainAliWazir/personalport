@@ -38,7 +38,7 @@ const markdown = new Marked({
 });
 
 
-export default function BlogPost({ post }) {
+export default function BlogPost({ post, relatedPosts = [] }) {
   const [copied, setCopied] = useState(false);
 
   const content = post.content;
@@ -66,7 +66,7 @@ export default function BlogPost({ post }) {
     description: post.summary,
     image: absoluteUrl(coverSrc),
     datePublished: post.published_at,
-    dateModified: post.published_at,
+    dateModified: post.updated_at || post.published_at,
     articleSection: post.category,
     author: { '@type': 'Person', '@id': AUTHOR_ID, name: AUTHOR_NAME, url: absoluteUrl('/about') },
     mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(canonical) },
@@ -192,6 +192,36 @@ export default function BlogPost({ post }) {
           </p>
         )}
 
+        {/* Related Articles for Internal Link Equity */}
+        {relatedPosts.length > 0 && (
+          <section aria-labelledby="related-articles-heading" className="mt-12 border-b border-zinc-200 pb-12">
+            <h2 id="related-articles-heading" className="font-display text-xl font-semibold tracking-tight text-zinc-950">
+              Related articles
+            </h2>
+            <div className="mt-5 grid gap-4 sm:grid-cols-3">
+              {relatedPosts.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/blog/${item.slug}`}
+                  className="group flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-4 transition-colors hover:border-[#f97316]"
+                >
+                  <div>
+                    <p className="font-mono text-[0.68rem] text-[#f97316] font-semibold">
+                      {item.category}
+                    </p>
+                    <h3 className="mt-1.5 font-display text-sm font-semibold leading-snug text-zinc-950 transition-colors group-hover:text-[#f97316]">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <p className="mt-3 font-mono text-[0.68rem] text-zinc-500">
+                    {item.published_at}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Author Bio Box */}
         <div className="mt-12 rounded-3xl border border-zinc-200 bg-zinc-50/80 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-sm">
           <img
@@ -204,10 +234,10 @@ export default function BlogPost({ post }) {
               Written by Sabtain Ali
             </p>
             <h3 className="font-display text-lg font-semibold text-zinc-950">
-              Senior Full-Stack Software Engineer
+              Full-Stack Developer
             </h3>
             <p className="text-xs text-zinc-600 font-sans leading-relaxed">
-              I build web platforms for organizations like the World Health Organization and write daily lessons breaking down software concepts in plain human language.
+              I build backends and full-stack web apps with React, Node.js, Laravel, and MySQL - including the CommutersLink carpooling backend in Pakistan and web tools for WHO and WOAH.
             </p>
             <div className="pt-2">
               <Link

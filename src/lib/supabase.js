@@ -1369,47 +1369,30 @@ The most famous real-world example occurred in 1982 when **Compaq** reverse-engi
     category: 'Cybersecurity',
     read_time: '9 min read',
     published_at: '2026-10-22',
+    updated_at: '2026-11-26',
     cover_image: '/images/blog/php-security-bank-vault.png',
-    simple_analogy: 'Most PHP breaches exploit unparameterized queries, unsafe file uploads, and exposed endpoints rather than core language flaws.',
-    content: `Did you know that **over 76% of all websites whose server-side programming language is known run on PHP**?
+    simple_analogy: 'Most PHP breaches exploit unparameterized SQL queries, unserialize() calls, unsafe file uploads inside public webroots, and misconfigured PHP-CGI or php.ini settings.',
+    content: `Over 75% of websites with a known server-side language still run on PHP - from WordPress and Drupal sites to Laravel, Symfony, and FrankenPHP backends. Because it powers so much production infrastructure, automated scanners probe every public domain for common PHP misconfigurations around the clock.
 
-From the world's largest content management platforms (WordPress, Drupal) to modern enterprise architectures running Laravel, Symfony, and FrankenPHP, PHP continues to be the financial and operational engine of the internet.
-
-Because PHP is so ubiquitous, it is also the **single most scanned, probed, and targeted runtime on earth**. Every minute of every day, automated botnets blast millions of web servers searching for vulnerable PHP endpoints.
-
-Yet many developers have a dangerously distorted view of PHP security:
-- Some believe *"PHP is inherently insecure and obsolete."* (Completely false: modern PHP 8.3 and 8.4 feature world-class cryptographic engines, strict typing, and high-performance JIT compilers).
-- Others believe *"I am using a modern framework, so I am 100% immune."* (Equally dangerous: misconfigured upload paths, exposed debug flags, or legacy CGI wrappers can compromise even the cleanest Laravel deployment).
-
-How do PHP vulnerabilities actually happen? And how do senior security engineers build fortress-grade defenses around PHP applications?
-
-Let's unpack modern PHP security using an everyday real-world analogy: **The Bank Vault with Five Secret Backdoors**.
+Modern PHP 8.3 and 8.4 ship strong cryptography, strict typing, and fast runtime execution. Real-world breaches rarely come from bugs in PHP itself; they happen when application code mixes untrusted input with SQL queries, exposes \`unserialize()\`, saves user uploads inside executable web directories, or leaves debug flags enabled in \`php.ini\`.
 
 ---
 
-## 1. The Real-World Analogy: The Bank Vault and the 5 Backdoors
+## 1. Where Real PHP 8.x Breaches Actually Come From
 
-Imagine you are hired as Chief Security Officer for a high-security city bank:
+Whether you maintain raw PDO scripts or a Laravel 11 API, almost every critical PHP vulnerability falls into one of five buckets:
 
-To protect customer deposits, the bank installs a brand-new, 10-ton solid titanium vault door with dual retinal scanners and 12-digit combination locks. 
-
-On paper, the vault is unbreakable. But when you inspect the bank's daily operations, you discover shocking vulnerabilities:
-
-1. **The Teller Microphone**: Customers can yell deposit instructions through the microphone, and the teller deposits money into whichever account the voice demands without checking ID.
-2. **The Delivery Chute**: Couriers can drop sealed wooden crates directly into the vault basement without anyone opening them or scanning for explosives.
-3. **The Uninspected Parcel**: A package arrives labeled "Gold Bars". Instead of verifying what is inside, staff unpack it directly into the master vault based solely on the cardboard label.
-4. **The Transparent Glass Counter**: The bank ledger is printed on transparent glass facing the street, allowing anyone outside with binoculars to read customer account numbers.
-5. **The Borrowed Staff Badges**: Employees leave their all-access master badges hanging on plastic hooks outside the breakroom door.
-
-**Modern PHP is that 10-ton titanium vault door**. 
-
-The PHP core runtime is robust, fast, and engineered to high standards. But when developers write insecure application code or deploy flawed server configurations, they leave these five operational backdoors wide open.
+1. **SQL Injection (SQLi)**: Passing string-concatenated variables into SQL instead of parameterized queries, or forgetting to disable PDO emulated prepares on older MySQL setups.
+2. **PHP Object Injection**: Calling \`unserialize()\` on cookies, webhook payloads, or queue data controlled by the client.
+3. **Arbitrary File Uploads**: Trusting client \`$_FILES['type']\` headers or filenames and storing uploads inside a webroot where PHP execution is enabled.
+4. **Cross-Site Scripting (XSS)**: Rendering unescaped user fields directly in templates without \`htmlspecialchars()\` or Blade escaping.
+5. **Runtime & Session Misconfiguration**: Running vulnerable PHP-CGI builds on Windows (\`CVE-2024-4577\`), leaving \`display_errors = On\`, or allowing unencrypted session cookies.
 
 ---
 
-## 2. Forward Defense: The 5 Vulnerability Vectors in PHP
+## 2. The 5 Critical PHP Vulnerability Vectors
 
-Here is how each backdoor maps to modern web application attacks:
+Here is how those five attack paths map directly to application and server defenses:
 
 \`\`\`
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -1427,7 +1410,7 @@ Let's examine how each attack works at the byte level and how to lock it down.
 
 ---
 
-## 3. Backdoor 1: SQL Injection (The Fake Teller Microphone)
+## 3. Vector 1: SQL Injection in PDO and Query Builders
 
 SQL Injection remains one of the oldest and most damaging web vulnerabilities. It occurs when untrusted user input is directly concatenated into a raw database query string:
 
@@ -1491,7 +1474,7 @@ if ($user && password_verify($_POST['password'], $user['password_hash'])) {
 
 ---
 
-## 4. Backdoor 2: PHP Object Injection (The Uninspected Parcel)
+## 4. Vector 2: PHP Object Injection (Unsafe unserialize)
 
 One of PHP's most notorious features is native serialization: \`serialize()\` and \`unserialize()\`.
 
@@ -1517,7 +1500,7 @@ $data = json_decode($_COOKIE['user_prefs'], associative: true, depth: 8, flags: 
 
 ---
 
-## 5. Backdoor 3: Arbitrary File Upload (The Disguised Courier)
+## 5. Vector 3: Arbitrary File Upload & Execution
 
 Allowing users to upload profile pictures, PDF invoices, or documents is a standard requirement. However, naive upload handling is a primary vector for server takeover.
 
@@ -1531,10 +1514,10 @@ if ($_FILES['avatar']['type'] === 'image/png') {
 \`\`\`
 
 ### How Attackers Bypass This:
-1. An attacker crafts a file named \`backdoor.php\`.
+1. An attacker crafts a file named \`shell.php\`.
 2. They use a proxy to spoof the HTTP \`Content-Type\` header to \`image/png\`.
-3. The server moves \`backdoor.php\` into the public \`/uploads\` folder.
-4. The attacker navigates to \`https://example.com/uploads/backdoor.php\` and executes arbitrary code on your server.
+3. The server moves \`shell.php\` into the public \`/uploads\` folder.
+4. The attacker navigates to \`https://example.com/uploads/shell.php\` and executes arbitrary code on your server.
 
 ### The Multi-Layered Hardening Strategy:
 1. **Never trust the client filename**: Generate a cryptographically random UUID filename (\`bin2hex(random_bytes(16))\`).
@@ -1647,7 +1630,29 @@ session.sid_bits_per_character = 6
 
 1. **Modern PHP is Strong, Bad Code is Weak**: PHP 8.4 is one of the most secure, performant backends in modern web architecture. The vulnerabilities almost always arise from improper input handling, string concatenation, or unvetted file uploads.
 2. **Prepared Statements are Non-Negotiable**: Never let raw user strings touch a database query. Use PDO with server-side prepared statements and parameter binding.
-3. **Defense in Depth**: Combine code sanitization with server configuration. Turn off error displays in production, enforce HTTPS-only \`HttpOnly\` cookies, run current PHP versions, and isolate file storage outside the webroot.`
+3. **Defense in Depth**: Combine code sanitization with server configuration. Turn off error displays in production, enforce HTTPS-only \`HttpOnly\` cookies, run current PHP versions, and isolate file storage outside the webroot.
+
+---
+
+## Common PHP Security Questions
+
+### Should I disable PDO::ATTR_EMULATE_PREPARES in PHP?
+Yes. Setting \`PDO::ATTR_EMULATE_PREPARES => false\` forces MySQL or MariaDB to compile the SQL statement separately from parameter values at the database engine level, removing edge-case multibyte encoding bypasses.
+
+### How do I check if my server is exposed to CVE-2024-4577?
+Run \`php -v\` and inspect your web server SAPI. If you run PHP-CGI directly on Windows under Apache or IIS, upgrade immediately to PHP 8.3.8+, 8.2.20+, or migrate to FastCGI/PHP-FPM behind Nginx or FrankenPHP.
+
+### Where should uploaded user images or PDFs live in Laravel or PHP?
+Store raw user uploads outside \`public/\` (for example in \`storage/app/private\` or an object bucket like S3/R2), generate a random UUID filename, verify MIME bytes with \`finfo_file()\`, and disable PHP execution inside static upload paths at the Nginx/Apache layer.
+
+---
+
+## References & Further Reading
+
+- Internal: [Laravel Case Study: WHO e-ACR Data Reconciliation](/portfolio/who-eacr)
+- Internal: [The European Supermarket IoT Hack: OT Security Lessons](/blog/how-hackers-melted-european-supermarkets-iot-refrigeration-hack)
+- External: [OWASP PHP Configuration Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/PHP_Configuration_Cheat_Sheet.html)
+- External: [PHP Manual - Security Reference](https://www.php.net/manual/en/security.php)`
   },
   {
     id: '10',
@@ -1847,50 +1852,29 @@ Here is the exact battle-tested playbook senior engineering consultants use to m
     category: 'Artificial Intelligence',
     read_time: '8 min read',
     published_at: '2026-10-25',
+    updated_at: '2026-11-26',
     cover_image: '/images/blog/mcp-universal-usb-c-ai.png',
-    simple_analogy: 'MCP acts like a universal USB-C standard for AI, letting one server expose tools and data to any MCP-compatible client or IDE.',
-    content: `If you spend any time on X (formerly Twitter), GitHub, or developer discords in 2026, you have almost certainly seen developers buzzing about **MCP (Model Context Protocol)**.
+    simple_analogy: 'MCP is an open JSON-RPC 2.0 protocol over stdio or Streamable HTTP that lets a single tool server work across Claude, Cursor, VS Code, and custom agent runtimes without rewriting adapters.',
+    content: `Model Context Protocol (MCP) is an open JSON-RPC 2.0 protocol that standardizes how AI clients and IDEs discover and call external tools, read data sources, and load prompt templates.
 
-Phrases like *"We need to MCP-ify our database"*, *"Anthropic donated MCP to the Linux Foundation"*, and *"MCP is the USB-C moment for AI"* are everywhere.
+Before MCP, connecting Claude, Cursor, ChatGPT, and an internal CLI agent to the same PostgreSQL database, Git repository, and issue tracker meant writing and maintaining separate tool schemas and glue code for every single client. When an AI vendor changed its tool-calling payload format, integrations broke silently.
 
-Why is a technical protocol causing so much excitement across the global developer community?
-
-Because until recently, giving an AI model access to external data was an engineering nightmare. 
-
-If you wanted Claude, ChatGPT, Cursor, and a terminal coding agent to query your PostgreSQL database, read your local Git repository, and inspect your Slack channels, you had to write **dozens of bespoke, fragile API wrappers** that broke every time an AI provider changed their function-calling syntax.
-
-Enter **Model Context Protocol (MCP)**.
-
-Let's unpack what MCP is, why it is revolutionizing AI development, and how it works using an everyday real-world analogy: **The Universal USB-C Cable**.
+MCP decouples the AI host from the tool server so you write an integration once and run it across any compatible client.
 
 ---
 
-## 1. The Real-World Analogy: The Universal USB-C Cable
+## 1. What Model Context Protocol (MCP) Actually Solves
 
-Do you remember what traveling with electronic gadgets looked like in 2012?
-- Your laptop had a thick round barrel charger.
-- Your digital camera used a proprietary mini-USB cable.
-- Your Android phone used micro-USB.
-- Your iPhone used a 30-pin ribbon connector.
-- Your Kindle used another slightly different cable.
+At the wire level, MCP specifies capability negotiation, typed JSON Schema inputs, and two primary transports:
 
-If you had five devices, you had to carry five separate cables and a bag full of plastic dongles. If a friend asked to borrow a charger, your cables never fit their phone.
+- **\`stdio\` transport**: Ideal for local developer tools, Git inspection, and filesystem helpers launched as child processes by an IDE or desktop host.
+- **Streamable HTTP transport**: Built for remote, multi-user enterprise servers authenticated with OAuth tokens behind TLS.
 
-Then, the technology industry came together and engineered **USB-C**.
-
-USB-C did not just create a convenient reversible shape. It created a **universal standard protocol**:
-- The exact same cable carries 240W of electric power.
-- It transmits 40 Gbps of high-speed data.
-- It carries 8K video signals to external monitors.
-- It connects keyboards, microphones, external SSDs, and webcams to any brand of laptop, phone, or tablet on earth.
-
-**Model Context Protocol (MCP) is the USB-C of the AI era.**
-
-Before MCP, every AI model had its own proprietary "dongle" for function calling. MCP replaces all those messy custom adapters with a single, open, universal protocol that lets **any AI client connect to any data source or tool** with zero custom integration code.
+Instead of hardcoding custom OpenAI or Anthropic tool wrappers inside every repo, an MCP server exposes its tools through a standard handshake so any compliant host discovers them automatically at startup.
 
 ---
 
-## 2. The $M \times N$ Integration Nightmare vs The $M + N$ Standard
+## 2. The M x N Integration Nightmare vs The M + N Standard
 
 To understand why tech leads and CTOs love MCP, look at the mathematics of software integration:
 
@@ -2070,10 +2054,31 @@ MCP was engineered with strict security boundaries from day one:
 
 ## Key Takeaways
 
-1. **The Universal USB-C for AI**: MCP transforms fragmented, proprietary function-calling into an open, vendor-neutral standard for connecting AI agents to tools and data.
-2. **From $M \\times N$ to $M + N$**: By decoupling AI clients from data servers, developers only write integrations once, breaking vendor lock-in forever.
-3. **The 3 Primitives**: Everything an AI needs boils down to **Resources** (reading data), **Prompts** (curated workflows), and **Tools** (executing actions).
-4. **The Future is Open**: With stewardship transitioned to the Linux Foundation's Agentic AI Foundation and adoption by Anthropic, Google, and OpenAI, MCP is rapidly becoming the foundation of autonomous software engineering.`
+1. **Open Standard**: MCP replaces per-vendor tool wrappers with a single JSON-RPC 2.0 protocol.
+2. **From M x N to M + N**: Write a server once for PostgreSQL, Slack, or internal APIs and reuse it across every compatible client.
+3. **Three Core Primitives**: **Resources** (read-only context), **Prompts** (reusable templates), and **Tools** (callable actions).
+4. **Scoped Security**: Hosts negotiate permissions explicitly and can require human approval before mutating state.
+
+---
+
+## Common MCP Troubleshooting Questions
+
+### Why does my stdio MCP server fail to connect or throw JSON parse errors?
+Any \`console.log()\` or print statement writing to \`stdout\` corrupts the JSON-RPC stream over \`stdio\`. Always send diagnostic logs to \`stderr\` (\`console.error()\`), never \`stdout\`.
+
+### When should I use stdio vs Streamable HTTP transport?
+Use \`stdio\` for local developer utilities that inspect local files, git diffs, or local Docker containers. Use Streamable HTTP when multiple team members share a hosted server with centralized auth and audit logging.
+
+### How do I stop an MCP agent from running destructive SQL queries?
+Expose read-only tools backed by a read-only database role, validate every query server-side, and keep write operations behind separate tools that require explicit user confirmation in the client host.
+
+---
+
+## References & Further Reading
+
+- Internal: [How Autonomous AI Agents Work: Architecture & Tool Use](/blog/what-is-an-ai-agent-explained)
+- Internal: [AI Evals & Runtime Guardrails for Production LLM Apps](/blog/ai-evals-guardrails-driving-test-analogy)
+- External: [Model Context Protocol Official Specification](https://modelcontextprotocol.io/specification/latest)`
   },
   {
     id: '12',
@@ -2443,55 +2448,23 @@ If you can reconstruct the logic without peeking, congratulations: you did not j
     category: 'Artificial Intelligence',
     read_time: '9 min read',
     published_at: '2026-10-29',
+    updated_at: '2026-11-26',
     cover_image: '/images/blog/ai-evals-driving-test.png',
     simple_analogy: 'Manual prompt checks only test the happy path; automated eval suites and runtime guardrails catch regressions and prompt injections before users do.',
-    content: `If you spend any time following AI engineering leads on X (formerly Twitter) in 2026, you will notice a massive shift in how the best builders talk about Large Language Models:
+    content: `Most teams test an LLM feature by running five manual prompts in a playground, seeing clean replies, and deploying. Within days of real traffic, non-deterministic edge cases appear: broken JSON responses, leaked PII, policy hallucinations, or tool-calling loops that spike API bills.
 
-Nobody is bragging about prompt hacks anymore. Instead, the entire developer timeline is dominated by one urgent mantra:
-
-> *"If you don't have an automated evaluation suite, you don't have an AI product. You just have a demo that hasn't embarrassed you in public yet."*
-
-Why are AI leaders like Andrej Karpathy, Simon Willison, and Chip Huyen constantly hammering the concept of **Evals (Evaluations)** and **Guardrails**?
-
-Because thousands of startups and enterprises fell into the exact same painful trap:
-1. They built an AI customer agent or coding assistant.
-2. They tested it locally with five friendly prompts. Everything looked magical.
-3. They launched to production.
-4. Within 48 hours, the agent hallucinated a fake 90% discount code, leaked customer email addresses, or entered an infinite recursive loop that burned $4,000 in API tokens before breakfast.
-
-How do elite software engineers prevent AI agents from going rogue? 
-
-Let's unpack how modern AI evaluation and guardrails work using an everyday real-world analogy: **The Empty Parking Lot vs The Proving Ground Driving Test**.
+Shipping reliable LLM systems requires two separate engineering layers: **offline Evals** that run in CI before every prompt or model change ships, and **runtime Guardrails** that inspect inputs and outputs in milliseconds before a response reaches your user or database.
 
 ---
 
-## 1. The Real-World Analogy: The Parking Lot vs The Proving Ground
+## 1. Why Manual Prompt Spot-Checking Breaks in Production
 
-Imagine you are hiring a delivery driver for your commercial fleet:
+When you tweak a system prompt to fix one bug, you often introduce silent regressions somewhere else. Without a repeatable regression suite, you hit four predictable failures:
 
-### The Vibe Check (How Most Teams Test AI)
-To test the driver, you take them to an empty church parking lot on a clear Sunday afternoon:
-- They start the engine.
-- They steer around two plastic orange cones at 10 mph.
-- They park cleanly between two white lines.
-- You say: *"Awesome! Smooth vibes! You're hired."*
-
-On Monday morning, you hand them the keys to a 5-ton delivery truck in the middle of a blizzard on a six-lane interstate during rush hour. 
-- Road signs are covered in ice.
-- Pedestrians dart across intersections.
-- A car spins out 50 feet ahead.
-
-Because the driver was only tested in an empty parking lot, they panic, slam the wrong pedal, and cause a devastating four-car pileup.
-
-### The Closed-Course Proving Ground (AI Evals & Guardrails)
-Now consider how airline pilots, Formula 1 drivers, and autonomous vehicles are actually certified:
-- They are not evaluated on "vibes" in an empty lot.
-- They are put through a rigorous **closed-course test matrix**: emergency wet-asphalt braking, hydroplaning recovery, night driving with blinded headlights, and hundreds of flight simulator hours where double-engine failures and crosswinds are intentionally triggered.
-- Furthermore, the vehicle itself is fitted with **Guardrails**: anti-lock brakes (ABS), electronic stability control, and automatic emergency braking sensors that override driver error before metal hits concrete.
-
-**In software engineering, AI Evals are that rigorous proving ground test, and Guardrails are the unbreachable safety overrides.**
-
-If you only test your AI agent with a few ad-hoc chat prompts in your terminal, you are driving in an empty parking lot. The moment real users hit your app with edge cases, typos, and malicious prompts, your system crashes.
+1. **Silent Schema Drift**: Adding a new instruction causes a model to wrap JSON in Markdown fences or omit optional fields, breaking downstream parsers.
+2. **Policy & Refund Hallucinations**: Under persuasive user phrasing, an unguarded support bot agrees to unauthorized discounts or unsupported SLA promises.
+3. **Indirect Prompt Injection**: Retrieved support docs or user-supplied text override system rules unless untrusted data is isolated and tool execution is strictly scoped.
+4. **Model Version Regressions**: Switching model snapshots without running a fixed benchmark set changes tone, refusal rates, and tool accuracy overnight.
 
 ---
 
@@ -2682,7 +2655,28 @@ export async function runBenchmarkSuite(testCases: Array<{ input: string; expect
 1. **Vibes Do Not Scale**: If you only test AI models by chatting with them informally, your application will break in production. Systematic benchmarks are mandatory.
 2. **Prompts are Code**: Every change to a system prompt must run through an automated regression test suite before merging to main.
 3. **Defense in Depth**: Evals test your models offline before deployment; Guardrails protect your users in real time during live execution.
-4. **The Ultimate Competitive Moat**: The companies that dominate generative AI are not the ones with the fanciest prompts; they are the ones with the highest-fidelity evaluation suites and the tightest safety guardrails.`
+4. **Measure Real Changes**: Run your benchmark suite on every system prompt edit, retrieval tweak, or model upgrade before merging.
+
+---
+
+## Common AI Eval & Guardrail Questions
+
+### How many test cases do I need to start an AI eval suite?
+Start with 30 to 50 real examples pulled from failed user sessions, tricky edge cases, and core happy paths. A small suite run on every PR beats a huge benchmark you never run.
+
+### When should I use code assertions instead of LLM-as-a-Judge?
+Always use deterministic code checks (Zod schemas, regex PII scans, valid tool arguments, allowed enum values) first because they cost zero tokens and never flake. Reserve LLM-as-a-Judge for subjective dimensions like tone or grounded faithfulness.
+
+### How do runtime guardrails block prompt injections without killing latency?
+Keep strict deterministic checks (token caps, output schema validation, allowlisted tool parameters, and role-level authorization on backend actions) on the critical path; they run in under 5ms and cannot be talked out of enforcing permissions.
+
+---
+
+## References & Further Reading
+
+- Internal: [How to Stop Reasoning Models Overthinking (CoDE-Stop Guide)](/blog/how-to-stop-reasoning-models-overthinking-codestop)
+- Internal: [Model Context Protocol (MCP): Connecting AI Agents to Tools](/blog/what-is-model-context-protocol-mcp-usb-c-analogy)
+- External: [OWASP Top 10 for Large Language Model Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)`
   },
   {
     id: '15',
@@ -2692,52 +2686,22 @@ export async function runBenchmarkSuite(testCases: Array<{ input: string; expect
     category: 'Web Performance',
     read_time: '8 min read',
     published_at: '2026-11-01',
+    updated_at: '2026-11-26',
     cover_image: '/images/blog/web-bloat-overpacked-suitcase.png',
     simple_analogy: 'Shipping megabytes of client-side JavaScript and third-party trackers blocks the main thread before a user can click a single button.',
-    content: `Here is an infuriating paradox of modern technology:
+    content: `Most websites feel sluggish in 2026 not because network connections are slow, but because browsers are forced to download, parse, compile, and hydrate megabytes of JavaScript on the main UI thread before rendering simple text and buttons.
 
-In 2004, you probably had a dial-up or early DSL internet connection running at **1.5 Megabits per second**. You opened Wikipedia, clicked an article, and the page appeared on your CRT monitor almost instantly.
-
-Today, in 2026, you are sitting in a coffee shop on an iPhone with a multi-core bionic processor, connected to **5G or a 1-Gigabit fiber Wi-Fi network that is literally 1,000 times faster**.
-
-You open a local news website or a restaurant menu to read three paragraphs of text:
-- The screen stays completely white for three seconds.
-- Suddenly, the layout shifts violently downward as a banner ad pops in.
-- You try to scroll, but the phone stutters and freezes.
-- A cookie consent popup slides in from the bottom, a newsletter modal slams down from the top, and your battery begins warming your palm.
-
-Why is the modern web so slow despite our hardware and network speeds being the fastest in human history?
-
-Let's unpack why websites feel so bloated today using an everyday real-world analogy: **The Light Weekend Backpack vs The Overpacked Suitcase**.
+Open DevTools Performance on an average marketing page or dashboard and the bottleneck is obvious: empty initial HTML shells waiting on JS bundles, synchronous hydration tasks locking user taps for 400ms+, and third-party analytics tags fighting over CPU time.
 
 ---
 
-## 1. The Real-World Analogy: The Overpacked Suitcase
+## 1. Why Fast Internet Still Feels Slow on Real Pages
 
-Imagine you are taking a quick 48-hour weekend trip to the sunny seaside:
+Even on 5G or fiber, three architectural habits wreck real-world responsiveness (LCP and INP):
 
-### Traveler A: The Light Backpack (The Early Web)
-Traveler A packs a single canvas backpack:
-- A swimsuit.
-- Sunglasses and sunscreen.
-- A clean shirt and toothbrush.
-
-They step off the airplane, walk straight past baggage claim, and step onto the beach in ten minutes. Fast, effortless, zero friction.
-
-### Traveler B: The Overpacked Suitcase (The Modern Bloated Web)
-Now look at Traveler B embarking on that same 48-hour beach trip:
-- They check **six giant 70-pound hard-shell suitcases**.
-- Inside the suitcases: a heavy winter parka (just in case it snows on the equator), an electric lawnmower, a 27-inch desktop monitor, three blenders, and forty-five separate battery-powered tracking beacons attached to every handle so advertising agencies can monitor where the luggage travels.
-
-When Traveler B lands:
-- They wait 45 minutes at the baggage carousel.
-- The baggage handler pulls a muscle trying to lift the lawnmower.
-- The taxi driver refuses to load all six trunks into the car.
-- By the time Traveler B drags everything into the hotel lobby, half the weekend is gone and they are utterly exhausted.
-
-**Most modern websites are Traveler B.** 
-
-You only visited the page to read a 300-word recipe or check store opening hours. But the web server insists on packing 15 megabytes of client-side JavaScript, three UI component libraries, and forty-five third-party analytics trackers into your browser before letting you read a single sentence.
+1. **Client-Side Only Rendering (Empty HTML)**: Shipping a bare \`<div id="root"></div>\` forces the browser to fetch JS, execute React, fetch JSON, and only then paint the headline.
+2. **Main-Thread Hydration Cost**: Even with SSR, hydrating hundreds of static components runs expensive synchronous JavaScript right when the user starts scrolling or tapping.
+3. **Unchecked Third-Party Scripts**: Heatmaps, chat widgets, tag managers, and ad scripts multiply long tasks on mid-range Android CPUs.
 
 ---
 
@@ -2887,7 +2851,28 @@ If you want your website to load under 1 second on a budget Android phone on 4G,
 1. **Bandwidth is Not the Bottleneck**: Fiber internet is fast, but mobile CPUs are bounded by the physical laws of thermal dissipation and battery limits. Parse and compile times dominate web latency.
 2. **Pack the Backpack, Not the Lawn-Mower**: Ship pure HTML and CSS for content. Reserve client-side JavaScript strictly for rich, stateful user interactivity.
 3. **Hydration is Often Unnecessary Overhead**: Most marketing websites, portfolios, and blogs do not need virtual DOM re-hydration on initial load.
-4. **Fast is a Feature**: Google ranks fast sites higher, users convert at double the rate on snappy pages, and every 100 milliseconds of latency shaved directly improves user retention.`
+4. **Fast is a Feature**: Google ranks fast sites higher, users convert at double the rate on snappy pages, and every 100 milliseconds of latency shaved directly improves user retention.
+
+---
+
+## Common Web Performance Questions
+
+### How do I diagnose what is hurting Interaction to Next Paint (INP)?
+Open Chrome DevTools -> Performance, record while clicking menus or typing in filters, and look for red **Long Tasks** (>50ms) blocking the main thread. Break up heavy state updates, lazy-load offscreen widgets, and trim third-party scripts.
+
+### Does static pre-rendering help SEO and Core Web Vitals for React sites?
+Yes. Pre-rendering HTML at build time lets the browser paint text and meta tags immediately (lowering LCP) while giving search crawlers complete HTML without waiting for client-side JavaScript execution.
+
+### Why do Lighthouse desktop scores look 99 while mobile fails Core Web Vitals?
+Desktop CPUs mask JavaScript parse cost. Mid-tier mobile devices have much slower single-core performance and higher network latency, so shipping 600KB of gzipped JS hurts mobile users three to four times harder.
+
+---
+
+## References & Further Reading
+
+- Internal: [How Database Indexes Work: B-Trees & SQL Query Tuning](/blog/why-databases-need-indexes-the-book-secret)
+- Internal: [Technical SEO and Speed Optimization Service](/service#technical-seo)
+- External: [web.dev - Core Web Vitals & INP Guide](https://web.dev/articles/inp)`
   },
   {
     id: '16',
@@ -3091,7 +3076,15 @@ Stuxnet did not breach the Iranian government directly. It breached five small, 
 1. **Software Has Physical Consequences**: Code does not live in an abstract mathematical universe. When software controls power grids, water pumps, medical devices, or cars, bugs and exploits become kinetic weapons.
 2. **The Deception is Deadlier Than the Attack**: What made Stuxnet historically devastating was not just changing motor speeds; it was the man-in-the-middle telemetry loop that blinded human operators to the truth.
 3. **Defense in Depth Over Physical Isolation**: Disconnecting a server from Wi-Fi does not protect you from supply chain contamination, human error, or hardware implants.
-4. **The Ultimate Lesson**: Always maintain independent, hardwired physical limits that software can never override.`
+4. **The Ultimate Lesson**: Always maintain independent, hardwired physical limits that software can never override.
+
+---
+
+## References & Further Reading
+
+- Internal: [The European Supermarket IoT Hack: OT Security Lessons](/blog/how-hackers-melted-european-supermarkets-iot-refrigeration-hack)
+- Internal: [Software Reverse Engineering: Binaries, Protocols & Tools](/blog/what-is-reverse-engineering-watchmaker-analogy)
+- External: [CISA - Industrial Control Systems (ICS) Advisories](https://www.cisa.gov/news-events/cybersecurity-advisories)`
   },
   {
     id: '17',
@@ -3284,7 +3277,15 @@ Supermarkets did not get hacked because their internal IT team was incompetent; 
 1. **The Line Between Software and Physics is Gone**: A computer bug or insecure port does not just corrupt bits on a hard drive; it melts food, stops assembly lines, and spoils emergency blood banks.
 2. **Convenience is the Enemy of Security**: Wiring industrial controllers directly to the internet without a VPN saved technicians twenty minutes of setup time, but cost retail stores tens of millions of euros.
 3. **Default Passwords are Zero-Day Vulnerabilities in Disguise**: Automated bots crawl the entire internet searching for \`admin/admin\`. If you do not change it, you have effectively opened your front door to the world.
-4. **Hardwire Your Safety**: In any system where software controls physical temperature, voltage, or pressure, never allow code to be the sole guardian. Always back software logic with unhackable mechanical circuit breakers.`
+4. **Hardwire Your Safety**: In any system where software controls physical temperature, voltage, or pressure, never allow code to be the sole guardian. Always back software logic with unhackable mechanical circuit breakers.
+
+---
+
+## References & Further Reading
+
+- Internal: [How Stuxnet Worked: Zero-Days, PLCs & SCADA Cyber Warfare](/blog/how-code-destroyed-machines-stuxnet-story)
+- Internal: [PHP Security Guide: Fixing SQLi, RCE & Deserialization](/blog/modern-php-security-guide-bank-vault-analogy)
+- External: [OWASP - Internet of Things (IoT) Top 10 Security Risks](https://owasp.org/www-project-internet-of-things/)`
   },
   {
     id: '18',
@@ -3452,7 +3453,15 @@ If an engineer merges code written by an AI agent, that engineer must be able to
 1. **Syntax Is Free, Comprehension Is Priceless**: AI agents lowered the cost of *generating* lines of code to nearly zero, which makes the human bottleneck (reading, navigating, and verifying systems) ten times more valuable.
 2. **Duplication Is the First Symptom**: Agents prefer creating fresh parallel functions over modifying delicate shared utilities. Watch your duplication and short-term churn metrics closely.
 3. **Green Tests Do Not Equal Good Architecture**: A test suite can turn 100% green while three duplicated pricing engines silently drift apart underneath.
-4. **Be the Architect, Not the Innocent Bystander**: Sarah Winchester never drew a master blueprint and ended up with doors opening into thin air. Own your interfaces, review structural diffs fiercely, and protect your foundation.`
+4. **Be the Architect, Not the Innocent Bystander**: Sarah Winchester never drew a master blueprint and ended up with doors opening into thin air. Own your interfaces, review structural diffs fiercely, and protect your foundation.
+
+---
+
+## References & Further Reading
+
+- Internal: [Vibe Coding in Production: Where AI Code Generation Fails](/blog/what-is-vibe-coding-architect-analogy)
+- Internal: [Legacy Code Modernization with the Strangler Fig Pattern](/blog/ai-legacy-modernization-ship-of-theseus)
+- External: [GitClear - Coding on Copilot: AI Code Churn & Duplication Research](https://www.gitclear.com/coding_on_copilot_data_shows_ais_downward_pressure_on_code_quality)`
   },
   {
     id: '19',
@@ -3462,35 +3471,22 @@ If an engineer merges code written by an AI agent, that engineer must be able to
     category: 'Artificial Intelligence',
     read_time: '8 min read',
     published_at: '2026-11-24',
+    updated_at: '2026-11-26',
     cover_image: '/images/blog/reasoning-models-overthinking-codestop.png',
-    simple_analogy: 'An overthinking reasoning model is like a mathematician who solves a geometry problem in three minutes, but spends the next 45 minutes obsessively redrawing the triangles until they accidentally introduce errors.',
-    content: `If you have deployed OpenAI o1, o3, DeepSeek-R1, or Gemini Thinking into a production API loop in 2026, you have almost certainly experienced the **"Overthinking Tax"**:
+    simple_analogy: 'Reasoning models often reach the right answer early and then burn thousands of extra thinking tokens second-guessing themselves. Monitoring confidence stability lets you stop generation early and cut token costs by 25% to 50%.',
+    content: `If you run OpenAI o3, DeepSeek-R1, or Gemini Thinking models in production, you have probably hit the overthinking problem: a straightforward prompt triggers 3,000 to 5,000 hidden reasoning tokens, adds 15 seconds of latency, and sometimes talks the model out of an answer it already got right in step two.
 
-You ask the model a basic arithmetic or logical question that a junior developer could solve in ten seconds. Instead of answering immediately, the model enters a five-minute deliberation trance, generates 4,800 hidden "thinking tokens," burns through your API balance, and finally outputs:
-
-> *"The answer is 42."*
-
-Even worse, researchers have discovered a counter-intuitive reality in modern AI reasoning architectures: **longer thinking traces do not always produce better answers.**
-
-In fact, after a certain compute threshold, extra reasoning tokens often trigger **Overthinking Degradation**: the model doubts its own correct deduction, loops through redundant verifications, second-guesses edge cases that do not exist, and hallucinates an incorrect conclusion right before returning.
-
-To solve this massive waste of latency and cloud spend, researchers from the University of Maryland and USC published a landmark paper titled **"Early Stopping for Large Reasoning Models via Confidence Dynamics" (CoDE-Stop, arXiv:2604.04930)**.
-
-Here is what the research reveals about how reasoning models think, why early stopping cuts token consumption by **25% to 50% without retraining**, and how to build an adaptive inference wrapper in Python.
+Research on **CoDE-Stop ("Early Stopping for Large Reasoning Models via Confidence Dynamics", arXiv:2604.04930)** shows that tracking candidate answer stability and token entropy during decoding cuts reasoning token usage by **25% to 50%** without retraining the model. Below is how confidence-based early stopping works and how to wrap it in Python.
 
 ---
 
-## 1. The Real-World Analogy: The Obsessive Mathematician
+## 1. What Overthinking Degradation Looks Like in Production
 
-To understand why reasoning models get stuck in unproductive loops, imagine an obsessive mathematician taking a timed exam:
+Unbounded test-time compute creates three real production headaches:
 
-- You give them a geometry problem.
-- Within **three minutes**, they calculate the angles correctly and write the exact proof on the blackboard.
-- But instead of moving on to the next question, they sit staring at the blackboard for another **45 minutes**.
-- They redraw the triangles six times. They question whether Euclid's fifth postulate holds in hypothetical non-Euclidean space. They erase half of their clean proof and replace it with a tangled, convoluted lemma.
-- Right before the exam timer expires, they misplace a minus sign during their twelfth unnecessary check, turning a 100% correct answer into a failing grade.
-
-In modern Large Reasoning Models (LRMs), this exact pattern is happening at cloud scale millions of times per day.
+1. **High Token Regret**: Most reasoning tokens on routine queries are emitted *after* the model already arrived at its final answer.
+2. **Overthinking Degradation**: Extra self-verification steps ("Wait, let me re-check...") can introduce arithmetic or logic slips that corrupt an already valid derivation.
+3. **Predictable Latency Spikes**: A hardcoded \`max_tokens\` cap lets trivial prompts hang for 20+ seconds on streaming routes.
 
 ---
 
@@ -3634,7 +3630,275 @@ Reasoning models often burn tokens trying to simultaneously solve a math problem
 1. **More Reasoning Does Not Equal More Accuracy**: Reasoning models hit diminishing returns quickly. Unchecked deliberation traces regularly trigger Overthinking Degradation, where self-doubt corrupts correct answers.
 2. **Confidence Stabilizes Early**: The CoDE-Stop paper proves that correct trajectories converge on high confidence early in generation, while incorrect paths oscillate erratically.
 3. **50% Token Savings Without Fine-Tuning**: Tracking confidence dynamics allows teams to halt generation dynamically, saving substantial latency and cloud costs with zero retraining.
-4. **Enforce Adaptive Inference in Production**: Stop treating reasoning models like black boxes with fixed token limits. Implement dynamic early stopping to make test-time compute economically viable.`
+4. **Enforce Adaptive Inference in Production**: Stop treating reasoning models like black boxes with fixed token limits. Implement dynamic early stopping to make test-time compute economically viable.
+
+---
+
+## Common Reasoning Model Questions
+
+### Why does increasing max_tokens sometimes reduce LLM accuracy?
+Longer chains of thought give models more chances to hallucinate false assumptions or over-complicate edge cases on simple prompts.
+
+### Can you use CoDE-Stop with DeepSeek-R1 or vLLM?
+Yes. Any self-hosted or API inference loop exposing step logprobs or reasoning delimiters lets you inspect token entropy and candidate stability before generation hits a static limit.
+
+### Should reasoning models output strict JSON directly?
+Usually no. Let the reasoning model solve the problem cleanly first, then pass the answer into a fast, cheap non-reasoning model for JSON schema formatting.
+
+---
+
+## References & Further Reading
+
+- Internal: [Gemini Argon Review: Test-Time Compute & Deep Reasoning](/blog/what-is-gemini-argon-chess-grandmaster-analogy)
+- Internal: [AI Evals & Runtime Guardrails for Production LLM Apps](/blog/ai-evals-guardrails-driving-test-analogy)
+- External: [arXiv - Machine Learning & Reasoning Compute Research Archive](https://arxiv.org/list/cs.CL/recent)`
+  },
+  {
+    id: '20',
+    slug: 'whatsapp-cloud-api-webhook-nodejs-signature-retries',
+    title: 'WhatsApp Cloud API Webhook in Node.js: Signatures & Retries',
+    summary: 'Fix WhatsApp Cloud API webhook bugs in Node.js and Express: hub.verify_token 403s, X-Hub-Signature-256 raw-body HMAC checks, and wamid deduplication.',
+    category: 'Backend & APIs',
+    read_time: '9 min read',
+    published_at: '2026-11-26',
+    cover_image: '/images/blog/whatsapp-cloud-api-webhook-nodejs.jpg',
+    simple_analogy: 'Capture the raw request buffer before JSON parsing for X-Hub-Signature-256, return HTTP 200 immediately before slow work, and deduplicate every event by message.id (wamid) in SQL or Redis.',
+    content: `If you have integrated the WhatsApp Cloud API in Node.js and Express, you have probably seen this exact sequence: your webhook works cleanly in local \`ngrok\` testing, goes live, and within an hour fails signature checks on emoji messages, throws \`403\` during dashboard verification, or sends users the exact same automated reply three times in a row.
+
+None of those bugs are caused by Meta's API being flaky. They happen because Express middleware alters raw request bodies before HMAC verification, Meta expects an HTTP \`200 OK\` in a few seconds before triggering retry storms, and WhatsApp delivers both incoming messages and delivery-status events to the exact same endpoint.
+
+Here is the production Express + PostgreSQL/Redis setup to fix every one of those failure modes.
+
+---
+
+## 1. Fixing GET /webhook 403 Verification Failures
+
+When you register a callback URL in the Meta Developer Dashboard, Meta sends a \`GET\` request with three query parameters:
+
+- \`hub.mode\` (always \`subscribe\`)
+- \`hub.verify_token\` (must match the secret string you pasted into the dashboard)
+- \`hub.challenge\` (a random integer string that you must echo back untouched)
+
+Two subtle mistakes trigger \`403 Forbidden\` or verification failures here:
+
+1. **Returning JSON instead of plain text**: Calling \`res.json({ challenge })\` fails Meta's check. You must return \`res.status(200).send(String(challenge))\`.
+2. **Not validating exact token equality**: Always return \`403\` explicitly if either \`mode !== 'subscribe'\` or \`token !== process.env.WHATSAPP_VERIFY_TOKEN\`.
+
+\`\`\`javascript
+import express from 'express';
+
+const app = express();
+
+app.get('/webhook', (req, res) => {
+  const mode = req.query['hub.mode'];
+  const token = req.query['hub.verify_token'];
+  const challenge = req.query['hub.challenge'];
+
+  if (mode === 'subscribe' && token === process.env.WHATSAPP_VERIFY_TOKEN) {
+    return res.status(200).type('text/plain').send(String(challenge));
+  }
+
+  return res.sendStatus(403);
+});
+\`\`\`
+
+---
+
+## 2. Why X-Hub-Signature-256 Fails on Emojis (Raw Buffer Fix)
+
+Meta signs every \`POST\` webhook payload using HMAC-SHA256 with your **App Secret** and attaches it in the \`X-Hub-Signature-256\` header formatted as \`sha256=<hex>\`.
+
+The #1 bug developers hit is mounting global \`app.use(express.json())\`, hashing \`JSON.stringify(req.body)\`, and wondering why signature verification randomly fails whenever a customer sends an emoji, Arabic text, or escaped slash \`/\`. \`JSON.stringify(req.body)\` re-serializes characters and whitespace differently than the exact byte payload Meta hashed.
+
+**The fix:** Capture the raw \`Buffer\` inside the \`verify\` hook of \`express.json()\`, compute the HMAC against \`req.rawBody\`, check buffer byte lengths first, and compare with \`crypto.timingSafeEqual\`:
+
+\`\`\`javascript
+import crypto from 'node:crypto';
+import express from 'express';
+
+// Capture raw request bytes BEFORE JSON parsing mutates whitespace or unicode escapes
+app.use(
+  express.json({
+    verify: (req, _res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
+
+function hasValidMetaSignature(req) {
+  const header = req.get('x-hub-signature-256');
+  const appSecret = process.env.WHATSAPP_APP_SECRET;
+
+  if (!header || !appSecret || !Buffer.isBuffer(req.rawBody)) {
+    return false;
+  }
+
+  const [scheme, signatureHex] = header.split('=');
+  if (scheme !== 'sha256' || !signatureHex) {
+    return false;
+  }
+
+  const expectedHex = crypto
+    .createHmac('sha256', appSecret)
+    .update(req.rawBody)
+    .digest('hex');
+
+  const receivedBuf = Buffer.from(signatureHex, 'hex');
+  const expectedBuf = Buffer.from(expectedHex, 'hex');
+
+  // timingSafeEqual throws RangeError if buffer lengths differ
+  if (receivedBuf.length !== expectedBuf.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(receivedBuf, expectedBuf);
+}
+\`\`\`
+
+Always check \`receivedBuf.length !== expectedBuf.length\` before calling \`crypto.timingSafeEqual\`. Without that length guard, a malformed or truncated header crashes your request handler with \`RangeError: Input buffers must have the same byte length\`.
+
+---
+
+## 3. Stopping Meta's Duplicate Retry Storms
+
+Meta enforces a strict response timeout on webhook deliveries. If your handler queries PostgreSQL, calls an LLM API, or sends a reply over the Graph API *before* answering Meta's POST request, slow requests exceed the deadline.
+
+When a delivery times out or returns a \`5xx\`, Meta treats it as failed and **retries with exponential backoff for up to 7 days**. That causes duplicate replies, duplicate CRM leads, and wasted AI tokens.
+
+Acknowledge valid webhooks **immediately** with \`res.sendStatus(200)\` right after signature verification, then hand the payload off to a worker queue (BullMQ, Redis, or a database job table) or an isolated async handler:
+
+\`\`\`javascript
+app.post('/webhook', async (req, res) => {
+  if (!hasValidMetaSignature(req)) {
+    return res.sendStatus(401);
+  }
+
+  // Acknowledge immediately so Meta does not mark the delivery as timed out
+  res.sendStatus(200);
+
+  // Enqueue or handle asynchronously after response flush
+  setImmediate(() => {
+    processWebhookPayload(req.body).catch((err) => {
+      console.error('WhatsApp webhook processing error:', err);
+    });
+  });
+});
+\`\`\`
+
+*(Note: In serverless platforms like Vercel or AWS Lambda where the runtime freezes once \`res.sendStatus(200)\` returns, push the validated payload to Redis/SQS/Upstash **before** returning \`200 OK\`, since queue insertion takes under 20ms.)*
+
+---
+
+## 4. Deduplicating Messages with wamid and Ignoring Status Floods
+
+Even with fast \`200 OK\` responses, network blips cause Meta to guarantee **at-least-once delivery**, meaning you will still occasionally receive the exact same webhook twice.
+
+At the same time, Meta sends **message status events** (\`sent\`, \`delivered\`, \`read\`, \`failed\`) to the same \`messages\` field. If you only check \`changes[0].value\`, status updates trigger unnecessary database queries or error logs.
+
+Handle both cleanly:
+
+1. Ignore events that only contain \`value.statuses\` (unless you are explicitly updating delivery receipts).
+2. Deduplicate incoming user messages using \`message.id\` (the unique \`wamid.HBg...\` string), **not** the sender phone number or message text.
+3. Enforce uniqueness atomically at the database or Redis layer so two parallel retries cannot pass a check-then-insert race condition.
+
+\`\`\`sql
+-- PostgreSQL / MySQL idempotency table
+CREATE TABLE processed_whatsapp_messages (
+  message_id VARCHAR(255) PRIMARY KEY,
+  sender_wa_id VARCHAR(32) NOT NULL,
+  received_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+\`\`\`
+
+\`\`\`javascript
+async function claimMessageOnce(pool, messageId, senderWaId) {
+  // Atomic insert: returns 1 row only for the first worker that claims this wamid
+  const result = await pool.query(
+    \`INSERT INTO processed_whatsapp_messages (message_id, sender_wa_id)
+     VALUES ($1, $2)
+     ON CONFLICT (message_id) DO NOTHING
+     RETURNING message_id\`,
+    [messageId, senderWaId]
+  );
+
+  return result.rowCount === 1;
+}
+
+async function processWebhookPayload(body) {
+  if (body?.object !== 'whatsapp_business_account') return;
+
+  for (const entry of body.entry ?? []) {
+    for (const change of entry.changes ?? []) {
+      if (change.field !== 'messages') continue;
+      const value = change.value ?? {};
+
+      // Skip outbound delivery receipts when routing inbound customer replies
+      if (Array.isArray(value.statuses)) {
+        for (const status of value.statuses) {
+          // Optionally log failed deliveries: status.errors
+          if (status.status === 'failed') {
+            console.warn('Outbound WhatsApp message failed:', status.id, status.errors);
+          }
+        }
+      }
+
+      for (const message of value.messages ?? []) {
+        const claimed = await claimMessageOnce(dbPool, message.id, message.from);
+        if (!claimed) {
+          continue; // Duplicate retry safely skipped
+        }
+
+        await routeInboundMessage(message, value.contacts?.[0]);
+      }
+    }
+  }
+}
+\`\`\`
+
+If you prefer Redis over SQL for short-lived deduplication, use atomic \`SET key 1 EX 86400 NX\`:
+
+\`\`\`javascript
+const wasNew = await redis.set(\`wa:msg:\${message.id}\`, '1', { EX: 86400, NX: true });
+if (!wasNew) continue;
+\`\`\`
+
+---
+
+## 5. Production Checklist & Common Errors
+
+| Symptom | Root Cause | Exact Fix |
+|---|---|---|
+| Dashboard returns 403 on setup | Token mismatch or JSON response body | Return \`String(challenge)\` as \`text/plain\` with status \`200\` |
+| Valid emojis fail HMAC check | Hashing \`JSON.stringify(req.body)\` | Capture raw \`Buffer\` via \`express.json({ verify })\` |
+| \`RangeError\` on bad signatures | Calling \`timingSafeEqual\` on mismatched lengths | Check \`receivedBuf.length !== expectedBuf.length\` first |
+| Bot answers the same message 3 times | Slow reply triggers Meta retry timeout | Return \`200 OK\` fast and deduplicate on \`message.id\` |
+| Bot crashes on empty \`messages\` | Reading \`value.messages[0]\` on status webhooks | Check \`value.statuses\` and iterate \`value.messages ?? []\` |
+
+---
+
+## Frequently Asked Questions
+
+### Why does Meta keep retrying my WhatsApp webhook after I already answered the user?
+Meta only cares whether your webhook HTTP endpoint returned a \`2xx\` status code before the request deadline, not whether you sent a WhatsApp reply via the Graph API. If calling your AI model or CRM takes 8 seconds before calling \`res.sendStatus(200)\`, Meta marks the webhook timed out and queues retries for days.
+
+### Can I disable X-Hub-Signature-256 verification in production?
+Never. Without verifying the HMAC-SHA256 signature against your App Secret, anyone who discovers your webhook URL can forge fake user messages, exhaust your OpenAI/CRM quotas, and poison database records.
+
+### How long should I keep processed wamid records?
+Meta retries failed deliveries for up to 7 days. Keeping \`wamid\` keys for 7 to 14 days (either via Redis TTL or a scheduled SQL cleanup job) prevents all retry duplicates cleanly without growing your table indefinitely.
+
+### Does setImmediate work on Vercel or AWS Lambda for WhatsApp webhooks?
+No. Serverless functions freeze or terminate execution immediately after sending the HTTP \`200\` response. On serverless hosts, push the verified event payload into a fast queue (SQS, Upstash QStash, or BullMQ on Redis) and wait for the queue write to settle before calling \`res.sendStatus(200)\`.
+
+---
+
+## References & Further Reading
+
+- Internal: [Khandowa Law Case Study: Automated WhatsApp Consultation Intake](/portfolio/khandowa-law)
+- Internal: [How REST APIs Work: HTTP Methods, Status Codes & JSON](/blog/what-is-an-api-restaurant-waiter)
+- Internal: [How Database Indexes Work: B-Trees & SQL Query Tuning](/blog/why-databases-need-indexes-the-book-secret)
+- External: [Meta Developers - WhatsApp Cloud API Webhooks Documentation](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks)
+- External: [Node.js Crypto Docs - crypto.timingSafeEqual](https://nodejs.org/api/crypto.html#cryptotimingsafeequala-b)`
   }
 ];
 
@@ -3662,14 +3926,14 @@ export async function loadPublishedPosts() {
   }
   return posts
     .filter(({ slug }) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug))
-    .map(({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image, content }) =>
-      ({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image: coverImage(slug, cover_image), content })
+    .map(({ slug, title, summary, simple_analogy, category, read_time, published_at, updated_at, cover_image, content }) =>
+      ({ slug, title, summary, simple_analogy, category, read_time, published_at, ...(updated_at ? { updated_at } : {}), cover_image: coverImage(slug, cover_image), content })
     )
     .sort((a, b) => (b.published_at || '').localeCompare(a.published_at || '') || a.slug.localeCompare(b.slug));
 }
 
 export function blogIndex(posts) {
-  return posts.map(({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image }) =>
-    ({ slug, title, summary, simple_analogy, category, read_time, published_at, cover_image })
+  return posts.map(({ slug, title, summary, simple_analogy, category, read_time, published_at, updated_at, cover_image }) =>
+    ({ slug, title, summary, simple_analogy, category, read_time, published_at, ...(updated_at ? { updated_at } : {}), cover_image })
   );
 }

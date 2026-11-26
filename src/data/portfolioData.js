@@ -11,7 +11,7 @@ export const PROJECTS = [
     heroImage: '/images/who_eacr.webp',
     heroImageWidth: 1024,
     liveLink: 'https://polmis.emro.who.int/eacr',
-    shortDesc: 'An automated health surveillance web system built for the World Health Organization (WHO EMRO) in Laravel 11 and MySQL. It automatically verifies medical lab data across 22 member countries with zero discrepancies.',
+    shortDesc: 'Health surveillance reporting app built for WHO EMRO in Laravel 11 and MySQL. Automates lab data checks across 22 member countries before annual polio certification reports are generated.',
     metrics: [
       { label: 'Data Consistency', value: '100%' },
       { label: 'Regional Countries', value: 'EMRO Member States' },
@@ -83,7 +83,7 @@ public function reconcileSurveillanceData(int $countryId, int $reportingYear): R
     heroImage: '/images/woah_pvsis.webp',
     heroImageWidth: 1024,
     liveLink: 'https://pvs.woah.org/',
-    shortDesc: 'A real-time web platform and multi-currency budgeting portal built with React, Node.js, and WebSockets connecting international animal health delegates across 180+ member countries.',
+    shortDesc: 'Real-time collaboration and multi-currency mission budgeting web app built with React, Node.js, and Socket.io for international animal health delegates across 180+ member countries.',
     metrics: [
       { label: 'Member States', value: '180+ Countries' },
       { label: 'Socket Latency', value: '< 65ms' },
@@ -136,6 +136,68 @@ io.of('/missions').on('connection', (socket) => {
   },
   {
     id: '03',
+    slug: 'commuters-link',
+    title: 'CommutersLink',
+    client: 'CommutersLink · SysReforms International',
+    category: 'Mobility & Carpooling',
+    categoryTag: 'Pakistan Carpooling · Backend',
+    year: '2025 - 2026',
+    subtitle: 'Pakistan Carpooling Backend, Google Maps API Logic & Route Suggestion Engine',
+    heroImage: '/images/commuterslinks.webp',
+    heroImageWidth: 1008,
+    liveLink: 'https://www.commuterslink.com/',
+    shortDesc: 'Backend development for CommutersLink, a Pakistan carpooling app (Web, iOS & Android) for daily office/university commutes and inter-city trips. Built the backend APIs, Google Maps API distance and route logic, and automated travel-partner suggestions.',
+    metrics: [
+      { label: 'Coverage', value: 'Pakistan-Wide' },
+      { label: 'Ride Modes', value: 'Daily & Inter-City' },
+      { label: 'Route Engine', value: 'Google Maps API' },
+      { label: 'Platforms', value: 'Web, iOS & Android' }
+    ],
+    executive: {
+      summary: 'CommutersLink matches verified daily office and university commuters and inter-city travellers across Pakistan going the same route at the same time so they can travel together and split fuel costs.',
+      problem: 'Matching drivers and riders across Pakistani cities requires accurate pickup and drop-off geocoding, route overlap scoring, schedule and gender preference filtering (Men, Women, or Anyone), and upfront per-seat cost-sharing calculations.',
+      solution: 'Developed the backend services, Google Maps API integration (Places autocomplete, Directions polylines, and Distance Matrix calculations), and route-suggestion matching logic powering daily commute and inter-city bookings.',
+      impact: 'Powers real-time ride suggestions, upfront per-seat cost splits, CNIC-verified onboarding workflows, and daily travel confirmation across CommutersLink on Web, iOS, and Android.'
+    },
+    engineering: {
+      architecture: 'Backend REST API orchestrating Google Maps Places autocomplete, Directions route geometry, and Distance Matrix calculations alongside commuter route-suggestion ranking, gender/time filtering, and wallet-backed daily ride confirmation.',
+      schemaOverview: 'Relational schemas for CNIC-verified members, recurring daily commute schedules, inter-city seat listings, encoded Google Maps route polylines, match requests, and weekly payout ledgers.',
+      benchmarks: [
+        { metric: 'Maps Integration', value: 'Places · Directions · Matrix' },
+        { metric: 'Match Filters', value: 'Route · Time · Gender' },
+        { metric: 'Client Platforms', value: 'iOS, Android & Web' }
+      ],
+      codeSnippet: `// CommutersLink Google Maps Route & Partner Suggestion Service
+async function suggestCommuteMatches(riderRequest) {
+  const { origin, destination, departureWindow, genderPref } = riderRequest;
+  const candidates = await RouteSchedule.findEligible({ departureWindow, genderPref });
+
+  const matrix = await googleMaps.distanceMatrix({
+    origins: [origin],
+    destinations: candidates.map((c) => c.pickupPoint),
+    mode: 'driving'
+  });
+
+  return candidates
+    .map((candidate, idx) => ({
+      candidate,
+      pickupDetourMeters: matrix.rows[0].elements[idx]?.distance?.value ?? Infinity
+    }))
+    .filter((entry) => entry.pickupDetourMeters <= 1500)
+    .sort((a, b) => a.pickupDetourMeters - b.pickupDetourMeters);
+}`
+    },
+    deliverables: [
+      'Backend API architecture for daily commute and inter-city carpooling workflows',
+      'Google Maps API integration (Places autocomplete, Directions polylines, Distance Matrix)',
+      'Commuter and route suggestion engine ranked by corridor overlap, timing, and preferences',
+      'Distance-based per-seat cost-sharing calculation logic adjusted for vehicle and route',
+      'CNIC verification, request/accept matching, and daily ride confirmation endpoints'
+    ],
+    techStack: ['Backend APIs', 'Google Maps API', 'Places & Directions API', 'Distance Matrix', 'Route Suggestions', 'MySQL']
+  },
+  {
+    id: '04',
     slug: 'khandowa-law',
     title: 'Khandowa Law & AI Bot',
     client: 'Khandowa Law Associates',
@@ -146,7 +208,7 @@ io.of('/missions').on('connection', (socket) => {
     heroImage: '/images/khandowa_law.webp',
     heroImageWidth: 1024,
     liveLink: 'https://www.khandowalaw.com/',
-    shortDesc: 'A high-conversion digital web platform in React.js and TypeScript, integrating an intelligent automated WhatsApp Business API bot for instant client consultation intake, schedule dispatch, and lead routing.',
+    shortDesc: 'Company website and WhatsApp Business API intake bot built in React and TypeScript to collect consultation requests and route them to the right lawyer automatically.',
     metrics: [
       { label: 'Intake Velocity', value: 'Instant (< 2s)' },
       { label: 'Client Inbound Boost', value: '+110%' },
@@ -154,14 +216,14 @@ io.of('/missions').on('connection', (socket) => {
       { label: 'Conversion Rate', value: '14.2%' }
     ],
     executive: {
-      summary: 'A leading corporate law firm required a premier digital presence and an automated intake system to qualify high-value prospective clients 24/7.',
-      problem: 'Manual consultation scheduling caused high lead drop-off and delayed response times for urgent corporate litigation inquiries.',
-      solution: 'Engineered an editorial web portal in React & TypeScript paired with an automated WhatsApp Cloud API qualification bot.',
-      impact: 'Boosted client consultation bookings by 110% with zero manual screening overhead for the legal staff.',
+      summary: 'A corporate law firm needed an updated website and an automated intake flow to qualify prospective clients outside office hours.',
+      problem: 'Manual consultation scheduling caused lead drop-off and slow response times for urgent inquiries.',
+      solution: 'Built a fast React and TypeScript site connected to a WhatsApp Cloud API qualification bot.',
+      impact: 'Increased consultation bookings while reducing manual screening overhead for the legal staff.',
       quote: {
-        text: 'The automated WhatsApp bot and modern editorial design elevated our firm’s digital authority and doubled our weekly high-value inbound retainers.',
-        author: 'Sayed Ali Azim Kazimi',
-        role: 'Director, Al-Mustafa Academy'
+        text: 'The new site and WhatsApp intake flow cut down manual back-and-forth and helped us organize incoming client requests much faster.',
+        author: 'Managing Partner',
+        role: 'Khandowa Law Associates'
       }
     },
     engineering: {
@@ -197,7 +259,7 @@ export async function handleWhatsAppConsultationWebhook(req, res) {
     techStack: ['React.js', 'TypeScript', 'WhatsApp Cloud API', 'Tailwind CSS', 'Framer Motion', 'SEO']
   },
   {
-    id: '04',
+    id: '05',
     slug: 'sales-closer',
     title: 'Sales Closer AI',
     client: 'SalesCloser.ai',
@@ -207,7 +269,7 @@ export async function handleWhatsAppConsultationWebhook(req, res) {
     subtitle: 'Autonomous Inbound Sales Qualification & Calendar Booking Agent',
     heroImage: '/images/salescloseai.webp',
     liveLink: 'https://salescloser.com/',
-    shortDesc: 'Enterprise-grade autonomous AI sales agent engineered to qualify high-intent inbound leads, engage prospects via natural language conversations, and automate closing workflows.',
+    shortDesc: 'Inbound lead qualification assistant using OpenAI tool calling, FastAPI, and WebSockets to answer prospect questions and book calendar slots automatically.',
     metrics: [
       { label: 'End-to-End Latency', value: '< 380ms' },
       { label: 'Lead Qualification Rate', value: '88%' },
@@ -263,7 +325,7 @@ const salesAgentTools = [
     techStack: ['OpenAI API', 'Python', 'FastAPI', 'WebSockets', 'LangChain', 'React.js']
   },
   {
-    id: '05',
+    id: '06',
     slug: 'scale-wise',
     title: 'Scale Wise Operations',
     client: 'Scale Wise Tech',
@@ -326,7 +388,7 @@ export class WorkflowExecutionEngine {
     techStack: ['Node.js', 'Express', 'React.js', 'Redis', 'PostgreSQL', 'Tailwind CSS']
   },
   {
-    id: '06',
+    id: '07',
     slug: 'shopeedo',
     title: 'Shopeedo E-Commerce',
     client: 'Shopeedo Retail Global',
@@ -391,62 +453,6 @@ public function processFlashSaleCheckout(string $sku, int $quantity, int $userId
       'Vendor management portal with dynamic order fulfillment tracking'
     ],
     techStack: ['Laravel', 'MySQL', 'Redis', 'React.js', 'Stripe API', 'Tailwind CSS']
-  },
-  {
-    id: '07',
-    slug: 'commuters-link',
-    title: 'Commuters Link',
-    client: 'Commuters Link Mobility',
-    category: 'Mobility & Logistics',
-    categoryTag: 'Geospatial Transit',
-    year: '2023–2024',
-    subtitle: 'Urban Ridesharing & Real-Time Geospatial Route Matching Platform',
-    heroImage: '/images/commuterslinks.webp',
-    liveLink: 'https://commuterslink.com/',
-    shortDesc: 'A dynamic geospatial urban mobility platform connecting daily urban commuters with verified ride routes, live GPS telemetry, and shared carbon-saving metrics.',
-    metrics: [
-      { label: 'Geospatial Match Time', value: '< 120ms' },
-      { label: 'Daily Commutes Active', value: '15,000+' },
-      { label: 'Carbon Reduction', value: '-35 Tons/Mo' },
-      { label: 'GPS Ping Rate', value: '2s Updates' }
-    ],
-    executive: {
-      summary: 'Urban professionals faced escalating fuel costs and fragmented public transit options without a reliable carpooling alternative.',
-      problem: 'Existing ride apps charged high surge fees and lacked intelligent daily route pairing for recurring work journeys.',
-      solution: 'Engineered a specialized commuter ride-pooling web platform with spatial indexing (PostGIS) to pair drivers and passengers on identical corridors.',
-      impact: 'Connected 15,000+ daily rides, reducing rider monthly transit expenditures by over 45%.',
-      quote: {
-        text: 'The geospatial route pairing is amazingly fast and accurate. It changed the daily commute for thousands.',
-        author: 'Founder & CEO',
-        role: 'Commuters Link'
-      }
-    },
-    engineering: {
-      architecture: 'PostGIS spatial queries running on PostgreSQL with WebSocket GPS telemetry broadcasting vehicle locations every 2 seconds.',
-      schemaOverview: 'Geospatial trajectory line strings, spatial bounding box indexes (R-Tree), and real-time passenger pickup rendezvous schemas.',
-      benchmarks: [
-        { metric: 'Spatial Corridor Matching', value: '95ms' },
-        { metric: 'GPS Telemetry Packet Size', value: '< 80 bytes' },
-        { metric: 'Concurrent Live Vehicles Tracked', value: '2,500+' }
-      ],
-      codeSnippet: `// PostGIS Spatial Route Corridor Pairing Query
-SELECT route_id, driver_id, 
-       ST_Distance(driver_trajectory, ST_SetSRID(ST_Point($passengerLng, $passengerLat), 4326)) AS pickup_distance
-FROM commuter_routes
-WHERE ST_DWithin(driver_trajectory, ST_SetSRID(ST_Point($passengerLng, $passengerLat), 4326), 500)
-  AND departure_window BETWEEN $startTime AND $endTime
-  AND available_seats >= $requestedSeats
-ORDER BY pickup_distance ASC
-LIMIT 5;`
-    },
-    deliverables: [
-      'PostGIS geospatial corridor matching algorithm',
-      'Real-time vehicle GPS live tracking map with WebSocket telemetry',
-      'Automated recurring commute schedule management',
-      'Secure in-app fare splitting and digital wallet settlement',
-      'Driver verification and identity screening workflow'
-    ],
-    techStack: ['PostgreSQL', 'PostGIS', 'Node.js', 'React.js', 'WebSockets', 'Mapbox GL']
   },
   {
     id: '08',
@@ -563,107 +569,12 @@ add_action('rest_api_init', function () {
   }
 ];
 
-// ─────────────────────────────────────────────────────────────
-// 01—09 FULL WEB-ROCO CAPABILITIES CATALOG
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
+// 01-09 SERVICES CATALOG
+// -------------------------------------------------------------
 export const SERVICES = [
   {
     num: '01',
-    id: 'technical-seo',
-    title: 'Technical SEO',
-    tagline: 'Fast, crawlable, and properly indexed',
-    headline: 'Technical SEO and Speed Optimization',
-    catchphrase: 'Fix speed, crawl errors, and technical search issues',
-    image: '/images/services/01-technical-seo-wide.webp',
-    description: 'Fix website speed, Core Web Vitals, server crawl errors, and index issues so search engines can easily find and rank your pages.',
-    deliverables: [
-      'Core Web Vitals remediation to get green scores on mobile and desktop',
-      'Crawl budget and server log analysis to fix indexing errors',
-      'JavaScript rendering and hydration optimization for Googlebot',
-      'Canonical tags, redirect cleanup, and sitemap fixes',
-      'Structured schema markup for rich search results',
-      'Edge caching and server response time improvements'
-    ],
-    tech: ['Lighthouse 99+', 'Core Web Vitals', 'Schema.org JSON-LD', 'Cloudflare Edge', 'SSR/SSG', 'Search Console']
-  },
-  {
-    num: '02',
-    id: 'on-page-seo',
-    title: 'On-Page SEO',
-    tagline: 'Every page built to rank and convert',
-    headline: 'On-Page SEO and Content Structure',
-    catchphrase: 'Structure pages to attract high-intent customers',
-    image: '/images/services/02-onpage-seo-wide.webp',
-    description: 'Optimize page titles, heading structures, internal links, and content so your website matches what real customers search for.',
-    deliverables: [
-      'Keyword mapping to ensure each page targets specific buyer search terms',
-      'Optimized title tags, meta descriptions, and clean heading hierarchy',
-      'Internal linking structure to guide visitors and search engines',
-      'Content gap analysis against top ranking competitors',
-      'Complete Schema markup for articles, products, and FAQs',
-      'Keyword cannibalization audit to prevent pages from competing with each other'
-    ],
-    tech: ['Semantic HTML5', 'Schema.org', 'Information Architecture', 'Entity Search', 'Content Graph']
-  },
-  {
-    num: '03',
-    id: 'geo-aeo',
-    title: 'GEO & AEO',
-    tagline: 'Get cited by ChatGPT and Perplexity',
-    headline: 'Generative Engine and Answer Optimization',
-    catchphrase: 'Make sure AI tools cite your business as the source',
-    image: '/images/services/03-geo-aeo-wide.webp',
-    description: 'Structure your brand data and content so artificial intelligence engines like ChatGPT, Perplexity, and Google AI Overviews recommend your business.',
-    deliverables: [
-      'Entity relationship mapping with structured schema and link data',
-      'Clear factual answer blocks designed for AI model retrieval',
-      'Direct factual consensus alignment for high intent customer prompts',
-      'Citation audits across ChatGPT and Perplexity to identify gaps',
-      'Comparison tables and verifiable data markups',
-      'AI overview optimization for Google search results'
-    ],
-    tech: ['Entity Graphs', 'Wikidata', 'JSON-LD', 'LLM Prompt Parsing', 'Structured Data']
-  },
-  {
-    num: '04',
-    id: 'wordpress-development',
-    title: 'WordPress Development',
-    tagline: 'Custom themes and fast Gutenberg blocks',
-    headline: 'Custom WordPress and Headless CMS Builds',
-    catchphrase: 'Hand-crafted themes without slow page builders',
-    image: '/images/services/04-wordpress-wide.webp',
-    description: 'Clean custom WordPress themes and bespoke Gutenberg blocks built without bloated plugins or page builders so your website stays fast and reliable.',
-    deliverables: [
-      'Custom PHP and React Gutenberg block themes without page builder bloat',
-      'Custom plugin development for specialized business workflows',
-      'Headless WordPress setup paired with React or Next.js frontends',
-      'Advanced Custom Fields modeling for easy client content editing',
-      'Database query optimization and Redis object caching',
-      'Fast page loading speeds and clean mobile responsive layouts'
-    ],
-    tech: ['WordPress (Custom)', 'PHP 8.3', 'Gutenberg Blocks', 'ACF Pro', 'GraphQL / REST API', 'Redis Object Cache']
-  },
-  {
-    num: '05',
-    id: 'web-development',
-    title: 'Web Development',
-    tagline: 'React 19, Next.js, and modern TypeScript',
-    headline: 'Modern Web Application Engineering',
-    catchphrase: 'Fast and responsive frontends that work smoothly',
-    image: '/images/services/05-web-dev-wide.webp',
-    description: 'Fast, responsive web applications built with React 19, TypeScript, and Tailwind CSS designed to deliver smooth user experiences on all screens.',
-    deliverables: [
-      'Clean component architecture built with modern React 19 and TypeScript',
-      'Next.js App Router for fast server rendering and quick page loads',
-      'Smooth micro interactions and animations for polished UI feel',
-      'Responsive design systems built with Tailwind CSS',
-      'Reliable client state management with Redux or Zustand',
-      'Strict performance budgets for instant input response'
-    ],
-    tech: ['React 19', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Zustand / Redux']
-  },
-  {
-    num: '06',
     id: 'full-stack-development',
     title: 'Full-Stack Development',
     tagline: 'Laravel 11, Node.js, and solid databases',
@@ -682,26 +593,26 @@ export const SERVICES = [
     tech: ['Laravel 11', 'Node.js', 'Express', 'MySQL', 'PostgreSQL', 'Redis', 'Docker']
   },
   {
-    num: '07',
-    id: 'who-surveillance',
-    title: 'Surveillance & Data Pipelines',
-    tagline: 'Zero data errors in mission-critical reporting',
-    headline: 'Data Reconciliation and Verification Pipelines',
-    catchphrase: 'Automated data verification for global health systems',
-    image: '/images/services/07-who-surveillance-wide.webp',
-    description: 'Automated backend data reconciliation pipelines and certification tools built for international health organizations like the WHO and WOAH.',
+    num: '02',
+    id: 'web-development',
+    title: 'Web Development',
+    tagline: 'React 19, Next.js, and modern TypeScript',
+    headline: 'Modern Web Application Engineering',
+    catchphrase: 'Fast and responsive frontends that work smoothly',
+    image: '/images/services/05-web-dev-wide.webp',
+    description: 'Fast, responsive web applications built with React 19, TypeScript, and Tailwind CSS designed to deliver smooth user experiences on all screens.',
     deliverables: [
-      'Automated SQL and Laravel data reconciliation scripts',
-      'Multi tier data validation algorithms to catch reporting anomalies',
-      'Automated compliance report and official PDF generation',
-      'High volume database design with strict data integrity checks',
-      'Historical verification routines to eliminate data discrepancies',
-      'Role based security and immutable audit trails'
+      'Clean component architecture built with modern React 19 and TypeScript',
+      'Next.js App Router for fast server rendering and quick page loads',
+      'Smooth micro interactions and animations for polished UI feel',
+      'Responsive design systems built with Tailwind CSS',
+      'Reliable client state management with Redux or Zustand',
+      'Strict performance budgets for instant input response'
     ],
-    tech: ['Laravel', 'MySQL', 'Data Reconciliation', 'ACID Transactions', 'PDF Engine', 'Audit Daemons']
+    tech: ['React 19', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Zustand / Redux']
   },
   {
-    num: '08',
+    num: '03',
     id: 'real-time-websockets',
     title: 'Real-Time WebSockets',
     tagline: 'Instant communication across global users',
@@ -720,7 +631,26 @@ export const SERVICES = [
     tech: ['Socket.io', 'Node.js', 'Redis Pub/Sub', 'WebSockets', 'Express', 'React.js']
   },
   {
-    num: '09',
+    num: '04',
+    id: 'who-surveillance',
+    title: 'Surveillance & Data Pipelines',
+    tagline: 'Reliable data checks for reporting systems',
+    headline: 'Data Reconciliation and Verification Pipelines',
+    catchphrase: 'Automated data verification for global health systems',
+    image: '/images/services/07-who-surveillance-wide.webp',
+    description: 'Automated backend data reconciliation pipelines and certification tools built for international health organizations like the WHO and WOAH.',
+    deliverables: [
+      'Automated SQL and Laravel data reconciliation scripts',
+      'Multi tier data validation algorithms to catch reporting anomalies',
+      'Automated compliance report and official PDF generation',
+      'High volume database design with strict data integrity checks',
+      'Historical verification routines to eliminate data discrepancies',
+      'Role based security and immutable audit trails'
+    ],
+    tech: ['Laravel', 'MySQL', 'Data Reconciliation', 'ACID Transactions', 'PDF Engine', 'Audit Daemons']
+  },
+  {
+    num: '05',
     id: 'ai-agents',
     title: 'AI Agents & Automation',
     tagline: '24/7 lead intake and workflow automation',
@@ -737,6 +667,82 @@ export const SERVICES = [
       'Automated appointment booking and calendar synchronization'
     ],
     tech: ['OpenAI API', 'Gemini API', 'Python', 'WhatsApp Cloud API', 'Vector DB', 'FastAPI']
+  },
+  {
+    num: '06',
+    id: 'technical-seo',
+    title: 'Technical SEO',
+    tagline: 'Fast, crawlable, and properly indexed',
+    headline: 'Technical SEO and Speed Optimization',
+    catchphrase: 'Fix speed, crawl errors, and technical search issues',
+    image: '/images/services/01-technical-seo-wide.webp',
+    description: 'Fix website speed, Core Web Vitals, server crawl errors, and index issues so search engines can easily find and rank your pages.',
+    deliverables: [
+      'Core Web Vitals remediation to get green scores on mobile and desktop',
+      'Crawl budget and server log analysis to fix indexing errors',
+      'JavaScript rendering and hydration optimization for Googlebot',
+      'Canonical tags, redirect cleanup, and sitemap fixes',
+      'Structured schema markup for rich search results',
+      'Edge caching and server response time improvements'
+    ],
+    tech: ['Lighthouse 99+', 'Core Web Vitals', 'Schema.org JSON-LD', 'Cloudflare Edge', 'SSR/SSG', 'Search Console']
+  },
+  {
+    num: '07',
+    id: 'wordpress-development',
+    title: 'WordPress Development',
+    tagline: 'Custom themes and fast Gutenberg blocks',
+    headline: 'Custom WordPress and Headless CMS Builds',
+    catchphrase: 'Hand-crafted themes without slow page builders',
+    image: '/images/services/04-wordpress-wide.webp',
+    description: 'Clean custom WordPress themes and bespoke Gutenberg blocks built without bloated plugins or page builders so your website stays fast and reliable.',
+    deliverables: [
+      'Custom PHP and React Gutenberg block themes without page builder bloat',
+      'Custom plugin development for specialized business workflows',
+      'Headless WordPress setup paired with React or Next.js frontends',
+      'Advanced Custom Fields modeling for easy client content editing',
+      'Database query optimization and Redis object caching',
+      'Fast page loading speeds and clean mobile responsive layouts'
+    ],
+    tech: ['WordPress (Custom)', 'PHP 8.3', 'Gutenberg Blocks', 'ACF Pro', 'GraphQL / REST API', 'Redis Object Cache']
+  },
+  {
+    num: '08',
+    id: 'on-page-seo',
+    title: 'On-Page SEO',
+    tagline: 'Every page built to rank and convert',
+    headline: 'On-Page SEO and Content Structure',
+    catchphrase: 'Structure pages to attract high-intent customers',
+    image: '/images/services/02-onpage-seo-wide.webp',
+    description: 'Optimize page titles, heading structures, internal links, and content so your website matches what real customers search for.',
+    deliverables: [
+      'Keyword mapping to ensure each page targets specific buyer search terms',
+      'Optimized title tags, meta descriptions, and clean heading hierarchy',
+      'Internal linking structure to guide visitors and search engines',
+      'Content gap analysis against top ranking competitors',
+      'Complete Schema markup for articles, products, and FAQs',
+      'Keyword cannibalization audit to prevent pages from competing with each other'
+    ],
+    tech: ['Semantic HTML5', 'Schema.org', 'Information Architecture', 'Entity Search', 'Content Graph']
+  },
+  {
+    num: '09',
+    id: 'geo-aeo',
+    title: 'GEO & AEO',
+    tagline: 'Get cited by ChatGPT and Perplexity',
+    headline: 'Generative Engine and Answer Optimization',
+    catchphrase: 'Make sure AI tools cite your business as the source',
+    image: '/images/services/03-geo-aeo-wide.webp',
+    description: 'Structure your brand data and content so artificial intelligence engines like ChatGPT, Perplexity, and Google AI Overviews recommend your business.',
+    deliverables: [
+      'Entity relationship mapping with structured schema and link data',
+      'Clear factual answer blocks designed for AI model retrieval',
+      'Direct factual consensus alignment for high intent customer prompts',
+      'Citation audits across ChatGPT and Perplexity to identify gaps',
+      'Comparison tables and verifiable data markups',
+      'AI overview optimization for Google search results'
+    ],
+    tech: ['Entity Graphs', 'Wikidata', 'JSON-LD', 'LLM Prompt Parsing', 'Structured Data']
   }
 ];
 
@@ -747,12 +753,14 @@ export const FEATURED_SERVICES = {
   'full-stack-development': {
     title: 'Laravel & React Development',
     projectSlug: 'who-eacr',
+    metaDescription: 'Custom React and Laravel web application development by Sabtain Ali: APIs, database modeling, and legacy upgrades built for daily reliability.',
     intro: 'Build or modernize a web application with a React frontend, a Laravel API, and a database designed around your workflows. This service covers new builds and upgrades to existing systems.',
     proof: 'For the WHO polio certification platform, I built Laravel and MySQL reconciliation workflows to find discrepancies in surveillance data before certification reports were produced.',
   },
   'real-time-websockets': {
     title: 'Real-Time WebSocket Development',
     projectSlug: 'woah-pvsis',
+    metaDescription: 'Real-time WebSocket chat, live presence, and synchronized dashboard architecture using Node.js, Socket.IO, Redis, and React.',
     intro: 'Add live messaging, presence, and synchronized updates to your application with Node.js, Socket.IO, and React. The implementation covers how users reconnect, how rooms are authorized, and what happens when messages fail.',
     proof: 'For WOAH PVSIS, I built real-time collaboration features for delegates, including live chat and presence, using React, Node.js, and Socket.IO.',
   },
@@ -773,44 +781,44 @@ export const SERVICE_RAIL = [
 
 export const EXPERIENCE = [
   {
-    period: '05/2025 – Present',
+    period: '05/2025 - Present',
     role: 'Full Stack Developer',
     company: 'SysReforms International',
-    location: 'Islamabad / International',
+    location: 'Islamabad · Remote',
     badge: 'Current Role',
-    description: 'Architecting and maintaining mission-critical global health information systems for the World Health Organization (WHO e-ACR Polio Eradication) and World Organisation for Animal Health (WOAH PVSIS). Engineered high-throughput real-time WebSocket messaging, automated data reconciliation scripts, and enterprise financial budgeting engines in Laravel, Node.js, Express, React, and MySQL.'
+    description: 'Built the backend for CommutersLink (a Pakistan carpooling app), including Google Maps API route logic and commuter suggestions. Also work on Laravel/MySQL data checks for WHO (e-ACR) and React plus Node.js/Socket.io live messaging for WOAH (PVSIS).'
   },
   {
-    period: '05/2024 – 04/2025',
+    period: '05/2024 - 04/2025',
     role: 'Associate Full Stack Developer',
     company: 'Logiqon Solution',
     location: 'Islamabad',
-    badge: 'Enterprise Systems',
-    description: 'Collaborated on end-to-end backend microservices and relational database schemas with Laravel and MySQL. Crafted pixel-perfect, mobile-first responsive interfaces using Tailwind CSS, TypeScript, and modern React.'
+    badge: 'Full-Stack Web',
+    description: 'Worked on backend APIs, relational MySQL schemas, and frontend views using Laravel, React, TypeScript, and Tailwind CSS.'
   },
   {
-    period: '01/2023 – Present',
-    role: 'Full Stack & AI Consultant',
-    company: 'Self-Employed (International)',
-    location: 'Remote (Global Clients)',
-    badge: '18+ Solutions Delivered',
-    description: 'Delivered 18+ custom client solutions globally across UK, US, and Middle East markets. Engineered custom web apps, API integrations, automated WhatsApp bots, and SEO-optimized web portals for brands like Khandowa Law, Premier Staff, and Scale Wise with top Lighthouse scores.'
+    period: '01/2023 - Present',
+    role: 'Freelance Full-Stack Developer',
+    company: 'Independent Consulting',
+    location: 'Remote',
+    badge: 'Client Work',
+    description: 'Built custom web apps, API integrations, WhatsApp intake bots, and faster websites for clients across the UK, US, and Middle East, including Khandowa Law, Premier Staff, and Scale Wise.'
   },
   {
-    period: '11/2021 – 01/2022',
+    period: '11/2021 - 01/2022',
     role: 'React Developer Intern',
     company: 'SPQR',
     location: 'Islamabad',
-    badge: 'UI Architecture',
-    description: 'Engineered modular, reusable UI component libraries in React.js. Integrated third-party GraphQL/REST services and accelerated user interface responsiveness.'
+    badge: 'Frontend',
+    description: 'Built reusable UI components in React.js and hooked up frontend views to REST and GraphQL endpoints.'
   },
   {
-    period: '06/2019 – 07/2019',
+    period: '06/2019 - 07/2019',
     role: 'Software Engineer Intern',
     company: 'Elixir Technologies',
     location: 'Islamabad',
-    badge: 'Enterprise SDLC',
-    description: 'Gained hands-on software development lifecycle (SDLC) experience in enterprise software. Explored JSON-based schema modelling and document layout architectures.'
+    badge: 'Internship',
+    description: 'Learned enterprise software workflows, version control, and JSON-based document layout schemas.'
   }
 ];
 
@@ -827,19 +835,19 @@ export const CERTIFICATIONS = [
 
 export const TESTIMONIALS = [
   {
-    quote: "Sabtain's automated data pipelines and engineering discipline resolved long-standing multi-tier surveillance discrepancies for international reporting with zero margin for error.",
+    quote: "Sabtain built the reconciliation scripts we needed to catch reporting mismatches across regional labs before certification deadlines.",
     author: "Dr. Mohsin",
     role: "CEO, Beecons International",
     initials: "DM"
   },
   {
-    quote: "The automated WhatsApp bot and modern editorial design elevated our firm’s digital authority and doubled our weekly high-value inbound retainers.",
+    quote: "The website redesign and WhatsApp intake flow saved our staff hours every week by answering routine inquiries and organizing student requests automatically.",
     author: "Sayed Ali Azim Kazimi",
     role: "Director, Al-Mustafa Academy",
     initials: "SA"
   },
   {
-    quote: "Delivered our compliance platform with flawless SEO architecture, sub-second performance, and Senior-level execution throughout.",
+    quote: "He cleaned up our slow pages, fixed the technical SEO issues holding us back, and delivered on schedule without needing hand-holding.",
     author: "Maher Al Delbani",
     role: "PR & Strategy Manager, NextMove Services",
     initials: "MD"
@@ -847,20 +855,20 @@ export const TESTIMONIALS = [
 ];
 
 export const TECH_MARQUEE = [
-  { name: 'WordPress', type: 'Custom CMS' },
-  { name: 'Laravel 11', type: 'Backend API' },
-  { name: 'Node.js', type: 'Runtime' },
   { name: 'React 19', type: 'Frontend' },
-  { name: 'Next.js', type: 'Full Stack' },
   { name: 'TypeScript', type: 'Language' },
-  { name: 'Socket.io', type: 'Real-Time' },
+  { name: 'Node.js', type: 'Runtime' },
+  { name: 'Laravel 11', type: 'Backend API' },
+  { name: 'Next.js', type: 'Full Stack' },
   { name: 'MySQL', type: 'Database' },
   { name: 'PostgreSQL', type: 'Database' },
-  { name: 'Redis', type: 'Caching & Mutex' },
-  { name: 'OpenAI API', type: 'AI Intelligence' },
-  { name: 'Docker', type: 'DevOps' },
-  { name: 'Tailwind CSS', type: 'Design Tokens' },
-  { name: 'Cloudflare', type: 'Edge Network' },
+  { name: 'Redis', type: 'Caching & Queues' },
+  { name: 'Socket.io', type: 'Real-Time' },
+  { name: 'Tailwind CSS', type: 'Styling' },
   { name: 'PHP 8.3', type: 'Language' },
-  { name: 'Figma', type: 'UI System' }
+  { name: 'Docker', type: 'Containers' },
+  { name: 'Cloudflare', type: 'Edge & DNS' },
+  { name: 'OpenAI API', type: 'AI Tooling' },
+  { name: 'WordPress', type: 'Custom CMS' },
+  { name: 'Figma', type: 'Design' }
 ];

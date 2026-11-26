@@ -33,7 +33,7 @@ const KNOWLEDGE_BASE = [
   },
   {
     keywords: ['contact', 'email', 'hire', 'reach', 'linkedin', 'phone', 'message'],
-    answer: "You can reach Sabtain directly at sabtainaliwazir@gmail.com, connect on LinkedIn at https://www.linkedin.com/in/sabtainali123/, or message via WhatsApp at +92 332 9298679. You can also submit an inquiry through the contact form!"
+    answer: "You can reach Sabtain directly at sabtainali375@gmail.com, connect on LinkedIn at https://www.linkedin.com/in/sabtainali123/, or message via WhatsApp at +92 332 9298679. You can also submit an inquiry through the contact form!"
   }
 ];
 
@@ -44,7 +44,7 @@ const getAIResponse = (query) => {
       return item.answer;
     }
   }
-  return `Thanks for asking! Sabtain specializes in mission-critical platforms (WHO, WOAH), React & TypeScript platforms, WebSockets, AI/WhatsApp automation, and Laravel architectures. Feel free to ask about his WHO e-ACR data pipeline, WOAH PVSIS modules, or email him at sabtainaliwazir@gmail.com!`;
+  return `Thanks for asking! Sabtain specializes in mission-critical platforms (WHO, WOAH), React & TypeScript platforms, WebSockets, AI/WhatsApp automation, and Laravel architectures. Feel free to ask about his WHO e-ACR data pipeline, WOAH PVSIS modules, or email him at sabtainali375@gmail.com!`;
 };
 
 const AIChat = ({ initiallyOpen = false }) => {

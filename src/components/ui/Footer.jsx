@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Link } from '../../router/RouterContext';
 import { trackPortfolioEvent } from '../../lib/metrics';
-import ExpandingArrowButton from './ExpandingArrowButton';
-import { Copy, Check, ArrowUpRight, Mail, Terminal } from 'lucide-react';
+import { Copy, Check, ArrowUpRight, Mail } from 'lucide-react';
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
-  const email = 'sabtainaliwazir@gmail.com';
+  const email = 'sabtainali375@gmail.com';
 
   const copyEmail = () => {
     navigator.clipboard.writeText(email);
@@ -15,47 +14,37 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-zinc-200/80 bg-zinc-50/80 text-zinc-900 overflow-hidden pt-16 pb-12">
-      {/* Background ambient glow */}
-      <div
-        className="pointer-events-none absolute -bottom-40 left-1/2 -translate-x-1/2 h-80 w-full max-w-4xl rounded-full bg-[#f97316]/5 blur-[120px]"
-        aria-hidden="true"
-      />
-
-      <div className="gutter mx-auto max-w-[78rem] relative z-10">
+    <footer className="border-t border-zinc-200/80 bg-zinc-50/70 pt-16 pb-12 text-zinc-900">
+      <div className="gutter mx-auto max-w-[68rem]">
         {/* Main CTA Section */}
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-end pb-16 border-b border-zinc-200/80">
+        <div className="grid gap-8 border-b border-zinc-200/80 pb-12 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            {/* Availability Chip */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#f97316]/30 bg-orange-50 px-3.5 py-1 text-xs font-mono text-zinc-900 mb-6 shadow-sm">
-              <span className="size-2 rounded-full bg-[#f97316] animate-ping" />
-              <span>Available for engineering contracts & senior roles</span>
-            </div>
-
-            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.04em] text-zinc-950 leading-[0.98]">
-              Let&#39;s build systems <br />
-              <span className="italic font-normal text-zinc-500 font-serif">that scale & compound.</span>
+            <h2 className="font-display text-3xl font-bold tracking-[-0.03em] text-zinc-950 sm:text-4xl">
+              Want to work together?
             </h2>
-            <p className="mt-4 max-w-md text-sm text-zinc-600 leading-relaxed font-sans">
-              Full-stack web engineering, custom WordPress, and technical SEO delivered with clean craftsmanship.
+            <p className="mt-3 max-w-md font-sans text-sm leading-relaxed text-zinc-600 sm:text-base">
+              I&#39;m open to full-stack engineering roles and select freelance builds. Email is the fastest way to reach me.
             </p>
           </div>
 
-          <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-4 items-start lg:items-end">
-            <ExpandingArrowButton href="/contact" accentColor="#f97316" className="h-14 min-w-64">
-              Start a project
-            </ExpandingArrowButton>
+          <div className="flex flex-wrap items-center gap-3 lg:col-span-5 lg:justify-end">
+            <Link
+              href="/contact"
+              className="inline-flex h-11 items-center rounded-full bg-zinc-950 px-6 text-sm font-semibold text-white transition-colors hover:bg-zinc-800"
+            >
+              Get in touch
+            </Link>
 
-            {/* Copy Email Bar */}
             <button
+              type="button"
               onClick={copyEmail}
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-5 py-3 text-xs font-mono text-zinc-700 hover:border-[#f97316] hover:text-[#f97316] transition-colors shadow-sm cursor-pointer"
+              className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-full border border-zinc-200 bg-white px-5 font-mono text-xs text-zinc-700 transition-colors hover:border-[#f97316] hover:text-[#f97316]"
             >
               <Mail className="size-3.5 text-[#f97316]" />
               <span>{email}</span>
               {copied ? (
-                <span className="text-[#f97316] flex items-center gap-1 font-sans font-semibold">
-                  <Check className="size-3" /> Copied!
+                <span className="flex items-center gap-1 font-sans font-semibold text-[#f97316]">
+                  <Check className="size-3" /> Copied
                 </span>
               ) : (
                 <Copy className="size-3 text-zinc-400" />
@@ -65,110 +54,81 @@ export default function Footer() {
         </div>
 
         {/* Link Navigation Columns */}
-        <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4 border-b border-zinc-200/80">
+        <div className="grid grid-cols-2 gap-8 border-b border-zinc-200/80 py-10 sm:grid-cols-3">
           <div>
-            <p className="label-mono text-xs text-zinc-400 mb-4">Navigation</p>
-            <ul className="space-y-2 text-sm text-zinc-600 font-sans">
+            <p className="label-mono mb-4 text-xs text-zinc-400">Pages</p>
+            <ul className="space-y-2 font-sans text-sm text-zinc-600">
               <li>
-                <Link href="/" className="hover:text-[#f97316] transition-colors">
+                <Link href="/" className="transition-colors hover:text-[#f97316]">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio" className="hover:text-[#f97316] transition-colors">
-                  Selected Work
+                <Link href="/portfolio" className="transition-colors hover:text-[#f97316]">
+                  Work
                 </Link>
               </li>
               <li>
-                <Link href="/service" className="hover:text-[#f97316] transition-colors">
-                  Capabilities & Services
+                <Link href="/service" className="transition-colors hover:text-[#f97316]">
+                  Services
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-[#f97316] transition-colors">
-                  Tech Concepts Blog
+                <Link href="/blog" className="transition-colors hover:text-[#f97316]">
+                  Blog
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-[#f97316] transition-colors">
-                  Career & Philosophy
+                <Link href="/about" className="transition-colors hover:text-[#f97316]">
+                  About
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-[#f97316] transition-colors">
-                  Get in Touch
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <p className="label-mono text-xs text-zinc-400 mb-4">Core Focus</p>
-            <ul className="space-y-2 text-sm text-zinc-600 font-sans">
-              <li>
-                <Link href="/service#full-stack-development" className="hover:text-[#f97316] transition-colors">
-                  Full Stack Architecture
-                </Link>
-              </li>
-              <li>
-                <Link href="/service#who-surveillance" className="hover:text-[#f97316] transition-colors">
-                  WHO Surveillance Pipelines
-                </Link>
-              </li>
-              <li>
-                <Link href="/service#real-time-websockets" className="hover:text-[#f97316] transition-colors">
-                  WebSocket Real-Time Hubs
-                </Link>
-              </li>
-              <li>
-                <Link href="/service#ai-agents" className="hover:text-[#f97316] transition-colors">
-                  Autonomous AI Agents
+                <Link href="/contact" className="transition-colors hover:text-[#f97316]">
+                  Contact
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <p className="label-mono text-xs text-zinc-400 mb-4">Featured Work</p>
-            <ul className="space-y-2 text-sm text-zinc-600 font-sans">
+            <p className="label-mono mb-4 text-xs text-zinc-400">Selected work</p>
+            <ul className="space-y-2 font-sans text-sm text-zinc-600">
               <li>
-                <Link href="/portfolio/who-eacr" className="hover:text-[#f97316] transition-colors">
-                  WHO • e-ACR System
+                <Link href="/portfolio/who-eacr" className="transition-colors hover:text-[#f97316]">
+                  WHO e-ACR System
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio/woah-pvsis" className="hover:text-[#f97316] transition-colors">
+                <Link href="/portfolio/woah-pvsis" className="transition-colors hover:text-[#f97316]">
                   WOAH PVSIS Platform
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio/khandowa-law" className="hover:text-[#f97316] transition-colors">
-                  Khandowa Law & Bot
+                <Link href="/portfolio/commuters-link" className="transition-colors hover:text-[#f97316]">
+                  CommutersLink
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio/sales-closer" className="hover:text-[#f97316] transition-colors">
-                  Sales Closer AI
+                <Link href="/portfolio/khandowa-law" className="transition-colors hover:text-[#f97316]">
+                  Khandowa Law &amp; Bot
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <p className="label-mono text-xs text-zinc-400 mb-4">Connect</p>
-            <ul className="space-y-2 text-sm text-zinc-600 font-sans">
+            <p className="label-mono mb-4 text-xs text-zinc-400">Elsewhere</p>
+            <ul className="space-y-2 font-sans text-sm text-zinc-600">
               <li>
                 <a
                   href="https://github.com/SabtainAliWazir"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-[#f97316] transition-colors"
+                  className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f97316]"
                 >
-                  <svg className="size-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                  </svg>
                   <span>GitHub</span>
-                  <ArrowUpRight className="size-3 text-zinc-400" />
+                  <ArrowUpRight className="size-3.5 text-zinc-400" />
                 </a>
               </li>
               <li>
@@ -176,13 +136,10 @@ export default function Footer() {
                   href="https://www.linkedin.com/in/sabtainali123/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-[#f97316] transition-colors"
+                  className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f97316]"
                 >
-                  <svg className="size-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                  </svg>
                   <span>LinkedIn</span>
-                  <ArrowUpRight className="size-3 text-zinc-400" />
+                  <ArrowUpRight className="size-3.5 text-zinc-400" />
                 </a>
               </li>
               <li>
@@ -191,11 +148,19 @@ export default function Footer() {
                   onClick={() => trackPortfolioEvent('whatsapp_click')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-[#f97316] transition-colors"
+                  className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f97316]"
                 >
-                  <Terminal className="size-3.5 text-[#f97316]" />
-                  <span>WhatsApp Direct</span>
-                  <ArrowUpRight className="size-3 text-zinc-400" />
+                  <span>WhatsApp</span>
+                  <ArrowUpRight className="size-3.5 text-zinc-400" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/documents/sabainali_resume.pdf"
+                  download
+                  className="inline-flex items-center gap-1.5 transition-colors hover:text-[#f97316]"
+                >
+                  <span>Resume (PDF)</span>
                 </a>
               </li>
             </ul>
@@ -203,10 +168,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom Metadata */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
-          <p>© {new Date().getFullYear()} Sabtain Ali. All rights reserved.</p>
-          <p>Designed &amp; Coded by Sabtain Ali · Senior Full-Stack Software Engineer</p>
-          <p>Islamabad, PK · Working with Clients Worldwide</p>
+        <div className="flex flex-col items-start justify-between gap-2 pt-8 font-mono text-xs text-zinc-500 sm:flex-row sm:items-center">
+          <p>© {new Date().getFullYear()} Sabtain Ali</p>
+          <p>Islamabad, PK</p>
         </div>
       </div>
     </footer>

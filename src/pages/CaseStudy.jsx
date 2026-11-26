@@ -35,11 +35,11 @@ export default function CaseStudy({ project }) {
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
       <SEOHead
         title={`${project.title} · Case Study`}
-        description={project.summary || project.subtitle}
+        description={project.shortDesc || project.subtitle}
         canonical={canonical}
         articleSchema={schema('CreativeWork', {
           name: project.title,
-          description: project.summary || project.subtitle,
+          description: project.shortDesc || project.subtitle,
           url: absoluteUrl(canonical),
           image: absoluteUrl(project.heroImage),
           author: { '@id': AUTHOR_ID },

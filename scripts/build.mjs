@@ -20,8 +20,21 @@ function escapeJson(value) {
   return JSON.stringify(value).replace(/</g, '\\u003c');
 }
 
+function relatedFor(post, index) {
+  const others = index.filter((item) => item.slug !== post.slug);
+  const sameCategory = others.filter((item) => item.category === post.category);
+  const fallback = others.filter((item) => item.category !== post.category);
+  return [...sameCategory, ...fallback].slice(0, 3);
+}
+
 for (const path of [...paths, '/404']) {
-  const payload = listings.get(path) ?? (postsByPath.has(path) ? { post: postsByPath.get(path) } : {});
+  const payload =
+    path === '/'
+      ? { recentPosts: index.slice(0, 4) }
+      : listings.get(path) ??
+        (postsByPath.has(path)
+          ? { post: postsByPath.get(path), relatedPosts: relatedFor(postsByPath.get(path), index) }
+          : {});
   const markup = await renderPage(path, payload);
   const shellIndex = markup.indexOf('<div id="app-shell"');
   if (shellIndex < 0) throw new Error(`Missing app shell on ${path}`);
@@ -37,7 +50,20 @@ for (const path of [...paths, '/404']) {
 }
 
 await writeFile(`${outDir}${BLOG_INDEX_PATH}`, JSON.stringify(index));
-const entries = paths.map((path) => `  <url><loc>${absoluteUrl(path)}</loc></url>`).join('\n');
+const today = new Date().toISOString().slice(0, 10);
+const latestPostDate = posts[0]?.published_at || today;
+const sitemapPaths = paths.filter((path) => !path.startsWith('/blog/page/'));
+const entries = sitemapPaths
+  .map((path) => {
+    const postEntry = postsByPath.get(path);
+    const lastmod = postEntry
+      ? postEntry.updated_at || postEntry.published_at
+      : path === '/' || path === '/blog'
+        ? latestPostDate
+        : today;
+    return `  <url><loc>${absoluteUrl(path)}</loc><lastmod>${lastmod}</lastmod></url>`;
+  })
+  .join('\n');
 await writeFile(`${outDir}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`);
 await writeFile(`${outDir}/robots.txt`, `User-agent: *\nAllow: /\nSitemap: ${absoluteUrl('/sitemap.xml')}\n`);
 console.log(`Pre-rendered ${paths.length} indexable pages and a 404 page.`);

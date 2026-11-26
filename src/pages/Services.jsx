@@ -21,7 +21,7 @@ const legacyAnchors = {
 };
 
 export default function Services() {
-  const [activeServiceId, setActiveServiceId] = useState('wordpress-development');
+  const [activeServiceId, setActiveServiceId] = useState('full-stack-development');
   const [expandedMap, setExpandedMap] = useState(
     SERVICES.reduce((acc, s) => ({ ...acc, [s.id]: true }), {})
   );
@@ -70,7 +70,7 @@ export default function Services() {
   }, []);
 
   const activeServiceIndex = SERVICES.findIndex((s) => s.id === activeServiceId);
-  const activeService = SERVICES[activeServiceIndex] || SERVICES[3];
+  const activeService = SERVICES[activeServiceIndex] || SERVICES[0];
 
   return (
     <div className="min-h-screen bg-white text-zinc-950 pt-28 sm:pt-36 pb-24">
